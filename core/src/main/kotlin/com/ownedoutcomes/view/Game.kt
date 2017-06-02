@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.stageHeight
 import com.ownedoutcomes.stageWidth
 import com.ownedoutcomes.view.actor.group
+import ktx.actors.centerPosition
 import ktx.app.KtxScreen
 import ktx.scene2d.*
 
@@ -13,6 +14,20 @@ class Game(
     val stage: Stage
 ) : KtxScreen {
   val spritesView = group {
+    image("chicken2_v1") {
+      height = 75f
+      width = 75f
+      rotation = -30f
+      centerPosition(stageWidth, stageHeight, true)
+    }
+
+    image("chicken4_v1") {
+      height = 75f
+      width = 75f
+      rotation = -30f
+      x = stageWidth / 2 - 100f
+      y = stageHeight/ 2 - 100f
+    }
   }
   val view = table {
     setFillParent(true)
@@ -25,12 +40,9 @@ class Game(
       val dirtEnd = 7
       for (y in 0..tilesY - 1) {
         for (x in 0..tilesX - 1) {
-
-          buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
             imageButton(style = createStyle(x, y, dirtStart, dirtEnd)) {
 
             }.cell(height = 50f, width = 50f)
-          }
         }
         row()
       }
