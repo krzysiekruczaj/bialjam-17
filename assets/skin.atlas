@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 689, 87
+  xy: 819, 87
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -22,7 +22,7 @@ brown
   index: -1
 chicken
   rotate: false
-  xy: 651, 72
+  xy: 781, 72
   size: 37, 49
   orig: 50, 50
   offset: 7, 0
@@ -34,65 +34,79 @@ dirt
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass
+field-selected
   rotate: false
   xy: 66, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_e
+grass
   rotate: false
   xy: 131, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_n
+grass_e
   rotate: false
   xy: 196, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_ne
+grass_n
   rotate: false
   xy: 261, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_nw
+grass_n-selected
   rotate: false
   xy: 326, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_s
+grass_ne
   rotate: false
   xy: 391, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_se
+grass_nw
   rotate: false
   xy: 456, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_sw
+grass_s
   rotate: false
   xy: 521, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-grass_w
+grass_se
   rotate: false
   xy: 586, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_sw
+  rotate: false
+  xy: 651, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_w
+  rotate: false
+  xy: 716, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
