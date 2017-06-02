@@ -15,7 +15,7 @@ class Menu(
   val view = table {
     setFillParent(true)
 
-    label("Hello world!") {
+    label("Play!") {
       color = Color.WHITE
       onClick { _, _ ->
         application.setScreen<Game>()
