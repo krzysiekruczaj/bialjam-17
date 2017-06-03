@@ -3,7 +3,6 @@ package com.ownedoutcomes.entity
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.ownedoutcomes.fieldWidth
 import ktx.box2d.body
 import ktx.math.vec2
@@ -41,6 +40,7 @@ class TowerFactory(val world: World) {
 }
 
 class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
+  var size: Float = 25f
 
   init {
     initiate()

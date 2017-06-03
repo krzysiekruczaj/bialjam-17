@@ -4,16 +4,18 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ownedoutcomes.entity.Chicken
+import com.ownedoutcomes.entity.Tower
 import com.ownedoutcomes.view.GameController
 
 
 class GameRenderer(val gameController: GameController, val batch: Batch, skin: Skin) {
-  private val towerSprite = skin.atlas.createSprite("castle_grey")
+  private val castleSprite = skin.atlas.createSprite("castle_grey")
   private val enemySprite = skin.atlas.createSprite("chicken2_v1")
+  private val towerSprite = skin.atlas.createSprite("tower0")
 
 
   init {
-    towerSprite.setOriginCenter()
+    castleSprite.setOriginCenter()
     enemySprite.setOriginCenter()
   }
 
@@ -25,12 +27,14 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
     renderEnemies()
 
+    renderTowers()
+
     batch.end()
   }
 
   private fun renderPlayer() {
     val castle = gameController.castle
-    val playerSprite = Sprite(towerSprite)
+    val playerSprite = Sprite(castleSprite)
     val spriteSize = castle.size * 2
     playerSprite.x = castle.body.position.x - castle.size
     playerSprite.y = castle.body.position.y - castle.size
@@ -52,6 +56,24 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     val spriteSize = enemy.size * 2
     enemySprite.x = enemy.body.position.x - enemy.size
     enemySprite.y = enemy.body.position.y - enemy.size
+    enemySprite.setSize(spriteSize, spriteSize)
+    enemySprite.setOriginCenter()
+    enemySprite.draw(batch)
+  }
+
+  private fun renderTowers() {
+    println("Rendering ${gameController.towers.size} towers")
+    gameController.towers.forEach {
+      tower ->
+      renderTower(tower)
+    }
+  }
+
+  private fun renderTower(tower: Tower) {
+    val enemySprite = Sprite(towerSprite)
+    val spriteSize = tower.size * 2
+    enemySprite.x = tower.body.position.x - tower.size
+    enemySprite.y = tower.body.position.y - tower.size
     enemySprite.setSize(spriteSize, spriteSize)
     enemySprite.setOriginCenter()
     enemySprite.draw(batch)
