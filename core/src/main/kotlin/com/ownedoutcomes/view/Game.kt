@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
+import com.ownedoutcomes.entity.Castle
 import ktx.actors.onClick
 import ktx.app.KtxScreen
 import ktx.box2d.body
@@ -25,6 +26,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val debugRenderer = Box2DDebugRenderer()
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
   val enemies: MutableList<Chicken> = mutableListOf()
+  val castles: MutableList<Castle> = mutableListOf()
 
   val view = table {
     setFillParent(true)
@@ -82,7 +84,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     }
   }
 
-  private fun KTableWidget.createImageButton(style: String) : Unit {
+  private fun KTableWidget.createImageButton(style: String): Unit {
     imageButton(style = style) {
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
   }
@@ -95,14 +97,17 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   override fun show() {
     reset()
     enemies.add(Chicken(skin.getDrawable("tower1"), world, 1f))
+    castles.add(Castle(skin.getDrawable("castle_grey"), world, 100f))
     stage.addActor(view)
     enemies.onEach { stage.addActor(it) }
+    castles.onEach { stage.addActor(it) }
     Gdx.input.inputProcessor = stage
   }
 
   override fun render(delta: Float) {
     stage.act(delta)
     enemies.onEach { it.update(delta) }
+    castles.onEach { it.update(delta) }
     world.step(delta, 8, 3)
     stage.draw()
     debugRenderer.render(world, camera.combined)
