@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.ownedoutcomes.entity.Castle
-import com.ownedoutcomes.entity.Enemy
+import com.ownedoutcomes.entity.Chicken
 
 class ContactController(val gameController: GameController) : ContactListener {
   override fun endContact(contact: Contact?) {}
@@ -16,7 +16,7 @@ class ContactController(val gameController: GameController) : ContactListener {
   }
 
   private fun checkContact(firstEntity: Any, secondEntity: Any) {
-    if (firstEntity is Enemy && secondEntity is Castle) {
+    if (firstEntity is Chicken && secondEntity is Castle) {
       firstEntity.life--
       if (firstEntity.life < 0) {
         gameController.enemiesToRemove.add(firstEntity)
