@@ -28,17 +28,14 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
     batch.begin()
 
-    renderPlayer()
-
+    renderCastle()
     renderEnemies()
-
     renderTowers()
-
 
     batch.end()
   }
 
-  private fun renderPlayer() {
+  private fun renderCastle() {
     val castle = gameController.castle
     val playerSprite = Sprite(castleSprite)
     val spriteSize = castle.size * 2
