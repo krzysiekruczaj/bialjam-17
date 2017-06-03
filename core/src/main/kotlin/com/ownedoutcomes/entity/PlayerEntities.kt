@@ -34,7 +34,7 @@ class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Ve
   }
 }
 
-class CastleFacade(image: Drawable, world: World, life: Float, val spawnVector: Vector2) : AbstractEntity(world, image) {
+class Tower(image: Drawable, world: World, life: Float, val spawnVector: Vector2) : AbstractEntity(world, image) {
 
   init {
     initiate()
@@ -52,7 +52,7 @@ class CastleFacade(image: Drawable, world: World, life: Float, val spawnVector: 
         width = 50f
         height = 50f
 
-        userData = this@CastleFacade
+        userData = this@Tower
         density = 0.5f
         friction = 0.3f
         restitution = 0.1f

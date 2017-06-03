@@ -5,19 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.ownedoutcomes.view.ContactController
 import com.ownedoutcomes.view.Game
 import com.ownedoutcomes.view.GameController
 import com.ownedoutcomes.view.Menu
 import ktx.app.KtxGame
 import ktx.async.enableKtxCoroutines
 import ktx.inject.Context
-import ktx.math.vec2
 import ktx.scene2d.Scene2DSkin
 import ktx.style.defaultStyle
 import ktx.style.imageButton
@@ -39,7 +36,7 @@ class Application : KtxGame<Screen>() {
       Scene2DSkin.defaultSkin = inject()
       bindSingleton(this@Application)
       bindSingleton(Menu(inject(), inject()))
-      bindSingleton(Game(inject(), inject(), inject()))
+      bindSingleton(Game(inject(), inject()))
     }
 
     addScreen(context.inject<Menu>())
