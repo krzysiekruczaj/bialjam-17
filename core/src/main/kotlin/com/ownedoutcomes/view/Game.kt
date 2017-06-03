@@ -1,15 +1,13 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
-import com.ownedoutcomes.entity.CastleFacade
+import com.ownedoutcomes.entity.TowerFactory
+import com.ownedoutcomes.logic.GameRenderer
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
@@ -22,7 +20,7 @@ class Game(val stage: Stage,
            val gameRenderer: GameRenderer) : KtxScreen {
 //  val debugRenderer = Box2DDebugRenderer()
 
-  private val towerFactory = TowerFactory(skin, gameController.world)
+  private val towerFactory = TowerFactory(gameController.world)
   private lateinit var towerTypes: KButtonTable
   private lateinit var pointsLabel: Label
 
@@ -138,8 +136,8 @@ class Game(val stage: Stage,
         println("TOWER: ${tower.life}")
 
         gameController.towers.add(tower)
-        stage.addActor(tower)
-        gameController.castleFacades.add(castleFacade)
+//        stage.addActor(tower)
+//        gameController.castleFacades.add(castleFacade)
 //        stage.addActor(castleFacade)
 
         actor.isChecked = false
@@ -183,7 +181,7 @@ class Game(val stage: Stage,
     gameController.update(delta)
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
-    gameController.castleFacades.onEach { it.update(delta) }
+    gameController.towers.onEach { it.update(delta) }
     stage.act(delta)
     stage.draw()
 //    debugRenderer.render(gameController.world, camera.combined)

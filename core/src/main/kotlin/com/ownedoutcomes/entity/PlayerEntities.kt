@@ -5,11 +5,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.ownedoutcomes.fieldWidth
-import com.ownedoutcomes.halfScreenWidth
 import ktx.box2d.body
 import ktx.math.vec2
 
-class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, image) {
+class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
+  var size: Float = 25f
+
   init {
     initiate()
   }
@@ -33,13 +34,13 @@ class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Ve
   }
 }
 
-class TowerFactory(val skin: Skin, val world: World) {
-  fun wallTower(spawnVector: Vector2) = Tower(skin.getDrawable("tower0"), world, 10f, spawnVector)
-  fun fastTower(spawnVector: Vector2) = Tower(skin.getDrawable("tower1"), world, 3f, spawnVector)
-  fun splashTower(spawnVector: Vector2) = Tower(skin.getDrawable("tower2"), world, 3f, spawnVector)
+class TowerFactory(val world: World) {
+  fun wallTower(spawnVector: Vector2) = Tower(world, 10f, spawnVector)
+  fun fastTower(spawnVector: Vector2) = Tower(world, 3f, spawnVector)
+  fun splashTower(spawnVector: Vector2) = Tower( world, 3f, spawnVector)
 }
 
-class Tower(image: Drawable, world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world, image) {
+class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
 
   init {
     initiate()
@@ -54,7 +55,7 @@ class Tower(image: Drawable, world: World, var life: Float, val spawnVector: Vec
       position.y = spawnVector.y
 
       circle(25f) {
-        userData = this@CastleFacade
+        userData = this@Tower
         density = 0.5f
         friction = 0.3f
         restitution = 0.1f
