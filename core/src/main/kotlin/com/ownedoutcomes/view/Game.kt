@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
 import com.ownedoutcomes.entity.CastleFacade
+import com.ownedoutcomes.logic.GameRenderer
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
@@ -18,11 +19,9 @@ import ktx.scene2d.*
 
 
 class Game(val stage: Stage,
-           val skin: Skin,
-           val gameController: GameController) : KtxScreen {
-  val debugRenderer = Box2DDebugRenderer()
-  val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
-  val castleFacades: MutableList<CastleFacade> = mutableListOf()
+           val gameController: GameController,
+           val gameRenderer: GameRenderer) : KtxScreen {
+//  val debugRenderer = Box2DDebugRenderer()
 
   private lateinit var towerTypes: KButtonTable
   private lateinit var pointsLabel: Label
@@ -122,7 +121,7 @@ class Game(val stage: Stage,
       onClick { _: InputEvent, actor: KImageButton, x: Float, y: Float ->
         println("Clicked [$x, $y] with actor $actor on [${actor.x}, ${actor.y}]")
 
-        println("Creating ${castleFacades.size} castle facades. Creating facade with id = [$currentTower]")
+        println("Creating ${gameController.castleFacades.size} castle facades. Creating facade with id = [$currentTower]")
 
         val x = actor.getX(Align.center) - halfScreenWidth
         val y = actor.getY(Align.center) - halfScreenHeight
@@ -130,14 +129,13 @@ class Game(val stage: Stage,
         println("Creating CastleFacade at [$x, $y]")
 
         val castleFacade = CastleFacade(
-          skin.getDrawable("tower$currentTower"),
           gameController.world,
           100f,
           vec2(x, y)
         )
 
-        castleFacades.add(castleFacade)
-        stage.addActor(castleFacade)
+        gameController.castleFacades.add(castleFacade)
+//        stage.addActor(castleFacade)
 
         actor.isChecked = false
       }
@@ -152,9 +150,9 @@ class Game(val stage: Stage,
   override fun show() {
     stage.addActor(view)
 
-    gameController.spawnEnemies().onEach { stage.addActor(it) }
-    stage.addActor(gameController.castle)
-    castleFacades.onEach { stage.addActor(it) }
+//    gameController.spawnEnemies().onEach { stage.addActor(it) }
+//    stage.addActor(gameController.castle)
+//    castleFacades.onEach { stage.addActor(it) }
 
     Gdx.input.inputProcessor = stage
     stage.keyboardFocus = view
@@ -168,19 +166,23 @@ class Game(val stage: Stage,
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
-      gameController.spawnEnemies().onEach { stage.addActor(it) }
+      gameController.spawnEnemies()
     } else {
       lastSpawnDelta += delta
     }
 
     updatePoints()
 
+
+//    pointsLabel.setText("Level: $currentGameLevel Points: $currentGamePoints")
+
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
-    castleFacades.onEach { it.update(delta) }
+    gameController.castleFacades.onEach { it.update(delta) }
     stage.act(delta)
     stage.draw()
-    debugRenderer.render(gameController.world, camera.combined)
+//    debugRenderer.render(gameController.world, camera.combined)
+    gameRenderer.render(delta)
   }
 
   private fun updatePoints() {

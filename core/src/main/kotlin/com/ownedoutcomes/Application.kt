@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.ownedoutcomes.logic.GameRenderer
 import com.ownedoutcomes.view.ContactController
 import com.ownedoutcomes.view.Game
 import com.ownedoutcomes.view.GameController
@@ -39,7 +40,9 @@ class Application : KtxGame<Screen>() {
       Scene2DSkin.defaultSkin = inject()
       bindSingleton(this@Application)
       bindSingleton(Menu(inject(), inject()))
+      bindSingleton(GameRenderer(inject(), inject(), inject()))
       bindSingleton(Game(inject(), inject(), inject()))
+
     }
 
     addScreen(context.inject<Menu>())
