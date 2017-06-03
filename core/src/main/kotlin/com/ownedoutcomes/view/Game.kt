@@ -1,8 +1,9 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -18,7 +19,6 @@ import ktx.actors.onClick
 import ktx.app.KtxScreen
 import ktx.math.vec2
 import ktx.scene2d.*
-import java.util.*
 
 
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
@@ -30,7 +30,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
 
   val selectedFields: MutableSet<Actor> = mutableSetOf()
 
-  val rand = Random()
+  var currentTower = 0
 
   val view = table {
     setFillParent(true)
@@ -54,11 +54,6 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
         row()
       }
 
-//      onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
-//        run {
-//          processKeyEvent(c)
-//        }
-//      }
     }.cell(width = stageWidth, height = stageHeight, padBottom = bottomPadding, row = true)
 
     // GUI:
@@ -79,14 +74,6 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     pack()
   }
 
-  private fun processKeyEvent(c: Char) {
-    println("Key event: $c")
-    when (c) {
-      'q' -> println("No elo: Q")
-      'w' -> println("No elo: W")
-    }
-  }
-
   private fun KImageButton.createCastleFacade(actor: KImageButton, event: InputEvent) {
     val actorName = actor.name
     println("Button clicked. Event: $event, actor: $actorName")
@@ -98,7 +85,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       val x = coordinates.x / widthTiles
       val y = coordinates.y / heightTiles
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(actorX - halfScreenWidth , actorY - halfScreenHeight))
+      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(actorX - halfScreenWidth, actorY - halfScreenHeight))
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }
@@ -138,7 +125,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   override fun show() {
     reset()
     for (i in 0..200) {
-      enemies.add((Chicken(skin.getDrawable("chicken${rand.nextInt(4) + 4}_v1"), world, 1f)))
+      enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)))
     }
 
     castles.add(Castle(skin.getDrawable("flag_blue"), world, vec2(0f, fieldWidth.toFloat() / 2)))
@@ -150,6 +137,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   }
 
   override fun render(delta: Float) {
+    inputHandling()
     stage.act(delta)
     world.step(delta, 8, 3)
     enemies.onEach { it.update(delta) }
@@ -160,6 +148,14 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   }
 
   fun reset() {}
+
+  fun inputHandling() {
+    when {
+      Gdx.input.isKeyPressed(Input.Keys.Q) -> currentTower = 0
+      Gdx.input.isKeyPressed(Input.Keys.W) -> currentTower = 1
+      Gdx.input.isKeyPressed(Input.Keys.E) -> currentTower = 2
+      Gdx.input.isKeyPressed(Input.Keys.R) -> currentTower = 3
+      Gdx.input.isKeyPressed(Input.Keys.T) -> currentTower = 4
+    }
+  }
 }
-
-

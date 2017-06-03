@@ -1,19 +1,16 @@
 package com.ownedoutcomes.entity
 
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import com.ownedoutcomes.*
+import com.ownedoutcomes.halfScreenWidth
+import com.ownedoutcomes.screenHeight
+import com.ownedoutcomes.screenWidth
 import ktx.box2d.body
 import ktx.math.vec2
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
-
-val playerDensity = 20f
 
 abstract class AbstractEntity(val world: World, drawable: Drawable) : Image(drawable) {
   lateinit var body: Body
@@ -37,7 +34,6 @@ abstract class Enemy(image: Drawable, world: World, life: Float) : AbstractEntit
   val destination = vec2(600f, 600f)
   val size = 1f
   var angle = 0f
-  val rand = Random()
 
   var reachDestination = false
 
