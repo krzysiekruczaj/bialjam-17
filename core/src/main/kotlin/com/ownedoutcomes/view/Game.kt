@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
 import com.ownedoutcomes.entity.CastleFacade
-import com.ownedoutcomes.logic.GameRenderer
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
@@ -23,6 +22,7 @@ class Game(val stage: Stage,
            val gameRenderer: GameRenderer) : KtxScreen {
 //  val debugRenderer = Box2DDebugRenderer()
 
+  private val towerFactory = TowerFactory(skin, gameController.world)
   private lateinit var towerTypes: KButtonTable
   private lateinit var pointsLabel: Label
 
@@ -59,8 +59,8 @@ class Game(val stage: Stage,
     // GUI:
     towerTypes = buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
       background("brown")
-      repeat(5) { index ->
-        val buttonName = "tower$index"
+      repeat(5) { i ->
+        val buttonName = "tower$i"
         imageButton(style = buttonName) {
           name = buttonName
           it.height(60f).width(70f)
@@ -78,15 +78,15 @@ class Game(val stage: Stage,
     }
     towerTypes.cell(growX = false, height = 90f, pad = 10f)
 
-    onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
+    onKey { _: InputEvent, _: KTableWidget, c: Char ->
       run {
         println("Pressed key = [$c]")
         when (c) {
-          'q' -> setCastleFacadeType(0)
-          'w' -> setCastleFacadeType(1)
-          'e' -> setCastleFacadeType(2)
-          'r' -> setCastleFacadeType(3)
-          't' -> setCastleFacadeType(4)
+          'q' -> setTowerType(0)
+          'w' -> setTowerType(1)
+          'e' -> setTowerType(2)
+          'r' -> setTowerType(3)
+          't' -> setTowerType(4)
         }
       }
     }
@@ -94,8 +94,9 @@ class Game(val stage: Stage,
     pack()
   }
 
-  private fun setCastleFacadeType(id: Int) {
+  private fun setTowerType(id: Int) {
     currentTower = id
+    println("currentTower set to $currentTower")
     val buttonGroup = towerTypes.buttonGroup
     buttonGroup.checked?.isChecked = false
     buttonGroup.buttons[id].isChecked = true
@@ -121,19 +122,23 @@ class Game(val stage: Stage,
       onClick { _: InputEvent, actor: KImageButton, x: Float, y: Float ->
         println("Clicked [$x, $y] with actor $actor on [${actor.x}, ${actor.y}]")
 
-        println("Creating ${gameController.castleFacades.size} castle facades. Creating facade with id = [$currentTower]")
+        println("Creating ${gameController.towers.size} castle facades. Creating facade with id = [$currentTower]")
 
         val x = actor.getX(Align.center) - halfScreenWidth
         val y = actor.getY(Align.center) - halfScreenHeight
 
-        println("Creating CastleFacade at [$x, $y]")
+        println("Creating Tower at [$x, $y]")
 
-        val castleFacade = CastleFacade(
-          gameController.world,
-          100f,
-          vec2(x, y)
-        )
+        val tower = when (currentTower) {
+          0 -> towerFactory.wallTower(vec2(x, y))
+          1 -> towerFactory.fastTower(vec2(x, y))
+          else -> towerFactory.splashTower(vec2(x, y))
+        }
 
+        println("TOWER: ${tower.life}")
+
+        gameController.towers.add(tower)
+        stage.addActor(tower)
         gameController.castleFacades.add(castleFacade)
 //        stage.addActor(castleFacade)
 
@@ -162,7 +167,7 @@ class Game(val stage: Stage,
 
   override fun render(delta: Float) {
     gameController.world.step(delta, 8, 3)
-    gameController.removeEnemies()
+    gameController.removeDestroyedGameObjects()
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
@@ -175,7 +180,7 @@ class Game(val stage: Stage,
 
 
 //    pointsLabel.setText("Level: $currentGameLevel Points: $currentGamePoints")
-
+    gameController.update(delta)
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
     gameController.castleFacades.onEach { it.update(delta) }

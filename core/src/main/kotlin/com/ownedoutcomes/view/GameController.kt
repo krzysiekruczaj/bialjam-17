@@ -7,9 +7,11 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
+import com.ownedoutcomes.entity.AbstractEntity
 import com.ownedoutcomes.entity.Castle
-import com.ownedoutcomes.entity.CastleFacade
 import com.ownedoutcomes.entity.Chicken
+import com.ownedoutcomes.entity.Tower
+import ktx.collections.GdxSet
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
 import ktx.collections.gdxSetOf
@@ -24,29 +26,11 @@ class GameController(val skin: Skin) : Disposable {
   val castle = Castle(world, 1000f)
   val enemies = gdxSetOf<Chicken>()
   val enemiesToRemove = gdxSetOf<Chicken>()
-
-  val castleFacades = mutableListOf<CastleFacade>()
-
+  val towers = gdxSetOf<Tower>()
+  val towersToRemove = gdxSetOf<Tower>()
 
   init {
     world.setContactListener(ContactController(this))
-  }
-
-  fun removeEnemies() {
-    if (enemiesToRemove.isNotEmpty()) {
-      enemiesToRemove.forEach {
-        val bd = Array<Body>()
-        world.getBodies(bd)
-
-        if (bd.contains(it.body, true)) {
-          it.body.isActive = false
-          world.destroyBody(it.body)
-        }
-
-        enemies.remove(it)
-      }
-    }
-    enemiesToRemove.clear()
   }
 
   fun spawnEnemies() =
@@ -58,5 +42,33 @@ class GameController(val skin: Skin) : Disposable {
 
   override fun dispose() {
     world.dispose()
+  }
+
+  fun removeDestroyedGameObjects() {
+    removeObjects(enemies, enemiesToRemove)
+    removeObjects(towers, towersToRemove)
+  }
+
+  private fun <E : AbstractEntity> removeObjects(allObjects: GdxSet<E>, toRemove: GdxSet<E>) {
+    if (toRemove.isNotEmpty()) {
+      toRemove.forEach {
+        val bd = Array<Body>()
+        world.getBodies(bd)
+
+        if (bd.contains(it.body, true)) {
+          it.body.isActive = false
+          world.destroyBody(it.body)
+        }
+
+        allObjects.remove(it)
+      }
+    }
+    toRemove.clear()
+  }
+
+  fun update(delta: Float) {
+    enemies.onEach { it.update(delta) }
+    castle.update(delta)
+    towers.onEach { it.update(delta) }
   }
 }
