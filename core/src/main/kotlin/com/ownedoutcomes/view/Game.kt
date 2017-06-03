@@ -25,6 +25,7 @@ import java.util.*
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val debugRenderer = Box2DDebugRenderer()
   val camera = OrthographicCamera(screenWidth.toFloat() * 3, screenHeight.toFloat() * 3)
+
   val enemies: MutableList<Chicken> = mutableListOf()
   val castles: MutableList<Castle> = mutableListOf()
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
@@ -55,11 +56,6 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
         row()
       }
 
-//      onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
-//        run {
-//          processKeyEvent(c)
-//        }
-//      }
     }.cell(width = stageWidth, height = stageHeight, padBottom = bottomPadding, row = true)
 
     // GUI:
@@ -78,14 +74,6 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       }
     }.cell(growX = false, height = 90f, pad = 10f)
     pack()
-  }
-
-  private fun processKeyEvent(c: Char) {
-    println("Key event: $c")
-    when (c) {
-      'q' -> println("No elo: Q")
-      'w' -> println("No elo: W")
-    }
   }
 
   private fun KImageButton.createCastleFacade(actor: KImageButton, event: InputEvent) {
@@ -168,6 +156,5 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       Gdx.input.isKeyPressed(Input.Keys.R) -> currentTower = 3
       Gdx.input.isKeyPressed(Input.Keys.T) -> currentTower = 4
     }
-    println("current Tower:$currentTower")
   }
 }
