@@ -88,7 +88,7 @@ class Game(val stage: Stage,
         }
       }
     }
-
+    setTowerType(0)
     pack()
   }
 
