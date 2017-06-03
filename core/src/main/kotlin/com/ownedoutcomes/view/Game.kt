@@ -75,11 +75,11 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       run {
         println("Pressed key = [$c]")
         when(c) {
-          'q' -> createCastleFacade(0)
-          'w' -> createCastleFacade(1)
-          'e' -> createCastleFacade(2)
-          'r' -> createCastleFacade(3)
-          't' -> createCastleFacade(3)
+          'q' -> setCastleFacadeType(0)
+          'w' -> setCastleFacadeType(1)
+          'e' -> setCastleFacadeType(2)
+          'r' -> setCastleFacadeType(3)
+          't' -> setCastleFacadeType(4)
         }
       }
     }
@@ -87,7 +87,12 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     pack()
   }
 
-  private fun createCastleFacade(id:Int) {
+  private fun setCastleFacadeType(id:Int) {
+    currentTower = id
+  }
+
+  private fun createCastleFacade() {
+    val id = currentTower
     val facadesSize = castleFacades.size
     println("Creating $facadesSize castle facades. Creating facade with id = [$id]")
     selectedFields.forEach { actor: Actor ->
@@ -125,6 +130,8 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
         val actorY = actor.y
         println("Clicked [$x, $y] with actor $actor on [$actorX, $actorY]")
         selectedFields.add(actor)
+        createCastleFacade()
+        actor.isChecked = false
       }
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
   }
