@@ -1,7 +1,6 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -14,6 +13,7 @@ import com.ownedoutcomes.*
 import com.ownedoutcomes.entity.CastleFacade
 import com.ownedoutcomes.entity.Chicken
 import ktx.actors.onClick
+import ktx.actors.onKey
 import ktx.app.KtxScreen
 import ktx.math.vec2
 import ktx.scene2d.*
@@ -29,6 +29,8 @@ class Game(val stage: Stage,
   val selectedFields: MutableSet<Actor> = mutableSetOf()
 
   var currentTower = 0
+
+  var lastSpawnDelta = 0.0f
 
   val view = table {
     setFillParent(true)
@@ -63,30 +65,39 @@ class Game(val stage: Stage,
           name = buttonName
           it.height(60f).width(70f)
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
-          onClick { event: InputEvent, actor: KImageButton ->
-            createCastleFacade(actor, event)
-          }
         }
       }
     }.cell(growX = false, height = 90f, pad = 10f)
+
+    onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
+      run {
+        println("Pressed key = [$c]")
+        when (c) {
+          'q' -> currentTower = 0
+          'w' -> currentTower = 1
+          'e' -> currentTower = 2
+          'r' -> currentTower = 3
+          't' -> currentTower = 4
+        }
+      }
+    }
+
     pack()
   }
 
-  private fun KImageButton.createCastleFacade(actor: KImageButton, event: InputEvent) {
-    val actorName = actor.name
-    println("Button clicked. Event: $event, actor: $actorName")
+  private fun createCastleFacade() {
+    val id = currentTower
+    val facadesSize = castleFacades.size
+    println("Creating $facadesSize castle facades. Creating facade with id = [$id]")
     selectedFields.forEach { actor: Actor ->
-      val actorX = actor.getX(Align.center)
-      val actorY = actor.getY(Align.center)
-      println("Actor coordinating in CastleFacade is [$actorX, $actorY]")
-      val coordinates = actor.localToStageCoordinates(vec2(actorX, actorY))
-      val x = coordinates.x / widthTiles
-      val y = coordinates.y / heightTiles
+      val x = actor.getX(Align.center) - halfScreenWidth
+      val y = actor.getY(Align.center) - halfScreenHeight
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), gameController.world, 100f, vec2(actorX - halfScreenWidth, actorY - halfScreenHeight))
+      val castleFacade = CastleFacade(skin.getDrawable("tower$id"), gameController.world, 100f, vec2(x, y))
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }
+    selectedFields.clear()
   }
 
   private fun KTableWidget.createTileStyle(x: Int, y: Int, dirtStart: Int, dirtEnd: Int): Unit {
@@ -111,6 +122,8 @@ class Game(val stage: Stage,
         val actorY = actor.y
         println("Clicked [$x, $y] with actor $actor on [$actorX, $actorY]")
         selectedFields.add(actor)
+        createCastleFacade()
+        actor.isChecked = false
       }
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
   }
@@ -121,7 +134,6 @@ class Game(val stage: Stage,
   }
 
   override fun show() {
-    reset()
     for (i in 0..200) {
       gameController.enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), gameController.world, 1f)))
     }
@@ -131,29 +143,27 @@ class Game(val stage: Stage,
     stage.addActor(gameController.castle)
     castleFacades.onEach { stage.addActor(it) }
     Gdx.input.inputProcessor = stage
+    stage.keyboardFocus = view
   }
 
+  private val enemiesSpawnTimeout = 10
+
   override fun render(delta: Float) {
-    inputHandling()
     stage.act(delta)
     gameController.world.step(delta, 8, 3)
     gameController.removeEnemies()
+
+    if (lastSpawnDelta > enemiesSpawnTimeout) {
+      lastSpawnDelta = 0.0f
+      gameController.spawnEnemies().onEach { stage.addActor(it) }
+    } else {
+      lastSpawnDelta += delta
+    }
+
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
     castleFacades.onEach { it.update(delta) }
     stage.draw()
     debugRenderer.render(gameController.world, camera.combined)
-  }
-
-  fun reset() {}
-
-  fun inputHandling() {
-    when {
-      Gdx.input.isKeyPressed(Input.Keys.Q) -> currentTower = 0
-      Gdx.input.isKeyPressed(Input.Keys.W) -> currentTower = 1
-      Gdx.input.isKeyPressed(Input.Keys.E) -> currentTower = 2
-      Gdx.input.isKeyPressed(Input.Keys.R) -> currentTower = 3
-      Gdx.input.isKeyPressed(Input.Keys.T) -> currentTower = 4
-    }
   }
 }

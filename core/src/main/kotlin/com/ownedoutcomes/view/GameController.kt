@@ -1,5 +1,6 @@
 package com.ownedoutcomes.view
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -11,7 +12,7 @@ import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
 import ktx.math.vec2
 
-class GameController(skin: Skin) {
+class GameController(val skin: Skin) {
   val world = World(vec2(0f, 0f), true)
   val castle = Castle(skin.getDrawable("flag_blue"), world, 1000f)
   val enemies: MutableList<Chicken> = mutableListOf()
@@ -36,4 +37,11 @@ class GameController(skin: Skin) {
       }
     }
   }
+
+  fun spawnEnemies() =
+    (0..200).map {
+      val chicken = Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)
+      enemies.add(chicken)
+      chicken
+    }
 }
