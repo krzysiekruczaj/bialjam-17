@@ -3,6 +3,7 @@ package com.ownedoutcomes.view
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -31,8 +32,6 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val selectedFields: MutableSet<Actor> = mutableSetOf()
 
   var currentTower = 0
-
-  val rand = Random()
 
   val view = table {
     setFillParent(true)
@@ -137,7 +136,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   override fun show() {
     reset()
     for (i in 0..200) {
-      enemies.add((Chicken(skin.getDrawable("chicken${rand.nextInt(4) + 4}_v1"), world, 1f)))
+      enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)))
     }
 
     castles.add(Castle(skin.getDrawable("flag_blue"), world, vec2(0f, fieldWidth.toFloat() / 2)))
