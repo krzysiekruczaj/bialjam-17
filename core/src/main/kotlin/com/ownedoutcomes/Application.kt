@@ -64,8 +64,11 @@ class Application : KtxGame<Screen>() {
 
     // Dirt
     imageButton(name = "dirt") {
-      imageUp = skin.getDrawable("dirt")
+      up = skin.getDrawable("dirt")
       checked = skin.getDrawable("dirt")
+      imageUp = skin.getDrawable("empty-box")
+      imageChecked = skin.getDrawable("upgrade-box")
+      imageOver = skin.getDrawable("upgrade-box")
     }
 
     // Tower borders

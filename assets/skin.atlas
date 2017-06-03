@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 934, 257
+  xy: 804, 26
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -14,7 +14,7 @@ beige
   index: -1
 brown
   rotate: false
-  xy: 869, 179
+  xy: 804, 61
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
@@ -22,7 +22,7 @@ brown
   index: -1
 chicken
   rotate: false
-  xy: 804, 103
+  xy: 934, 242
   size: 37, 49
   orig: 50, 50
   offset: 7, 0
@@ -47,6 +47,13 @@ dirt
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
+  index: -1
+empty-box
+  rotate: false
+  xy: 804, 100
+  size: 52, 52
+  orig: 64, 64
+  offset: 6, 6
   index: -1
 grass
   rotate: false
@@ -120,7 +127,7 @@ grass_w
   index: -1
 gray
   rotate: false
-  xy: 804, 68
+  xy: 831, 65
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -160,4 +167,11 @@ tower4
   size: 60, 55
   orig: 60, 60
   offset: 0, 4
+  index: -1
+upgrade-box
+  rotate: false
+  xy: 869, 165
+  size: 52, 52
+  orig: 64, 64
+  offset: 6, 6
   index: -1
