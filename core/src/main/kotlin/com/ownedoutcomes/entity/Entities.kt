@@ -6,12 +6,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import com.ownedoutcomes.fieldHeight
-import com.ownedoutcomes.fieldWidth
-import com.ownedoutcomes.halfScreenHeight
-import com.ownedoutcomes.halfScreenWidth
+import com.ownedoutcomes.*
 import ktx.box2d.body
 import ktx.math.vec2
+import java.util.*
 
 class Castle(image: Drawable, world: World) : AbstractEntity(world, image) {
   init {
@@ -57,12 +55,12 @@ abstract class AbstractEntity(val world: World, drawable: Drawable) : Image(draw
 
 class Chicken(image: Drawable, world: World, life: Float) : Enemy(image, world, life = life)
 
-abstract class Enemy(image: Drawable,
-                     world: World,
-                     life: Float) : AbstractEntity(world, image) {
+abstract class Enemy(image: Drawable, world: World, life: Float) : AbstractEntity(world, image) {
   private val destination = vec2(600f, 600f)
   private val size = 1f
   private var angle = 0f
+  private val rand = Random()
+
   var reachDestination = false
 
   init {
@@ -74,8 +72,18 @@ abstract class Enemy(image: Drawable,
       type = BodyDef.BodyType.DynamicBody
       fixedRotation = true
       linearDamping = 1f
-      position.x = 300f - halfScreenWidth
-      position.y = 300f - halfScreenHeight
+
+      position.x = when (MathUtils.random.nextInt(2)) {
+        0 -> -MathUtils.random.nextFloat() % 200 - screenWidth  //left
+        1 -> MathUtils.random.nextFloat() % 200 + screenWidth //right
+        else -> 34f
+      }
+      position.y = when (MathUtils.random.nextInt(2)) {
+        0 -> -MathUtils.random.nextFloat() % 200  - screenHeight//down
+        1 -> MathUtils.random.nextFloat() % 200 + screenHeight //up
+        else -> 34f
+      }
+
       circle(20f) {
         userData = this@Enemy
         density = 0.05f
@@ -99,8 +107,4 @@ abstract class Enemy(image: Drawable,
 
     setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
   }
-}
-
-enum class EntityType {
-  CASTLE, CHICKEN
 }

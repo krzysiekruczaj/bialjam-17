@@ -14,6 +14,7 @@ import com.ownedoutcomes.entity.Chicken
 import ktx.actors.onClick
 import ktx.app.KtxScreen
 import ktx.scene2d.*
+import java.util.*
 
 
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
@@ -21,6 +22,8 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
   val enemies: MutableList<Chicken> = mutableListOf()
   val castles: MutableList<Castle> = mutableListOf()
+
+  val rand = Random()
 
   val view = table {
     setFillParent(true)
@@ -90,7 +93,10 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
 
   override fun show() {
     reset()
-    enemies.add(Chicken(skin.getDrawable("tower1"), world, 1f))
+    for (i in 0..200){
+      enemies.add((Chicken(skin.getDrawable("chicken${rand.nextInt(4) + 4}_v1"), world, 1f)))
+    }
+
     castles.add(Castle(skin.getDrawable("castle_grey"), world))
     stage.addActor(view)
     enemies.onEach { stage.addActor(it) }
