@@ -25,12 +25,9 @@ class Castle(image: Drawable, world: World, val spawnCenter: Vector2) : Abstract
       type = BodyDef.BodyType.StaticBody
       fixedRotation = true
       linearDamping = 1f
-      position.x = halfScreenWidth.toFloat()
-      position.y = halfScreenHeight.toFloat()
-      box {
-//        width = 150f
-//        height = 150f
-
+      position.x = spawnCenter.x
+      position.y = spawnCenter.y
+      circle(25f) {
         userData = this@Castle
         density = 0.5f
         friction = 0.3f
@@ -38,7 +35,9 @@ class Castle(image: Drawable, world: World, val spawnCenter: Vector2) : Abstract
       }
     }
 
-  override fun update(delta: Float) {}
+  override fun update(delta: Float) {
+    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
+  }
 }
 
 abstract class AbstractEntity(val world: World, drawable: Drawable) : Image(drawable) {
@@ -124,10 +123,8 @@ class CastleFacade(image: Drawable, world: World, life: Float, val spawnVector: 
       type = BodyDef.BodyType.StaticBody
       fixedRotation = true
       linearDamping = 1f
-      position.x = -250f
-      position.y = 25f
-//      position.x = spawnVector.x
-//      position.y = spawnVector.y
+      position.x = spawnVector.x
+      position.y = spawnVector.y
 
       circle(25f) {
         width = 50f
@@ -141,6 +138,7 @@ class CastleFacade(image: Drawable, world: World, life: Float, val spawnVector: 
     }
 
   override fun update(delta: Float) {
+    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
   }
 }
 

@@ -2,7 +2,6 @@ package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -15,7 +14,6 @@ import com.ownedoutcomes.entity.Castle
 import com.ownedoutcomes.entity.CastleFacade
 import com.ownedoutcomes.entity.Chicken
 import ktx.actors.onClick
-import ktx.actors.onKey
 import ktx.app.KtxScreen
 import ktx.math.vec2
 import ktx.scene2d.*
@@ -29,7 +27,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val castles: MutableList<Castle> = mutableListOf()
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
 
-  val selectedFields: MutableList<Actor> = mutableListOf()
+  val selectedFields: MutableSet<Actor> = mutableSetOf()
 
   val rand = Random()
 
@@ -55,11 +53,11 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
         row()
       }
 
-      onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
-        run {
-          processKeyEvent(c)
-        }
-      }
+//      onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
+//        run {
+//          processKeyEvent(c)
+//        }
+//      }
     }.cell(width = stageWidth, height = stageHeight, padBottom = bottomPadding, row = true)
 
     // GUI:
@@ -92,10 +90,11 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     val actorName = actor.name
     println("Button clicked. Event: $event, actor: $actorName")
     selectedFields.forEach { actor: Actor ->
-      val x = actor.x
-      val y = actor.y
+      val coordinates = stage.stageToScreenCoordinates(vec2(actor.x, actor.y))
+      val x = coordinates.x
+      val y = coordinates.y
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(0f, 0f))
+      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, coordinates)
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }
@@ -134,11 +133,11 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
 
   override fun show() {
     reset()
-    for (i in 0..200){
+    for (i in 0..200) {
       enemies.add((Chicken(skin.getDrawable("chicken${rand.nextInt(4) + 4}_v1"), world, 1f)))
     }
 
-    castles.add(Castle(skin.getDrawable("castle_grey"), world, vec2(camera.viewportWidth, camera.viewportHeight)))
+    castles.add(Castle(skin.getDrawable("flag_blue"), world, vec2(0f, fieldWidth.toFloat() / 2)))
     stage.addActor(view)
     enemies.onEach { stage.addActor(it) }
     castles.onEach { stage.addActor(it) }

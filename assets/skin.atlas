@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 676, 59
+  xy: 725, 59
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -29,7 +29,7 @@ castle_grey
   index: -1
 chicken
   rotate: false
-  xy: 638, 44
+  xy: 687, 44
   size: 37, 49
   orig: 50, 50
   offset: 7, 0
@@ -131,6 +131,13 @@ empty-box
   size: 52, 52
   orig: 64, 64
   offset: 6, 6
+  index: -1
+flag_blue
+  rotate: false
+  xy: 638, 43
+  size: 48, 50
+  orig: 50, 50
+  offset: 0, 0
   index: -1
 grass
   rotate: false
@@ -253,7 +260,7 @@ grass_w-selected
   index: -1
 gray
   rotate: false
-  xy: 704, 59
+  xy: 753, 59
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
