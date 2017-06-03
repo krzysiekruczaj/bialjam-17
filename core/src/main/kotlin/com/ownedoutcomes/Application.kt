@@ -74,11 +74,14 @@ class Application : KtxGame<Screen>() {
 
     // Tower borders
     val grassArray = arrayOf("n", "ne", "e", "s", "sw", "se", "w", "nw")
-    for (grassStyle in grassArray) {
+    grassArray.forEach { grassStyle ->
       val imageButtonName = "grass_$grassStyle"
       imageButton(name = imageButtonName) {
-        imageUp = skin.getDrawable(imageButtonName)
-        imageChecked = skin.getDrawable("$imageButtonName-selected")
+        up = skin.getDrawable(imageButtonName)
+        checked = skin.getDrawable("$imageButtonName-selected")
+        imageUp = skin.getDrawable("empty-box")
+        imageOver = skin.getDrawable("upgrade-box")
+        imageOver = skin.getDrawable("upgrade-box")
       }
     }
   }
