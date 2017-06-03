@@ -1,7 +1,6 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -29,6 +28,8 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
 
   val selectedFields: MutableSet<Actor> = mutableSetOf()
+
+  private lateinit var towerTypes: KButtonTable
 
   var currentTower = 0
 
@@ -59,7 +60,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     }.cell(width = stageWidth, height = stageHeight, padBottom = bottomPadding, row = true)
 
     // GUI:
-    buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
+    towerTypes = buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
       background("brown")
       repeat(5) { index ->
         val buttonName = "tower$index"
@@ -69,12 +70,13 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
         }
       }
-    }.cell(growX = false, height = 90f, pad = 10f)
+    }
+    towerTypes.cell(growX = false, height = 90f, pad = 10f)
 
     onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
       run {
         println("Pressed key = [$c]")
-        when(c) {
+        when (c) {
           'q' -> setCastleFacadeType(0)
           'w' -> setCastleFacadeType(1)
           'e' -> setCastleFacadeType(2)
@@ -87,8 +89,11 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     pack()
   }
 
-  private fun setCastleFacadeType(id:Int) {
+  private fun setCastleFacadeType(id: Int) {
     currentTower = id
+    val buttonGroup = towerTypes.buttonGroup
+    buttonGroup.checked?.isChecked = false
+    buttonGroup.buttons[id].isChecked = true
   }
 
   private fun createCastleFacade() {
@@ -156,7 +161,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     stage.act(delta)
     world.step(delta, 8, 3)
 
-    if(lastSpawnDelta > enemiesSpawnTimeout) {
+    if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
       spawnEnemies()
     } else {
