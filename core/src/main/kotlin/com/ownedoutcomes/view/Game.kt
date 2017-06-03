@@ -20,7 +20,6 @@ import ktx.app.KtxScreen
 import ktx.math.vec2
 import ktx.scene2d.*
 
-
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val debugRenderer = Box2DDebugRenderer()
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
@@ -31,6 +30,8 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val selectedFields: MutableSet<Actor> = mutableSetOf()
 
   var currentTower = 0
+
+  var lastSpawnDelta = 0.0f
 
   val view = table {
     setFillParent(true)
@@ -83,7 +84,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       val x = actorX - halfScreenWidth
       val y = actorY - halfScreenHeight
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(x, y))
+      val castleFacade = CastleFacade(skin.getDrawable("tower0"), world, 100f, vec2(x, y))
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }
@@ -122,26 +123,38 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
 
   override fun show() {
     reset()
-    for (i in 0..200) {
-      enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)))
-    }
-
     stage.addActor(view)
-    enemies.onEach { stage.addActor(it) }
     stage.addActor(castle)
     castleFacades.onEach { stage.addActor(it) }
     Gdx.input.inputProcessor = stage
   }
 
+  private val enemiesSpawnTimeout = 10
+
   override fun render(delta: Float) {
     inputHandling()
     stage.act(delta)
     world.step(delta, 8, 3)
+
+    if(lastSpawnDelta > enemiesSpawnTimeout) {
+      lastSpawnDelta = 0.0f
+      spawnEnemies()
+    } else {
+      lastSpawnDelta += delta
+    }
+
     enemies.onEach { it.update(delta) }
     castle.update(delta)
     castleFacades.onEach { it.update(delta) }
     stage.draw()
     debugRenderer.render(world, camera.combined)
+  }
+
+  private fun spawnEnemies() {
+    for (i in 0..200) {
+      enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)))
+    }
+    enemies.onEach { stage.addActor(it) }
   }
 
   fun reset() {}
