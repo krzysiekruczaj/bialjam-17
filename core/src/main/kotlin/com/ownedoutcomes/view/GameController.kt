@@ -6,10 +6,7 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
-import com.ownedoutcomes.entity.AbstractEntity
-import com.ownedoutcomes.entity.Castle
-import com.ownedoutcomes.entity.Chicken
-import com.ownedoutcomes.entity.Tower
+import com.ownedoutcomes.entity.*
 import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
@@ -19,10 +16,15 @@ class GameController(val skin: Skin) : Disposable {
   val world = World(vec2(0f, 0f), true)
 
   val castle = Castle(skin.getDrawable("flag_blue"), world, 1000f)
+
   val enemies = gdxSetOf<Chicken>()
   val enemiesToRemove = gdxSetOf<Chicken>()
+
   val towers = gdxSetOf<Tower>()
   val towersToRemove = gdxSetOf<Tower>()
+
+  val fastTowers = gdxSetOf<FastTower>()
+  val fastTowersToRemove = gdxSetOf<FastTower>()
 
   init {
     world.setContactListener(ContactController(this))
@@ -65,5 +67,14 @@ class GameController(val skin: Skin) : Disposable {
     enemies.onEach { it.update(delta) }
     castle.update(delta)
     towers.onEach { it.update(delta) }
+
+    fastTowers.onEach {
+      it.update(delta)
+      it.bullets.onEach { it.update(delta) }
+      if (it.lastShotTime > 1f) {
+        it.lastShotTime = 0f
+        it.shot(vec2(100f, 100f))
+      }
+    }
   }
 }

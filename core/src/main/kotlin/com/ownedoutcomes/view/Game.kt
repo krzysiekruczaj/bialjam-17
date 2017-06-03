@@ -130,16 +130,23 @@ class Game(val stage: Stage,
 
         println("Creating Tower at [$x, $y]")
 
-        val tower = when (currentTower) {
-          0 -> towerFactory.wallTower(vec2(x, y))
-          1 -> towerFactory.fastTower(vec2(x, y))
-          else -> towerFactory.splashTower(vec2(x, y))
+        when (currentTower) {
+          0 -> {
+            val wallTower = towerFactory.wallTower(vec2(x, y))
+            gameController.towers.add(wallTower)
+            stage.addActor(wallTower)
+          }
+          1 -> {
+            val fastTower = towerFactory.fastTower(vec2(x, y))
+            gameController.fastTowers.add(fastTower)
+            stage.addActor(fastTower)
+          }
+          else -> {
+            val splashTower = towerFactory.splashTower(vec2(x, y))
+            gameController.towers.add(splashTower)
+            stage.addActor(splashTower)
+          }
         }
-
-        println("TOWER: ${tower.life}")
-
-        gameController.towers.add(tower)
-        stage.addActor(tower)
 
         actor.isChecked = false
       }
