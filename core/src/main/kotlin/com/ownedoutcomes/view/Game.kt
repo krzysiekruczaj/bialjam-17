@@ -16,6 +16,7 @@ import com.ownedoutcomes.entity.Castle
 import com.ownedoutcomes.entity.CastleFacade
 import com.ownedoutcomes.entity.Chicken
 import ktx.actors.onClick
+import ktx.actors.onKey
 import ktx.app.KtxScreen
 import ktx.math.vec2
 import ktx.scene2d.*
@@ -66,28 +67,40 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
           name = buttonName
           it.height(60f).width(70f)
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
-          onClick { event: InputEvent, actor: KImageButton ->
-            createCastleFacade(actor, event)
-          }
         }
       }
     }.cell(growX = false, height = 90f, pad = 10f)
+
+    onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
+      run {
+        println("Pressed key = [$c]")
+        when(c) {
+          'q' -> createCastleFacade(0)
+          'w' -> createCastleFacade(1)
+          'e' -> createCastleFacade(2)
+          'r' -> createCastleFacade(3)
+          't' -> createCastleFacade(3)
+        }
+      }
+    }
+
     pack()
   }
 
-  private fun KImageButton.createCastleFacade(actor: KImageButton, event: InputEvent) {
-    val actorName = actor.name
-    println("Button clicked. Event: $event, actor: $actorName")
+  private fun createCastleFacade(id:Int) {
+    val facadesSize = castleFacades.size
+    println("Creating $facadesSize castle facades. Creating facade with id = [$id]")
     selectedFields.forEach { actor: Actor ->
       val actorX = actor.getX(Align.center)
       val actorY = actor.getY(Align.center)
       val x = actorX - halfScreenWidth
       val y = actorY - halfScreenHeight
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("tower0"), world, 100f, vec2(x, y))
+      val castleFacade = CastleFacade(skin.getDrawable("tower$id"), world, 100f, vec2(x, y))
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }
+    selectedFields.clear()
   }
 
   private fun KTableWidget.createTileStyle(x: Int, y: Int, dirtStart: Int, dirtEnd: Int): Unit {
@@ -127,12 +140,12 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     stage.addActor(castle)
     castleFacades.onEach { stage.addActor(it) }
     Gdx.input.inputProcessor = stage
+    stage.keyboardFocus = view
   }
 
   private val enemiesSpawnTimeout = 10
 
   override fun render(delta: Float) {
-    inputHandling()
     stage.act(delta)
     world.step(delta, 8, 3)
 
@@ -158,14 +171,4 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   }
 
   fun reset() {}
-
-  fun inputHandling() {
-    when {
-      Gdx.input.isKeyPressed(Input.Keys.Q) -> currentTower = 0
-      Gdx.input.isKeyPressed(Input.Keys.W) -> currentTower = 1
-      Gdx.input.isKeyPressed(Input.Keys.E) -> currentTower = 2
-      Gdx.input.isKeyPressed(Input.Keys.R) -> currentTower = 3
-      Gdx.input.isKeyPressed(Input.Keys.T) -> currentTower = 4
-    }
-  }
 }
