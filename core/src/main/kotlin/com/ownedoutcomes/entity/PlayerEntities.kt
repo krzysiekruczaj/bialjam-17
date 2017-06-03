@@ -50,7 +50,7 @@ class CastleFacade(image: Drawable, world: World, life: Float, val spawnVector: 
         width = 50f
         height = 50f
 
-        userData = this
+        userData = this@CastleFacade
         density = 0.5f
         friction = 0.3f
         restitution = 0.1f

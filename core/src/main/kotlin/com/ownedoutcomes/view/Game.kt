@@ -1,6 +1,7 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
@@ -28,6 +29,8 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
 
   val selectedFields: MutableSet<Actor> = mutableSetOf()
+
+  var currentTower = 0
 
   val rand = Random()
 
@@ -146,6 +149,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   }
 
   override fun render(delta: Float) {
+    inputHandling()
     stage.act(delta)
     world.step(delta, 8, 3)
     enemies.onEach { it.update(delta) }
@@ -156,6 +160,15 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   }
 
   fun reset() {}
+
+  fun inputHandling() {
+    when {
+      Gdx.input.isKeyPressed(Input.Keys.Q) -> currentTower = 0
+      Gdx.input.isKeyPressed(Input.Keys.W) -> currentTower = 1
+      Gdx.input.isKeyPressed(Input.Keys.E) -> currentTower = 2
+      Gdx.input.isKeyPressed(Input.Keys.R) -> currentTower = 3
+      Gdx.input.isKeyPressed(Input.Keys.T) -> currentTower = 4
+    }
+    println("current Tower:$currentTower")
+  }
 }
-
-
