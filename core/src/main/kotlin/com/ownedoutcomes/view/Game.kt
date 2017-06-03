@@ -2,7 +2,6 @@ package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -10,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
 import com.ownedoutcomes.entity.CastleFacade
-import com.ownedoutcomes.entity.Chicken
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
@@ -140,14 +138,12 @@ class Game(val stage: Stage,
   }
 
   override fun show() {
-    for (i in 0..200) {
-      gameController.enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), gameController.world, 1f)))
-    }
-
     stage.addActor(view)
-    gameController.enemies.onEach { stage.addActor(it) }
+
+    gameController.spawnEnemies().onEach { stage.addActor(it) }
     stage.addActor(gameController.castle)
     castleFacades.onEach { stage.addActor(it) }
+
     Gdx.input.inputProcessor = stage
     stage.keyboardFocus = view
   }
