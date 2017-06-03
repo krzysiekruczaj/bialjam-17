@@ -4,21 +4,24 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
+import com.ownedoutcomes.entity.Castle
+import com.ownedoutcomes.entity.Enemy
 
 class ContactController() : ContactListener {
-  override fun endContact(contact: Contact?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+  override fun endContact(contact: Contact?) {}
 
   override fun beginContact(contact: Contact?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    checkContact(contact!!.fixtureA.userData, contact.fixtureB.userData)
+    checkContact(contact.fixtureB.userData, contact.fixtureA.userData)
   }
 
-  override fun preSolve(contact: Contact?, oldManifold: Manifold?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+  private fun checkContact(firstEntity: Any, secondEntity: Any) {
+    if (firstEntity is Enemy && secondEntity is Castle) {
+      firstEntity.reachDestination = true
+    }
   }
 
-  override fun postSolve(contact: Contact?, impulse: ContactImpulse?) {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-  }
+
+  override fun preSolve(contact: Contact?, oldManifold: Manifold?) {}
+  override fun postSolve(contact: Contact?, impulse: ContactImpulse?) {}
 }
