@@ -1,7 +1,10 @@
 package com.ownedoutcomes
 
-val screenWidth = 500
-val screenHeight = 600
+val fieldWidth = 50
+val fieldHeight = 50
+
+val screenWidth = 19 * fieldWidth
+val screenHeight = 20 * fieldHeight
 
 val stageWidth = screenWidth.toFloat()
 val stageHeight = screenHeight.toFloat()
