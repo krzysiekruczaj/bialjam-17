@@ -23,8 +23,7 @@ import ktx.scene2d.*
 
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val debugRenderer = Box2DDebugRenderer()
-  val camera = OrthographicCamera(screenWidth.toFloat() * 3, screenHeight.toFloat() * 3)
-
+  val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
   val enemies: MutableList<Chicken> = mutableListOf()
   val castle = Castle(skin.getDrawable("flag_blue"), world)
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
@@ -79,11 +78,14 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     val actorName = actor.name
     println("Button clicked. Event: $event, actor: $actorName")
     selectedFields.forEach { actor: Actor ->
-      val coordinates = stage.stageToScreenCoordinates(vec2(actor.x, actor.y))
-      val x = coordinates.x
-      val y = coordinates.y
+      val actorX = actor.getX(Align.center)
+      val actorY = actor.getY(Align.center)
+      println("Actor coordinating in CastleFacade is [$actorX, $actorY]")
+      val coordinates = actor.localToStageCoordinates(vec2(actorX, actorY))
+      val x = coordinates.x / widthTiles
+      val y = coordinates.y / heightTiles
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, coordinates)
+      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(actorX - halfScreenWidth, actorY - halfScreenHeight))
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }

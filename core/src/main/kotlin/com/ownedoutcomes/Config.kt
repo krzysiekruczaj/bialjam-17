@@ -3,8 +3,10 @@ package com.ownedoutcomes
 val fieldWidth = 50
 val fieldHeight = 50
 
-val screenWidth = 19 * fieldWidth
-val screenHeight = 20 * fieldHeight
+val widthTiles = 19
+val heightTiles = 20
+val screenWidth = widthTiles * fieldWidth
+val screenHeight = heightTiles * fieldHeight
 
 val halfScreenWidth = screenWidth / 2
 val halfScreenHeight = screenHeight / 2
