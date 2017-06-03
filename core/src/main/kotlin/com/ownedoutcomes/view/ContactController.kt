@@ -20,30 +20,31 @@ class ContactController(val gameController: GameController) : ContactListener {
   }
 
   private fun checkContact(firstEntity: Any, secondEntity: Any) {
-    if (firstEntity is Chicken && secondEntity is Castle) {
-      firstEntity.life--
-      if (firstEntity.life < 0) {
-        gameController.enemiesToRemove.add(firstEntity)
+    if (firstEntity is Chicken) {
+      when (secondEntity) {
+        is Castle -> decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
+        is Bullet -> {
+          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
+          gameController.bulletsToRemove.add(secondEntity)
+        }
+        is Tower -> {
+          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
+
+          secondEntity.life--
+          if (secondEntity.life < 0) {
+            gameController.towersToRemove.add(secondEntity)
+          }
+        }
+
       }
     }
 
-    if (firstEntity is Chicken && secondEntity is Tower) {
-      firstEntity.life--
-      if (firstEntity.life < 0) {
-        gameController.enemiesToRemove.add(firstEntity)
-      }
+  }
 
-      secondEntity.life--
-      if (secondEntity.life < 0) {
-        gameController.towersToRemove.add(secondEntity)
-      }
-    }
-
-    if(firstEntity is Chicken && secondEntity is Bullet){
-      firstEntity.life--
-      if (firstEntity.life < 0) {
-        gameController.enemiesToRemove.add(firstEntity)
-      }
+  private fun decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity: Chicken) {
+    firstEntity.life--
+    if (firstEntity.life < 0) {
+      gameController.enemiesToRemove.add(firstEntity)
     }
   }
 

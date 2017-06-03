@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 198, 38
+  xy: 369, 59
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -19,6 +19,13 @@ brown
   split: 10, 10, 17, 19
   orig: 26, 38
   offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 356, 52
+  size: 12, 37
+  orig: 64, 64
+  offset: 26, 13
   index: -1
 castle_grey
   rotate: false
@@ -267,7 +274,7 @@ grass_w-selected
   index: -1
 gray
   rotate: false
-  xy: 226, 39
+  xy: 198, 38
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34

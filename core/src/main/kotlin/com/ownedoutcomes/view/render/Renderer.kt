@@ -21,6 +21,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   private val enemySprite = skin.atlas.createSprite("chicken2_v1")
   private val towerSprite = skin.atlas.createSprite("tower0")
   private val fastTowerSprite = skin.atlas.createSprite("tower1")
+  private val bulletSprite = skin.atlas.createSprite("bullet")
 
 
   val debugRenderer = Box2DDebugRenderer()
@@ -41,8 +42,22 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     renderEnemies(gameController.castle.spawnCenter)
     renderTowers()
     renderFastTowers()
+    renderBullets()
 
     batch.end()
+  }
+
+  private fun renderBullets() {
+    val bullets = gameController.bullets
+    bullets.onEach { bullet ->
+      val bulletSprite = Sprite(bulletSprite)
+      val spriteSize = bullet.size * 2
+      bulletSprite.x = bullet.body.position.x - bullet.size
+      bulletSprite.y = bullet.body.position.y - bullet.size
+      bulletSprite.setSize(spriteSize, spriteSize)
+      bulletSprite.setOriginCenter()
+      bulletSprite.draw(batch)
+    }
   }
 
   private fun renderCastle() {

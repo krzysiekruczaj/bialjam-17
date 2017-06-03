@@ -7,11 +7,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.fieldWidth
 import ktx.box2d.body
-import ktx.collections.gdxSetOf
 import ktx.math.vec2
 
-class Castle(world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
-  var size: Float = 75f
+class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
+  override var size: Float = 75f
+  override var angle = 0f
   var maxLife = life
 
   init {
@@ -44,12 +44,12 @@ class TowerFactory(val world: World) {
 }
 
 class FastTower(world: World,
-                var life: Float,
+                override var life: Float,
                 val spawnVector: Vector2) : AbstractEntity(world) {
-  val bullets = gdxSetOf<Bullet>()
-  var lastShotTime = 0f
+  override var size: Float = 25f
+  override var angle = 0f
 
-  var size: Float = 25f
+  var lastShotTime = 0f
   var maxLife = life
 
   init {
@@ -72,20 +72,22 @@ class FastTower(world: World,
       }
     }
 
-  fun shot(destination: Vector2) {
-    bullets.add(Bullet(world, this.body.position, destination))
+  fun shot(destination: Vector2): Bullet {
+    return Bullet(world, 1f, this.body.position, destination)
   }
 
   override fun update(delta: Float) {
-    bullets.onEach { it.update(delta) }
     lastShotTime += delta
   }
 
 }
 
 class Bullet(world: World,
+             override var life: Float,
              val spawnVector: Vector2,
              val destination: Vector2) : AbstractEntity(world) {
+  override var size: Float = 25f
+  override var angle = 0f
   init {
     initiate()
   }
@@ -117,8 +119,9 @@ class Bullet(world: World,
   }
 }
 
-class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
-  var size: Float = 25f
+class Tower(world: World, override var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
+  override var size: Float = 25f
+  override var angle = 0f
   var maxLife = life
 
   init {

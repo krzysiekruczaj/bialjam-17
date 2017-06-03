@@ -13,6 +13,9 @@ import ktx.math.vec2
 
 abstract class AbstractEntity(val world: World) {
   lateinit var body: Body
+  abstract var size: Float
+  abstract var angle: Float
+  abstract var life: Float
 
   fun initiate(): AbstractEntity {
     body = createBody(world)
@@ -24,13 +27,13 @@ abstract class AbstractEntity(val world: World) {
   abstract fun update(delta: Float)
 }
 
-class Chicken(world: World, life: Float) : Enemy(world, life = life)
+class Chicken(world: World, override var life: Float) : Enemy(world, life)
 
 abstract class Enemy(world: World,
-                     var life: Float,
+                     override var life: Float,
                      val destination: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
-  val size = 20f
-  var angle = 0f
+  override var size = 20f
+  override var angle = 0f
 
   init {
     initiate()

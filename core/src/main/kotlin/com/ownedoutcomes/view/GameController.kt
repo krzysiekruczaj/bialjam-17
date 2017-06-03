@@ -29,6 +29,9 @@ class GameController(val skin: Skin) : Disposable {
   val fastTowers = gdxSetOf<FastTower>()
   val fastTowersToRemove = gdxSetOf<FastTower>()
 
+  val bullets = gdxSetOf<Bullet>()
+  val bulletsToRemove = gdxSetOf<Bullet>()
+
   init {
     world.setContactListener(ContactController(this))
   }
@@ -48,6 +51,7 @@ class GameController(val skin: Skin) : Disposable {
   fun removeDestroyedGameObjects() {
     removeObjects(enemies, enemiesToRemove)
     removeObjects(towers, towersToRemove)
+    removeObjects(bullets, bulletsToRemove)
   }
 
   private fun <E : AbstractEntity> removeObjects(allObjects: GdxSet<E>, toRemove: GdxSet<E>) {
@@ -72,13 +76,14 @@ class GameController(val skin: Skin) : Disposable {
     castle.update(delta)
     towers.onEach { it.update(delta) }
 
+    bullets.onEach { it.update(delta) }
     fastTowers.onEach {
       it.update(delta)
-      it.bullets.onEach { it.update(delta) }
       if (it.lastShotTime > 1f) {
         it.lastShotTime = 0f
-        it.shot(vec2(100f, 100f))
+        bullets.add(it.shot(vec2(100f, 100f)))
       }
     }
+
   }
 }
