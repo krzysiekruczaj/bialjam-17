@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.ownedoutcomes.view.ContactController
 import com.ownedoutcomes.view.Game
+import com.ownedoutcomes.view.GameController
 import com.ownedoutcomes.view.Menu
 import ktx.app.KtxGame
 import ktx.async.enableKtxCoroutines
@@ -29,15 +30,12 @@ class Application : KtxGame<Screen>() {
   override fun create() {
     enableKtxCoroutines(asynchronousExecutorConcurrencyLevel = 1)
     context.register {
-      val world = World(vec2(0f, 0f), true)
-      world.setContactListener(ContactController())
-      bindSingleton(world)
-
       bindSingleton(TextureAtlas("skin.atlas"))
+      bindSingleton(createSkin(inject()))
+      bindSingleton(GameController(inject()))
       bindSingleton<Batch>(SpriteBatch())
       bindSingleton<Viewport>(ScreenViewport())
       bindSingleton(Stage(inject(), inject()))
-      bindSingleton(createSkin(inject()))
       Scene2DSkin.defaultSkin = inject()
       bindSingleton(this@Application)
       bindSingleton(Menu(inject(), inject()))

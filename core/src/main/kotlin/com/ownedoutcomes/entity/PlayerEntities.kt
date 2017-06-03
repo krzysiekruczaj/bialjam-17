@@ -9,7 +9,7 @@ import com.ownedoutcomes.halfScreenWidth
 import ktx.box2d.body
 import ktx.math.vec2
 
-class Castle(image: Drawable, world: World, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, image) {
+class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, image) {
   init {
     initiate()
   }
@@ -21,7 +21,7 @@ class Castle(image: Drawable, world: World, val spawnCenter: Vector2 = vec2(0f, 
       linearDamping = 1f
       position.x = spawnCenter.x
       position.y = spawnCenter.y
-      circle(25f) {
+      circle(50f) {
         userData = this@Castle
         density = 0.5f
         friction = 0.3f

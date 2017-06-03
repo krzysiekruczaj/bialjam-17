@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Manifold
 import com.ownedoutcomes.entity.Castle
 import com.ownedoutcomes.entity.Enemy
 
-class ContactController() : ContactListener {
+class ContactController(val gameController: GameController) : ContactListener {
   override fun endContact(contact: Contact?) {}
 
   override fun beginContact(contact: Contact?) {
@@ -17,7 +17,10 @@ class ContactController() : ContactListener {
 
   private fun checkContact(firstEntity: Any, secondEntity: Any) {
     if (firstEntity is Enemy && secondEntity is Castle) {
-      firstEntity.reachDestination = true
+      firstEntity.life--
+      if (firstEntity.life < 0) {
+        gameController.enemiesToRemove.add(firstEntity)
+      }
     }
   }
 

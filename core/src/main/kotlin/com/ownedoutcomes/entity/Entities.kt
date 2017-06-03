@@ -34,12 +34,10 @@ class Chicken(image: Drawable, world: World, life: Float) : Enemy(image, world, 
 
 abstract class Enemy(image: Drawable,
                      world: World,
-                     val life: Float,
+                     var life: Float,
                      val destination: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, image) {
   val size = 1f
   var angle = 0f
-
-  var reachDestination = false
 
   init {
     initiate()
@@ -67,14 +65,11 @@ abstract class Enemy(image: Drawable,
         friction = 0.2f
         restitution = 0.1f
       }
+
+      setScale(0.3f)
     }
 
   override fun update(delta: Float) {
-    if (reachDestination) {
-      body.applyForceToCenter(0f, 0f, false)
-      return
-    }
-
     val currentDensity = 15f + size * MathUtils.PI * 2000f * 1.05f
     angle = MathUtils.atan2(destination.y - body.position.y, destination.x - body.position.x)
     body.applyForceToCenter(
