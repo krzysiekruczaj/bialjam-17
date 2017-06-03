@@ -19,7 +19,7 @@ import java.util.*
 
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val debugRenderer = Box2DDebugRenderer()
-  val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
+  val camera = OrthographicCamera(screenWidth.toFloat() * 3, screenHeight.toFloat() * 3)
   val enemies: MutableList<Chicken> = mutableListOf()
   val castles: MutableList<Castle> = mutableListOf()
 
@@ -93,7 +93,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
 
   override fun show() {
     reset()
-    for (i in 0..200){
+    for (i in 0..200) {
       enemies.add((Chicken(skin.getDrawable("chicken${rand.nextInt(4) + 4}_v1"), world, 1f)))
     }
 

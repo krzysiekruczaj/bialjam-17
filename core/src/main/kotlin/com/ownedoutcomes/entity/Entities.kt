@@ -73,16 +73,15 @@ abstract class Enemy(image: Drawable, world: World, life: Float) : AbstractEntit
       fixedRotation = true
       linearDamping = 1f
 
-      position.x = when (MathUtils.random.nextInt(2)) {
-        0 -> -MathUtils.random.nextFloat() % 200 - screenWidth  //left
-        1 -> MathUtils.random.nextFloat() % 200 + screenWidth //right
-        else -> 34f
+      val newPosition = when (MathUtils.random.nextInt(4)) {
+        0 -> vec2(-screenWidth - (MathUtils.random.nextFloat() * 100f), (MathUtils.random.nextFloat() * 2 * screenHeight) - screenHeight)
+        1 -> vec2(screenWidth + (MathUtils.random.nextFloat() * 100f), (MathUtils.random.nextFloat() * 2 * -screenHeight) + screenHeight)
+        2 -> vec2((MathUtils.random.nextFloat() * 2 * screenWidth) - screenWidth, -screenHeight - (MathUtils.random.nextFloat() * 100f))
+        else -> vec2((MathUtils.random.nextFloat() * 2 * screenWidth) - screenWidth, screenHeight + (MathUtils.random.nextFloat() * 100f))
       }
-      position.y = when (MathUtils.random.nextInt(2)) {
-        0 -> -MathUtils.random.nextFloat() % 200  - screenHeight//down
-        1 -> MathUtils.random.nextFloat() % 200 + screenHeight //up
-        else -> 34f
-      }
+
+      position.x = newPosition.x
+      position.y = newPosition.y
 
       circle(20f) {
         userData = this@Enemy
