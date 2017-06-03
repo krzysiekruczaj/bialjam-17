@@ -17,7 +17,6 @@ import ktx.app.KtxScreen
 import ktx.box2d.body
 import ktx.math.vec2
 import ktx.scene2d.buttonGroup
-import ktx.scene2d.image
 import ktx.scene2d.imageButton
 import ktx.scene2d.table
 
@@ -31,29 +30,25 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     setFillParent(true)
     align(Align.bottomLeft)
     // Game:
+    val bottomPadding = -110f
     table {
-      val tilesY = (stageHeight.toInt() / 50)
-      val tilesX = (stageWidth.toInt() / 50)
+      val tilesY = (stageHeight.toInt() / fieldHeight)
+      val tilesX = (stageWidth.toInt() / fieldWidth)
+
+      val centerX = tilesX / 2
+
+      val fieldRadius = 3
+      val dirtStart = centerX - fieldRadius
+      val dirtEnd = centerX + fieldRadius
       for (y in 0..tilesY - 1) {
         for (x in 0..tilesX - 1) {
-          val dirtStart = 2
-          val dirtEnd = 7
-          image(when {
-            x == dirtStart && y == dirtStart -> "grass_nw"
-            x == dirtEnd && y == dirtStart -> "grass_ne"
-            x in dirtStart..dirtEnd && y == dirtStart -> "grass_n"
-            x == dirtStart && y == dirtEnd -> "grass_sw"
-            x == dirtEnd && y == dirtEnd -> "grass_se"
-            x in dirtStart..dirtEnd && y == dirtEnd -> "grass_s"
-            x == dirtStart && y in dirtStart..dirtEnd -> "grass_w"
-            x == dirtEnd && y in dirtStart..dirtEnd -> "grass_e"
-            x in dirtStart..dirtEnd && y in dirtStart..dirtEnd -> "dirt"
-            else -> "grass"
-          }).cell(height = 50f, width = 50f)
+          imageButton(style = createStyle(x, y, dirtStart, dirtEnd)) {
+
+          }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
         }
         row()
       }
-    }.cell(width = stageWidth, height = stageHeight, padBottom = -110f, row = true)
+    }.cell(width = stageWidth, height = stageHeight, padBottom = bottomPadding, row = true)
 
     // GUI:
     buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
@@ -64,8 +59,23 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
         }
       }
-    }.cell(growX = true, height = 90f, pad = 10f)
+    }.cell(growX = false, height = 90f, pad = 10f)
     pack()
+  }
+
+  private fun createStyle(x: Int, y: Int, dirtStart: Int, dirtEnd: Int): String {
+    when {
+      x == dirtStart && y == dirtStart -> return "grass_nw"
+      x == dirtEnd && y == dirtStart -> return "grass_ne"
+      x in dirtStart..dirtEnd && y == dirtStart -> return "grass_n"
+      x == dirtStart && y == dirtEnd -> return "grass_sw"
+      x == dirtEnd && y == dirtEnd -> return "grass_se"
+      x in dirtStart..dirtEnd && y == dirtEnd -> return "grass_s"
+      x == dirtStart && y in dirtStart..dirtEnd -> return "grass_w"
+      x == dirtEnd && y in dirtStart..dirtEnd -> return "grass_e"
+      x in dirtStart..dirtEnd && y in dirtStart..dirtEnd -> return "dirt"
+      else -> return "grass"
+    }
   }
 
   override fun show() {
