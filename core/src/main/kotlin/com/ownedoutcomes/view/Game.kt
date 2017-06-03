@@ -7,18 +7,18 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
+import ktx.actors.onClick
 import ktx.app.KtxScreen
 import ktx.box2d.body
 import ktx.math.vec2
-import ktx.scene2d.buttonGroup
-import ktx.scene2d.imageButton
-import ktx.scene2d.table
+import ktx.scene2d.*
 
 
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
@@ -42,9 +42,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       val dirtEnd = centerX + fieldRadius
       for (y in 0..tilesY - 1) {
         for (x in 0..tilesX - 1) {
-          imageButton(style = createStyle(x, y, dirtStart, dirtEnd)) {
-
-          }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
+          createTileStyle(x, y, dirtStart, dirtEnd)
         }
         row()
       }
@@ -54,28 +52,44 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
       background("brown")
       repeat(5) { index ->
-        imageButton(style = "tower$index") {
+        val buttonName = "tower$index"
+        imageButton(style = buttonName) {
+          name = buttonName
           it.height(60f).width(70f)
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
+          onClick { event: InputEvent, actor: KImageButton ->
+            val actorName = actor.name
+            println("Button clicked. Event: $event, actor: $actorName")
+          }
         }
       }
     }.cell(growX = false, height = 90f, pad = 10f)
     pack()
   }
 
-  private fun createStyle(x: Int, y: Int, dirtStart: Int, dirtEnd: Int): String {
+  private fun KTableWidget.createTileStyle(x: Int, y: Int, dirtStart: Int, dirtEnd: Int): Unit {
     when {
-      x == dirtStart && y == dirtStart -> return "grass_nw"
-      x == dirtEnd && y == dirtStart -> return "grass_ne"
-      x in dirtStart..dirtEnd && y == dirtStart -> return "grass_n"
-      x == dirtStart && y == dirtEnd -> return "grass_sw"
-      x == dirtEnd && y == dirtEnd -> return "grass_se"
-      x in dirtStart..dirtEnd && y == dirtEnd -> return "grass_s"
-      x == dirtStart && y in dirtStart..dirtEnd -> return "grass_w"
-      x == dirtEnd && y in dirtStart..dirtEnd -> return "grass_e"
-      x in dirtStart..dirtEnd && y in dirtStart..dirtEnd -> return "dirt"
-      else -> return "grass"
+      x == dirtStart && y == dirtStart -> return createImageButton("grass_nw")
+      x == dirtEnd && y == dirtStart -> return createImageButton("grass_ne")
+      x in dirtStart..dirtEnd && y == dirtStart -> return createImageButton("grass_n")
+      x == dirtStart && y == dirtEnd -> return createImageButton("grass_sw")
+      x == dirtEnd && y == dirtEnd -> return createImageButton("grass_se")
+      x in dirtStart..dirtEnd && y == dirtEnd -> return createImageButton("grass_s")
+      x == dirtStart && y in dirtStart..dirtEnd -> return createImageButton("grass_w")
+      x == dirtEnd && y in dirtStart..dirtEnd -> return createImageButton("grass_e")
+      x in dirtStart..dirtEnd && y in dirtStart..dirtEnd -> return createImageButton("dirt")
+      else -> return createImage("grass")
     }
+  }
+
+  private fun KTableWidget.createImageButton(style: String) : Unit {
+    imageButton(style = style) {
+    }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
+  }
+
+  private fun KTableWidget.createImage(style: String) {
+    image(style) {
+    }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
   }
 
   override fun show() {

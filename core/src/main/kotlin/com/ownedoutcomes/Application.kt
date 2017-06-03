@@ -63,34 +63,22 @@ class Application : KtxGame<Screen>() {
       }
     }
 
-    // Grass
-    imageButton(name = "grass") {
-      imageUp = skin.getDrawable("grass")
-      checked = skin.getDrawable("grass")
-    }
-
     // Dirt
     imageButton(name = "dirt") {
       up = skin.getDrawable("dirt")
-      checked = skin.getDrawable("dirt")
+      checked = skin.getDrawable("dirt-selected")
       imageUp = skin.getDrawable("empty-box")
       imageChecked = skin.getDrawable("upgrade-box")
       imageOver = skin.getDrawable("upgrade-box")
     }
 
     // Tower borders
-    val name = "grass_n"
-    imageButton(name = name) {
-      imageUp = skin.getDrawable(name)
-      imageChecked = skin.getDrawable("$name-selected")
-    }
-
-    val grassArray = arrayOf("ne", "e", "se", "s", "sw", "w", "nw")
+    val grassArray = arrayOf("n", "ne", "e", "s", "sw", "se", "w", "nw")
     for (grassStyle in grassArray) {
       val imageButtonName = "grass_$grassStyle"
       imageButton(name = imageButtonName) {
         imageUp = skin.getDrawable(imageButtonName)
-        checked = skin.getDrawable(imageButtonName)
+        imageChecked = skin.getDrawable("$imageButtonName-selected")
       }
     }
   }
