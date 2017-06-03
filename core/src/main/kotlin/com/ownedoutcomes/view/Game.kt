@@ -28,6 +28,8 @@ class Game(val stage: Stage,
 
   val selectedFields: MutableSet<Actor> = mutableSetOf()
 
+  private lateinit var towerTypes: KButtonTable
+
   var currentTower = 0
 
   var lastSpawnDelta = 0.0f
@@ -57,7 +59,7 @@ class Game(val stage: Stage,
     }.cell(width = stageWidth, height = stageHeight, padBottom = bottomPadding, row = true)
 
     // GUI:
-    buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
+    towerTypes = buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
       background("brown")
       repeat(5) { index ->
         val buttonName = "tower$index"
@@ -67,22 +69,30 @@ class Game(val stage: Stage,
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
         }
       }
-    }.cell(growX = false, height = 90f, pad = 10f)
+    }
+    towerTypes.cell(growX = false, height = 90f, pad = 10f)
 
     onKey { inputEvent: InputEvent, kTableWidget: KTableWidget, c: Char ->
       run {
         println("Pressed key = [$c]")
         when (c) {
-          'q' -> currentTower = 0
-          'w' -> currentTower = 1
-          'e' -> currentTower = 2
-          'r' -> currentTower = 3
-          't' -> currentTower = 4
+          'q' -> setCastleFacadeType(0)
+          'w' -> setCastleFacadeType(1)
+          'e' -> setCastleFacadeType(2)
+          'r' -> setCastleFacadeType(3)
+          't' -> setCastleFacadeType(4)
         }
       }
     }
 
     pack()
+  }
+
+  private fun setCastleFacadeType(id: Int) {
+    currentTower = id
+    val buttonGroup = towerTypes.buttonGroup
+    buttonGroup.checked?.isChecked = false
+    buttonGroup.buttons[id].isChecked = true
   }
 
   private fun createCastleFacade() {
