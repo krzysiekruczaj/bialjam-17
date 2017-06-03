@@ -1,5 +1,6 @@
 package com.ownedoutcomes.entity
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -9,7 +10,7 @@ import ktx.box2d.body
 import ktx.collections.gdxSetOf
 import ktx.math.vec2
 
-class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
+class Castle(world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
   var size: Float = 75f
   var maxLife = life
 
@@ -36,23 +37,20 @@ class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f,
   }
 }
 
-class TowerFactory(val skin: Skin, val world: World) {
-  fun wallTower(spawnVector: Vector2) = Tower(skin.getDrawable("tower0"), world, 10f, spawnVector)
-  fun fastTower(spawnVector: Vector2) = FastTower(skin.getDrawable("tower1"), skin.getDrawable("tower0"), world, 3f, spawnVector)
-  fun splashTower(spawnVector: Vector2) = Tower(skin.getDrawable("tower2"), world, 3f, spawnVector)
+class TowerFactory(val world: World) {
+  fun wallTower(spawnVector: Vector2) = Tower(world, 10f, spawnVector)
+  fun fastTower(spawnVector: Vector2) = FastTower(world, 3f, spawnVector)
+  fun splashTower(spawnVector: Vector2) = Tower(world, 3f, spawnVector)
 }
 
-class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
-  var size: Float = 25f
-  var maxLife = life
-
-class FastTower(towerImage: Drawable,
-                val bulletImage: Drawable,
-                world: World,
+class FastTower(world: World,
                 var life: Float,
-                val spawnVector: Vector2) : AbstractEntity(world, towerImage) {
+                val spawnVector: Vector2) : AbstractEntity(world) {
   val bullets = gdxSetOf<Bullet>()
   var lastShotTime = 0f
+
+  var size: Float = 25f
+  var maxLife = life
 
   init {
     initiate()
@@ -66,10 +64,7 @@ class FastTower(towerImage: Drawable,
       position.x = spawnVector.x
       position.y = spawnVector.y
 
-      circle(25f) {
-        width = 50f
-        height = 50f
-
+      circle(size) {
         userData = this@FastTower
         density = 0.5f
         friction = 0.3f
@@ -78,20 +73,19 @@ class FastTower(towerImage: Drawable,
     }
 
   fun shot(destination: Vector2) {
-    bullets.add(Bullet(bulletImage, world, this.body.position, destination))
+    bullets.add(Bullet(world, this.body.position, destination))
   }
 
   override fun update(delta: Float) {
-    super.update(delta)
     bullets.onEach { it.update(delta) }
     lastShotTime += delta
   }
 
 }
 
-class Bullet(drawable: Drawable, world: World,
+class Bullet(world: World,
              val spawnVector: Vector2,
-             val destination: Vector2) : AbstractEntity(world, drawable) {
+             val destination: Vector2) : AbstractEntity(world) {
   init {
     initiate()
   }
@@ -105,9 +99,6 @@ class Bullet(drawable: Drawable, world: World,
       position.y = spawnVector.y - 100f
 
       circle(2f) {
-        width = 50f
-        height = 50f
-
         userData = this@Bullet
         density = 0.05f
         friction = 0.3f
@@ -123,12 +114,13 @@ class Bullet(drawable: Drawable, world: World,
       MathUtils.cos(angle) * currentDensity,
       MathUtils.sin(angle) * currentDensity,
       true)
-
-    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
   }
 }
 
-class Tower(image: Drawable, world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world, image) {
+class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
+  var size: Float = 25f
+  var maxLife = life
+
   init {
     initiate()
   }

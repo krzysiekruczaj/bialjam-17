@@ -1,15 +1,13 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
 import com.ownedoutcomes.entity.TowerFactory
+import com.ownedoutcomes.view.render.GameRenderer
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
@@ -20,8 +18,6 @@ import ktx.scene2d.*
 class Game(val stage: Stage,
            val gameController: GameController,
            val gameRenderer: GameRenderer) : KtxScreen {
-//  val debugRenderer = Box2DDebugRenderer()
-
   private val towerFactory = TowerFactory(gameController.world)
   private lateinit var towerTypes: KButtonTable
   private lateinit var pointsLabel: Label
@@ -133,17 +129,14 @@ class Game(val stage: Stage,
           0 -> {
             val wallTower = towerFactory.wallTower(vec2(x, y))
             gameController.towers.add(wallTower)
-            stage.addActor(wallTower)
           }
           1 -> {
             val fastTower = towerFactory.fastTower(vec2(x, y))
             gameController.fastTowers.add(fastTower)
-            stage.addActor(fastTower)
           }
           else -> {
             val splashTower = towerFactory.splashTower(vec2(x, y))
             gameController.towers.add(splashTower)
-            stage.addActor(splashTower)
           }
         }
 

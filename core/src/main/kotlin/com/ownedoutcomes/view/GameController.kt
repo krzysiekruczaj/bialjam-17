@@ -6,13 +6,9 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
-import com.ownedoutcomes.entity.AbstractEntity
-import com.ownedoutcomes.entity.Castle
-import com.ownedoutcomes.entity.Chicken
-import com.ownedoutcomes.entity.Tower
+import com.ownedoutcomes.entity.*
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
-import com.ownedoutcomes.entity.*
 import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
