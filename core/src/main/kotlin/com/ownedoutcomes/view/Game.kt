@@ -80,12 +80,10 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     selectedFields.forEach { actor: Actor ->
       val actorX = actor.getX(Align.center)
       val actorY = actor.getY(Align.center)
-      println("Actor coordinating in CastleFacade is [$actorX, $actorY]")
-      val coordinates = actor.localToStageCoordinates(vec2(actorX, actorY))
-      val x = coordinates.x / widthTiles
-      val y = coordinates.y / heightTiles
+      val x = actorX - halfScreenWidth
+      val y = actorY - halfScreenHeight
       println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(actorX - halfScreenWidth, actorY - halfScreenHeight))
+      val castleFacade = CastleFacade(skin.getDrawable("chicken2_v1"), world, 100f, vec2(x, y))
       castleFacades.add(castleFacade)
       stage.addActor(castleFacade)
     }
