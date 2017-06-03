@@ -35,9 +35,27 @@ subprojects {
 
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 task pack << {
+  render('./raw', 100)
   TexturePacker.process(
-    'atlas', // Raw assets path.
-    'assets', // Output directory.
-    'skin' // Name of the generated atlas (without extension).
+    'atlas',         // Raw assets path.
+    'assets',        // Output directory.
+    'skin'           // Name of the generated atlas (without extension).
   )
+}
+
+def render(String dirName, size) {
+  def root = file(dirName)
+  root.listFiles().each {
+    def name = it.name.split("\\.")[0]
+    //runProcess(root, "inkscape -z -w $size -h $size -e ../atlas/${name}.png ${name}.svg")   //if using linux uncommen this
+    runProcess(root, "/Applications/Inkscape.app/Contents/Resources/bin/inkscape -z -w $size -h $size -e ../atlas/${name}.png ${name}.svg")
+  }
+}
+
+def runProcess(dir, String commands) {
+  println commands
+  def builder = new ProcessBuilder(commands.split(' '))
+  builder.inheritIO()
+  builder.directory(dir)
+  builder.start().waitFor()
 }
