@@ -1,19 +1,18 @@
 package com.ownedoutcomes.entity
 
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.ownedoutcomes.fieldWidth
-import com.ownedoutcomes.halfScreenWidth
 import ktx.box2d.body
 import ktx.collections.gdxSetOf
 import ktx.math.vec2
 
-class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, image) {
+class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
+  var size: Float = 75f
+  var maxLife = life
+
   init {
     initiate()
   }
@@ -25,7 +24,7 @@ class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Ve
       linearDamping = 1f
       position.x = spawnCenter.x
       position.y = spawnCenter.y
-      circle(50f) {
+      circle(size) {
         userData = this@Castle
         density = 0.5f
         friction = 0.3f
@@ -34,7 +33,6 @@ class Castle(image: Drawable, world: World, val life: Float, val spawnCenter: Ve
     }
 
   override fun update(delta: Float) {
-    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
   }
 }
 
@@ -43,6 +41,10 @@ class TowerFactory(val skin: Skin, val world: World) {
   fun fastTower(spawnVector: Vector2) = FastTower(skin.getDrawable("tower1"), skin.getDrawable("tower0"), world, 3f, spawnVector)
   fun splashTower(spawnVector: Vector2) = Tower(skin.getDrawable("tower2"), world, 3f, spawnVector)
 }
+
+class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
+  var size: Float = 25f
+  var maxLife = life
 
 class FastTower(towerImage: Drawable,
                 val bulletImage: Drawable,
@@ -139,10 +141,7 @@ class Tower(image: Drawable, world: World, var life: Float, val spawnVector: Vec
       position.x = spawnVector.x
       position.y = spawnVector.y
 
-      circle(25f) {
-        width = 50f
-        height = 50f
-
+      circle(size) {
         userData = this@Tower
         density = 0.5f
         friction = 0.3f
@@ -151,6 +150,5 @@ class Tower(image: Drawable, world: World, var life: Float, val spawnVector: Vec
     }
 
   override fun update(delta: Float) {
-    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
   }
 }

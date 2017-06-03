@@ -18,12 +18,11 @@ import ktx.scene2d.*
 
 
 class Game(val stage: Stage,
-           skin: Skin,
-           val gameController: GameController) : KtxScreen {
-  val debugRenderer = Box2DDebugRenderer()
-  val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
+           val gameController: GameController,
+           val gameRenderer: GameRenderer) : KtxScreen {
+//  val debugRenderer = Box2DDebugRenderer()
 
-  private val towerFactory = TowerFactory(skin, gameController.world)
+  private val towerFactory = TowerFactory(gameController.world)
   private lateinit var towerTypes: KButtonTable
   private lateinit var pointsLabel: Label
 
@@ -91,7 +90,7 @@ class Game(val stage: Stage,
         }
       }
     }
-
+    setTowerType(0)
     pack()
   }
 
@@ -161,15 +160,11 @@ class Game(val stage: Stage,
   override fun show() {
     stage.addActor(view)
 
-    gameController.spawnEnemies().onEach { stage.addActor(it) }
-    stage.addActor(gameController.castle)
-    gameController.towers.onEach { stage.addActor(it) }
-
     Gdx.input.inputProcessor = stage
     stage.keyboardFocus = view
   }
 
-  private val enemiesSpawnTimeout = 10
+  private val enemiesSpawnTimeout = 0.5f
 
   override fun render(delta: Float) {
     gameController.world.step(delta, 8, 3)
@@ -177,16 +172,22 @@ class Game(val stage: Stage,
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
-      gameController.spawnEnemies().onEach { stage.addActor(it) }
+      gameController.spawnEnemies(10)
     } else {
       lastSpawnDelta += delta
     }
 
-    gameController.update(delta)
     updatePoints()
+
+//    pointsLabel.setText("Level: $currentGameLevel Points: $currentGamePoints")
+    gameController.update(delta)
+    gameController.enemies.onEach { it.update(delta) }
+    gameController.castle.update(delta)
+    gameController.towers.onEach { it.update(delta) }
     stage.act(delta)
     stage.draw()
-    debugRenderer.render(gameController.world, camera.combined)
+//    debugRenderer.render(gameController.world, camera.combined)
+    gameRenderer.render(delta)
   }
 
   private fun updatePoints() {

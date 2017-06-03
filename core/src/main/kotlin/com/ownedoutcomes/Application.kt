@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport
 import com.ownedoutcomes.view.Game
 import com.ownedoutcomes.view.GameController
 import com.ownedoutcomes.view.Menu
+import com.ownedoutcomes.view.render.GameRenderer
 import ktx.app.KtxGame
 import ktx.async.enableKtxCoroutines
 import ktx.inject.Context
@@ -36,6 +37,7 @@ class Application : KtxGame<Screen>() {
       Scene2DSkin.defaultSkin = inject()
       bindSingleton(this@Application)
       bindSingleton(Menu(inject(), inject()))
+      bindSingleton(GameRenderer(inject(), inject(), inject()))
       bindSingleton(Game(inject(), inject(), inject()))
     }
 
