@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -25,8 +24,6 @@ class Game(val stage: Stage,
   val debugRenderer = Box2DDebugRenderer()
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
-
-  val selectedFields: MutableSet<Actor> = mutableSetOf()
 
   private lateinit var towerTypes: KButtonTable
 
@@ -95,21 +92,6 @@ class Game(val stage: Stage,
     buttonGroup.buttons[id].isChecked = true
   }
 
-  private fun createCastleFacade() {
-    val id = currentTower
-    val facadesSize = castleFacades.size
-    println("Creating $facadesSize castle facades. Creating facade with id = [$id]")
-    selectedFields.forEach { actor: Actor ->
-      val x = actor.getX(Align.center) - halfScreenWidth
-      val y = actor.getY(Align.center) - halfScreenHeight
-      println("Creating CastleFacade at [$x, $y]")
-      val castleFacade = CastleFacade(skin.getDrawable("tower$id"), gameController.world, 100f, vec2(x, y))
-      castleFacades.add(castleFacade)
-      stage.addActor(castleFacade)
-    }
-    selectedFields.clear()
-  }
-
   private fun KTableWidget.createTileStyle(x: Int, y: Int, dirtStart: Int, dirtEnd: Int): Unit {
     when {
       x == dirtStart && y == dirtStart -> return createImageButton("grass_nw")
@@ -127,12 +109,26 @@ class Game(val stage: Stage,
 
   private fun KTableWidget.createImageButton(style: String): Unit {
     imageButton(style = style) {
-      onClick { event: InputEvent, actor: KImageButton, x: Float, y: Float ->
-        val actorX = actor.x
-        val actorY = actor.y
-        println("Clicked [$x, $y] with actor $actor on [$actorX, $actorY]")
-        selectedFields.add(actor)
-        createCastleFacade()
+      onClick { _: InputEvent, actor: KImageButton, x: Float, y: Float ->
+        println("Clicked [$x, $y] with actor $actor on [${actor.x}, ${actor.y}]")
+
+        println("Creating ${castleFacades.size} castle facades. Creating facade with id = [$currentTower]")
+
+        val x = actor.getX(Align.center) - halfScreenWidth
+        val y = actor.getY(Align.center) - halfScreenHeight
+
+        println("Creating CastleFacade at [$x, $y]")
+
+        val castleFacade = CastleFacade(
+          skin.getDrawable("tower$currentTower"),
+          gameController.world,
+          100f,
+          vec2(x, y)
+        )
+
+        castleFacades.add(castleFacade)
+        stage.addActor(castleFacade)
+
         actor.isChecked = false
       }
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
@@ -159,7 +155,6 @@ class Game(val stage: Stage,
   private val enemiesSpawnTimeout = 10
 
   override fun render(delta: Float) {
-    stage.act(delta)
     gameController.world.step(delta, 8, 3)
     gameController.removeEnemies()
 
@@ -173,6 +168,7 @@ class Game(val stage: Stage,
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
     castleFacades.onEach { it.update(delta) }
+    stage.act(delta)
     stage.draw()
     debugRenderer.render(gameController.world, camera.combined)
   }
