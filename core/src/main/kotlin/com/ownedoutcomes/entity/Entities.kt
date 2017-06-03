@@ -33,7 +33,7 @@ abstract class Enemy(image: Drawable,
                      world: World,
                      var life: Float,
                      val destination: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
-  val size = 50f
+  val size = 20f
   var angle = 0f
 
   init {
@@ -56,7 +56,7 @@ abstract class Enemy(image: Drawable,
       position.x = newPosition.x
       position.y = newPosition.y
 
-      circle(20f) {
+      circle(size) {
         userData = this@Enemy
         density = 0.05f
         friction = 0.2f

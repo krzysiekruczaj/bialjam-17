@@ -21,7 +21,7 @@ class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f,
       linearDamping = 1f
       position.x = spawnCenter.x
       position.y = spawnCenter.y
-      circle(50f) {
+      circle(size) {
         userData = this@Castle
         density = 0.5f
         friction = 0.3f
@@ -54,7 +54,7 @@ class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractE
       position.x = spawnVector.x
       position.y = spawnVector.y
 
-      circle(25f) {
+      circle(size) {
         userData = this@Tower
         density = 0.5f
         friction = 0.3f

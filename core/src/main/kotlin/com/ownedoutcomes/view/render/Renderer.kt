@@ -2,6 +2,7 @@ package com.ownedoutcomes.logic
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ownedoutcomes.entity.Chicken
 import com.ownedoutcomes.entity.Tower
@@ -13,6 +14,8 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   private val enemySprite = skin.atlas.createSprite("chicken2_v1")
   private val towerSprite = skin.atlas.createSprite("tower0")
 
+  val debugRenderer = Box2DDebugRenderer()
+
 
   init {
     castleSprite.setOriginCenter()
@@ -21,6 +24,8 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
   fun render(delta: Float) {
     batch.projectionMatrix = gameController.camera.combined
+    debugRenderer.render(gameController.world, gameController.camera.combined)
+
     batch.begin()
 
     renderPlayer()
@@ -28,6 +33,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     renderEnemies()
 
     renderTowers()
+
 
     batch.end()
   }
