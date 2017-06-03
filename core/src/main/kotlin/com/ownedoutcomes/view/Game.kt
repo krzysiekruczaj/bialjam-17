@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
@@ -24,10 +25,13 @@ class Game(val stage: Stage,
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
 
   private lateinit var towerTypes: KButtonTable
+  private lateinit var pointsLabel: Label
 
   var currentTower = 0
 
   var lastSpawnDelta = 0.0f
+
+  var points = 0
 
   val view = table {
     setFillParent(true)
@@ -62,6 +66,14 @@ class Game(val stage: Stage,
           name = buttonName
           it.height(60f).width(70f)
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
+        }
+      }
+
+      // Points:
+      pointsLabel = label(text = "$:$points") {
+        cell ->
+        run {
+          cell.expand().align(Align.topRight)
         }
       }
     }
@@ -161,11 +173,18 @@ class Game(val stage: Stage,
       lastSpawnDelta += delta
     }
 
+    updatePoints()
+
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
     castleFacades.onEach { it.update(delta) }
     stage.act(delta)
     stage.draw()
     debugRenderer.render(gameController.world, camera.combined)
+  }
+
+  private fun updatePoints() {
+    points++
+    pointsLabel.setText("Money: $points")
   }
 }
