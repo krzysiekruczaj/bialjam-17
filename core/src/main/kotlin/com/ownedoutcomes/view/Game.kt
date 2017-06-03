@@ -19,7 +19,6 @@ import ktx.actors.onClick
 import ktx.app.KtxScreen
 import ktx.math.vec2
 import ktx.scene2d.*
-import java.util.*
 
 
 class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
@@ -27,7 +26,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
   val camera = OrthographicCamera(screenWidth.toFloat() * 3, screenHeight.toFloat() * 3)
 
   val enemies: MutableList<Chicken> = mutableListOf()
-  val castles: MutableList<Castle> = mutableListOf()
+  val castle = Castle(skin.getDrawable("flag_blue"), world)
   val castleFacades: MutableList<CastleFacade> = mutableListOf()
 
   val selectedFields: MutableSet<Actor> = mutableSetOf()
@@ -127,10 +126,9 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
       enemies.add((Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)))
     }
 
-    castles.add(Castle(skin.getDrawable("flag_blue"), world, vec2(0f, fieldWidth.toFloat() / 2)))
     stage.addActor(view)
     enemies.onEach { stage.addActor(it) }
-    castles.onEach { stage.addActor(it) }
+    stage.addActor(castle)
     castleFacades.onEach { stage.addActor(it) }
     Gdx.input.inputProcessor = stage
   }
@@ -140,7 +138,7 @@ class Game(val stage: Stage, val skin: Skin, val world: World) : KtxScreen {
     stage.act(delta)
     world.step(delta, 8, 3)
     enemies.onEach { it.update(delta) }
-    castles.onEach { it.update(delta) }
+    castle.update(delta)
     castleFacades.onEach { it.update(delta) }
     stage.draw()
     debugRenderer.render(world, camera.combined)

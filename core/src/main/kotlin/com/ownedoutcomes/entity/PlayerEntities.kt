@@ -4,10 +4,12 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
+import com.ownedoutcomes.fieldWidth
 import com.ownedoutcomes.halfScreenWidth
 import ktx.box2d.body
+import ktx.math.vec2
 
-class Castle(image: Drawable, world: World, val spawnCenter: Vector2) : AbstractEntity(world, image) {
+class Castle(image: Drawable, world: World, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, image) {
   init {
     initiate()
   }
