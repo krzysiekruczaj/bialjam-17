@@ -1,7 +1,9 @@
-package com.ownedoutcomes.logic
+package com.ownedoutcomes.view.render
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ownedoutcomes.entity.Chicken
@@ -10,7 +12,7 @@ import com.ownedoutcomes.view.GameController
 
 
 class GameRenderer(val gameController: GameController, val batch: Batch, skin: Skin) {
-  private val castleSprite = skin.atlas.createSprite("castle_grey")
+  private val castleSprite = skin.atlas.createSprite("castle_v1")
   private val enemySprite = skin.atlas.createSprite("chicken2_v1")
   private val towerSprite = skin.atlas.createSprite("tower0")
 
@@ -29,7 +31,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     batch.begin()
 
     renderCastle()
-    renderEnemies()
+    renderEnemies(gameController.castle.spawnCenter)
     renderTowers()
 
     batch.end()
@@ -46,21 +48,26 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     playerSprite.draw(batch)
   }
 
-  private fun renderEnemies() {
+  private fun renderEnemies(playerPosition: Vector2) {
     println("Rendering ${gameController.enemies.size} enemies")
     gameController.enemies.forEach {
       enemy ->
-      renderEnemy(enemy)
+      renderEnemy(playerPosition, enemy)
     }
   }
 
-  private fun renderEnemy(enemy: Chicken) {
+  private fun renderEnemy(playerPosition: Vector2, enemy: Chicken) {
     val enemySprite = Sprite(enemySprite)
     val spriteSize = enemy.size * 2
-    enemySprite.x = enemy.body.position.x - enemy.size
-    enemySprite.y = enemy.body.position.y - enemy.size
+    val enemyBody = enemy.body
+    enemySprite.x = enemyBody.position.x - enemy.size
+    enemySprite.y = enemyBody.position.y - enemy.size
     enemySprite.setSize(spriteSize, spriteSize)
     enemySprite.setOriginCenter()
+
+    val angle = MathUtils.atan2(playerPosition.y - enemyBody.position.y, playerPosition.x - enemyBody.position.x)
+
+    enemySprite.rotation = MathUtils.radiansToDegrees * angle
     enemySprite.draw(batch)
   }
 

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.*
 import com.ownedoutcomes.entity.TowerFactory
-import com.ownedoutcomes.logic.GameRenderer
+import com.ownedoutcomes.view.render.GameRenderer
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
@@ -161,7 +161,7 @@ class Game(val stage: Stage,
     stage.keyboardFocus = view
   }
 
-  private val enemiesSpawnTimeout = 10
+  private val enemiesSpawnTimeout = 0.5f
 
   override fun render(delta: Float) {
     gameController.world.step(delta, 8, 3)
@@ -169,7 +169,7 @@ class Game(val stage: Stage,
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
-      gameController.spawnEnemies()
+      gameController.spawnEnemies(10)
     } else {
       lastSpawnDelta += delta
     }

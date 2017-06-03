@@ -1,7 +1,6 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -11,9 +10,9 @@ import com.ownedoutcomes.entity.AbstractEntity
 import com.ownedoutcomes.entity.Castle
 import com.ownedoutcomes.entity.Chicken
 import com.ownedoutcomes.entity.Tower
-import ktx.collections.GdxSet
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
+import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
 import ktx.math.vec2
@@ -33,9 +32,10 @@ class GameController(val skin: Skin) : Disposable {
     world.setContactListener(ContactController(this))
   }
 
-  fun spawnEnemies() =
-    (0..200).map {
-      val chicken = Chicken(skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1"), world, 1f)
+  fun spawnEnemies(enemiesCount: Int) =
+    (0..enemiesCount).map {
+      //      skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1")
+      val chicken = Chicken(world, 1f)
       enemies.add(chicken)
       chicken
     }

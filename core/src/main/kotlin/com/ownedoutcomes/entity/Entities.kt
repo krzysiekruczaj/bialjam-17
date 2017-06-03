@@ -5,10 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.ownedoutcomes.fieldWidth
-import com.ownedoutcomes.halfScreenWidth
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
 import ktx.box2d.body
@@ -27,10 +24,9 @@ abstract class AbstractEntity(val world: World) {
   abstract fun update(delta: Float)
 }
 
-class Chicken(image: Drawable, world: World, life: Float) : Enemy(image, world, life = life)
+class Chicken(world: World, life: Float) : Enemy(world, life = life)
 
-abstract class Enemy(image: Drawable,
-                     world: World,
+abstract class Enemy(world: World,
                      var life: Float,
                      val destination: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
   val size = 20f

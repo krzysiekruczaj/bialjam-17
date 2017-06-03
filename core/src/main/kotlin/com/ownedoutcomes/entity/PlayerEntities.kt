@@ -8,7 +8,7 @@ import ktx.box2d.body
 import ktx.math.vec2
 
 class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
-  var size: Float = 25f
+  var size: Float = 75f
 
   init {
     initiate()

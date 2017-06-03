@@ -9,11 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.ownedoutcomes.logic.GameRenderer
-import com.ownedoutcomes.view.ContactController
 import com.ownedoutcomes.view.Game
 import com.ownedoutcomes.view.GameController
 import com.ownedoutcomes.view.Menu
+import com.ownedoutcomes.view.render.GameRenderer
 import ktx.app.KtxGame
 import ktx.async.enableKtxCoroutines
 import ktx.inject.Context
