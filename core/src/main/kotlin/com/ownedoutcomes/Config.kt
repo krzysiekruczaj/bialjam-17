@@ -11,3 +11,6 @@ val halfScreenHeight = screenHeight / 2
 
 val stageWidth = screenWidth.toFloat()
 val stageHeight = screenHeight.toFloat()
+
+val halfStageWidth = halfScreenWidth.toFloat()
+val halfStageHeight = halfScreenHeight.toFloat()

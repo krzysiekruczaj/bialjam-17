@@ -1,6 +1,7 @@
 package com.ownedoutcomes.entity
 
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
@@ -10,8 +11,11 @@ import com.ownedoutcomes.*
 import ktx.box2d.body
 import ktx.math.vec2
 import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 
-class Castle(image: Drawable, world: World) : AbstractEntity(world, image) {
+val playerDensity = 20f
+
+class Castle(image: Drawable, world: World, val spawnCenter: Vector2) : AbstractEntity(world, image) {
   init {
     initiate()
   }
@@ -21,12 +25,9 @@ class Castle(image: Drawable, world: World) : AbstractEntity(world, image) {
       type = BodyDef.BodyType.StaticBody
       fixedRotation = true
       linearDamping = 1f
-      x = halfScreenWidth.toFloat() - (3 * fieldWidth.toFloat() / 2)
-      y = halfScreenHeight.toFloat() - fieldHeight.toFloat()
-      box {
-        width = 150f
-        height = 150f
-
+      position.x = spawnCenter.x
+      position.y = spawnCenter.y
+      circle(25f) {
         userData = this@Castle
         density = 0.5f
         friction = 0.3f
@@ -34,7 +35,9 @@ class Castle(image: Drawable, world: World) : AbstractEntity(world, image) {
       }
     }
 
-  override fun update(delta: Float) {}
+  override fun update(delta: Float) {
+    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
+  }
 }
 
 abstract class AbstractEntity(val world: World, drawable: Drawable) : Image(drawable) {
@@ -56,10 +59,10 @@ abstract class AbstractEntity(val world: World, drawable: Drawable) : Image(draw
 class Chicken(image: Drawable, world: World, life: Float) : Enemy(image, world, life = life)
 
 abstract class Enemy(image: Drawable, world: World, life: Float) : AbstractEntity(world, image) {
-  private val destination = vec2(600f, 600f)
-  private val size = 1f
-  private var angle = 0f
-  private val rand = Random()
+  val destination = vec2(600f, 600f)
+  val size = 1f
+  var angle = 0f
+  val rand = Random()
 
   var reachDestination = false
 
@@ -107,3 +110,78 @@ abstract class Enemy(image: Drawable, world: World, life: Float) : AbstractEntit
     setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
   }
 }
+
+class CastleFacade(image: Drawable, world: World, life: Float, val spawnVector: Vector2) : AbstractEntity(world, image) {
+
+  init {
+    initiate()
+  }
+
+  override fun createBody(world: World) =
+    world.body {
+      type = BodyDef.BodyType.StaticBody
+      fixedRotation = true
+      linearDamping = 1f
+      position.x = spawnVector.x
+      position.y = spawnVector.y
+
+      circle(25f) {
+        width = 50f
+        height = 50f
+
+        userData = this
+        density = 0.5f
+        friction = 0.3f
+        restitution = 0.1f
+      }
+    }
+
+  override fun update(delta: Float) {
+    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
+  }
+}
+
+class Skurwysyn(image: Drawable, world: World, life: Float, val spawnCenter: Vector2) : Enemy(image, world, life = life) {
+  var speedBonus = random(0.8f, 1.5f)
+
+  override fun createBody(world: World) =
+    world.body {
+      type = BodyDef.BodyType.DynamicBody
+      fixedRotation = true
+      linearDamping = 1f
+//      position.x = random(halfScreenHeight.toFloat(), -halfScreenWidth.toFloat())
+//      position.y = random(halfScreenHeight.toFloat(), halfScreenWidth.toFloat())
+
+      position.x = -halfScreenWidth.toFloat() + 100f
+      position.y = halfScreenHeight.toFloat() - 100f
+      rotation = -30f
+
+
+//      x = halfScreenWidth.toFloat() - (3 * fieldWidth.toFloat() / 2)
+//      y = halfScreenHeight.toFloat()- fieldHeight.toFloat()
+      circle(25f) {
+        width = 50f
+        height = 50f
+
+        userData = this
+        density = 0.5f
+        friction = 0.3f
+        restitution = 0.1f
+      }
+    }
+
+  override fun update(delta: Float) {
+    val currentDensity = size * size * MathUtils.PI * playerDensity * speedBonus * random(0.9f, 1.1f)
+    body.applyForceToCenter(
+      body.linearVelocity.x,
+      body.linearVelocity.y,
+      true)
+
+    body.applyForceToCenter(currentDensity, 0f, true)
+    setPosition(body.position.x + halfScreenWidth, body.position.y + halfScreenWidth)
+    rotateBy(angle)
+  }
+
+}
+
+fun random(from: Float, to: Float) = from + ThreadLocalRandom.current().nextFloat() * (to - from)
