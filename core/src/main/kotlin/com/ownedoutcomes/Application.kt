@@ -36,7 +36,7 @@ class Application : KtxGame<Screen>() {
       Scene2DSkin.defaultSkin = inject()
       bindSingleton(this@Application)
       bindSingleton(Menu(inject(), inject()))
-      bindSingleton(Game(inject(), inject()))
+      bindSingleton(Game(inject(), inject(), inject()))
     }
 
     addScreen(context.inject<Menu>())

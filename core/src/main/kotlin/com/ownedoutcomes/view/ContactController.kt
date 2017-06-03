@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.ownedoutcomes.entity.Castle
 import com.ownedoutcomes.entity.Chicken
+import com.ownedoutcomes.entity.Tower
 
 class ContactController(val gameController: GameController) : ContactListener {
   override fun endContact(contact: Contact?) {}
@@ -22,6 +23,18 @@ class ContactController(val gameController: GameController) : ContactListener {
       firstEntity.life--
       if (firstEntity.life < 0) {
         gameController.enemiesToRemove.add(firstEntity)
+      }
+    }
+
+    if (firstEntity is Chicken && secondEntity is Tower) {
+      firstEntity.life--
+      if (firstEntity.life < 0) {
+        gameController.enemiesToRemove.add(firstEntity)
+      }
+
+      secondEntity.life--
+      if (secondEntity.life < 0) {
+        gameController.towersToRemove.add(secondEntity)
       }
     }
   }
