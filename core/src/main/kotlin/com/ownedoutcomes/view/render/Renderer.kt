@@ -1,7 +1,11 @@
 package com.ownedoutcomes.view.render
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -46,6 +50,14 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     playerSprite.setSize(spriteSize, spriteSize)
     playerSprite.setOriginCenter()
     playerSprite.draw(batch)
+
+    val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
+    pixmap.setColor(Color.RED)
+    pixmap.fill()
+    val drawable = TextureRegion(Texture(pixmap))
+    batch.color = Color.RED
+    batch.draw(drawable, playerSprite.x, playerSprite.y + 2 * castle.size, spriteSize * (castle.life / castle.maxLife), 10f)
+    pixmap.dispose()
   }
 
   private fun renderEnemies(playerPosition: Vector2) {
@@ -65,9 +77,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     enemySprite.setSize(spriteSize, spriteSize)
     enemySprite.setOriginCenter()
 
-    val angle = MathUtils.atan2(playerPosition.y - enemyBody.position.y, playerPosition.x - enemyBody.position.x)
-
-    enemySprite.rotation = MathUtils.radiansToDegrees * angle
+    enemySprite.rotation = MathUtils.radiansToDegrees * -enemy.angle
     enemySprite.draw(batch)
   }
 
@@ -80,12 +90,20 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   }
 
   private fun renderTower(tower: Tower) {
-    val enemySprite = Sprite(towerSprite)
+    val towerSprite = Sprite(towerSprite)
     val spriteSize = tower.size * 2
-    enemySprite.x = tower.body.position.x - tower.size
-    enemySprite.y = tower.body.position.y - tower.size
-    enemySprite.setSize(spriteSize, spriteSize)
-    enemySprite.setOriginCenter()
-    enemySprite.draw(batch)
+    towerSprite.x = tower.body.position.x - tower.size
+    towerSprite.y = tower.body.position.y - tower.size
+    towerSprite.setSize(spriteSize, spriteSize)
+    towerSprite.setOriginCenter()
+    towerSprite.draw(batch)
+
+    val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
+    pixmap.setColor(Color.RED)
+    pixmap.fill()
+    val drawable = TextureRegion(Texture(pixmap))
+    batch.color = Color.RED
+    batch.draw(drawable, towerSprite.x, towerSprite.y + 2 * tower.size, spriteSize * (tower.life / tower.maxLife), 10f)
+    pixmap.dispose()
   }
 }

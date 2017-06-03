@@ -9,6 +9,7 @@ import ktx.math.vec2
 
 class Castle( world: World, val life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
   var size: Float = 75f
+  var maxLife = life
 
   init {
     initiate()
@@ -41,6 +42,7 @@ class TowerFactory(val world: World) {
 
 class Tower(world: World, var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
   var size: Float = 25f
+  var maxLife = life
 
   init {
     initiate()
