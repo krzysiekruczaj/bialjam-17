@@ -5,16 +5,18 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
+import com.ownedoutcomes.view.ContactController
 import com.ownedoutcomes.view.Game
 import com.ownedoutcomes.view.Menu
 import ktx.app.KtxGame
 import ktx.async.enableKtxCoroutines
 import ktx.inject.Context
+import ktx.math.vec2
 import ktx.scene2d.Scene2DSkin
 import ktx.style.defaultStyle
 import ktx.style.imageButton
@@ -27,6 +29,10 @@ class Application : KtxGame<Screen>() {
   override fun create() {
     enableKtxCoroutines(asynchronousExecutorConcurrencyLevel = 1)
     context.register {
+      val world = World(vec2(0f, 0f), true)
+      world.setContactListener(ContactController())
+      bindSingleton(world)
+
       bindSingleton(TextureAtlas("skin.atlas"))
       bindSingleton<Batch>(SpriteBatch())
       bindSingleton<Viewport>(ScreenViewport())
@@ -35,12 +41,12 @@ class Application : KtxGame<Screen>() {
       Scene2DSkin.defaultSkin = inject()
       bindSingleton(this@Application)
       bindSingleton(Menu(inject(), inject()))
-      bindSingleton(Game(inject()))
+      bindSingleton(Game(inject(), inject(), inject()))
     }
 
     addScreen(context.inject<Menu>())
     addScreen(context.inject<Game>())
-    setScreen<Menu>()
+    setScreen<Game>()
   }
 
   fun createSkin(atlas: TextureAtlas): Skin = skin(atlas) { skin ->
