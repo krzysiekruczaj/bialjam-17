@@ -89,6 +89,9 @@ class Bullet(world: World,
              val destination: Vector2) : AbstractEntity(world) {
   override var size: Float = 5f
   override var angle = 0f
+
+  var timeToLive = 0f
+
   init {
     initiate()
   }
@@ -110,15 +113,19 @@ class Bullet(world: World,
     }
 
   override fun update(delta: Float) {
-    val currentDensity = 15f * MathUtils.PI * 2000f * 1.05f * 100f
+    timeToLive += delta
+    val currentDensity = 15f * MathUtils.PI * 2000f * 1.05f * 1000f
     val angle = MathUtils.atan2(destination.y - body.position.y, destination.x - body.position.x)
-//    println(body.fixtureList[0].userData)
     body.applyForce(
       MathUtils.cos(angle) * currentDensity,
       MathUtils.sin(angle) * currentDensity,
       destination.x,
       destination.y,
       true)
+  }
+
+  fun isTimeToLiveLimitExceeded(): Boolean {
+    return timeToLive > 3f
   }
 }
 

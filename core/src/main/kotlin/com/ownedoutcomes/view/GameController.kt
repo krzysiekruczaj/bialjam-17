@@ -76,7 +76,12 @@ class GameController(val skin: Skin) : Disposable {
     castle.update(delta)
     towers.onEach { it.update(delta) }
 
-    bullets.onEach { it.update(delta) }
+    bullets.onEach {
+      it.update(delta)
+      if (it.isTimeToLiveLimitExceeded()) {
+        bulletsToRemove.add(it)
+      }
+    }
     fastTowers.onEach {
       it.update(delta)
       if (it.lastShotTime > 0.3f) {
