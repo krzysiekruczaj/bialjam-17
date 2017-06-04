@@ -1,6 +1,7 @@
 package com.ownedoutcomes
 
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -28,9 +29,10 @@ class Application : KtxGame<Screen>() {
   override fun create() {
     enableKtxCoroutines(asynchronousExecutorConcurrencyLevel = 1)
     context.register {
+      bindSingleton(AssetManager())
       bindSingleton(TextureAtlas("skin.atlas"))
       bindSingleton(createSkin(inject()))
-      bindSingleton(GameController())
+      bindSingleton(GameController(inject()))
       bindSingleton<Batch>(SpriteBatch())
       bindSingleton<Viewport>(ScreenViewport())
       bindSingleton(Stage(inject(), inject()))

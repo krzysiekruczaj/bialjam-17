@@ -1,5 +1,6 @@
 package com.ownedoutcomes.view
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
@@ -15,7 +16,7 @@ import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
 import ktx.math.vec2
 
-class GameController : Disposable {
+class GameController(val assetManager: AssetManager) : Disposable {
   val world = World(vec2(0f, 0f), true)
 
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
@@ -42,7 +43,7 @@ class GameController : Disposable {
   var currentWave = 0
 
   init {
-    world.setContactListener(ContactController(this))
+    world.setContactListener(ContactController(this, assetManager))
   }
 
   fun spawnEnemies(waveNumber: Int): List<Chicken> {
