@@ -6,7 +6,10 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.fieldWidth
-import com.ownedoutcomes.view.*
+import com.ownedoutcomes.view.bulletCollisionGroup
+import com.ownedoutcomes.view.bulletGroup
+import com.ownedoutcomes.view.towerCollisionGroup
+import com.ownedoutcomes.view.towerGroup
 import ktx.box2d.body
 import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
@@ -65,13 +68,15 @@ class TripleShotFastTower(world: World,
 }
 
 open class FastTower(world: World,
-                override var life: Float,
-                val spawnVector: Vector2) : AbstractEntity(world) {
+                     override var life: Float,
+                     val spawnVector: Vector2) : AbstractEntity(world) {
   override var size: Float = 25f
   override var angle = 0f
+  var shotDelay = 0.5f
 
   var lastShotTime = 0f
   var maxLife = life
+  var towerPower = 1f
 
   init {
     initiate()
@@ -98,7 +103,7 @@ open class FastTower(world: World,
   open fun shot(destination: Vector2): GdxSet<Bullet> {
     val bodyPosition = this.body.position
     angle = destination.angle(bodyPosition)
-    return gdxSetOf(Bullet(world, 1f, bodyPosition, destination))
+    return gdxSetOf(Bullet(world, 1f, bodyPosition, destination, towerPower))
   }
 
   override fun update(delta: Float) {
@@ -110,7 +115,8 @@ open class FastTower(world: World,
 class Bullet(world: World,
              override var life: Float,
              val spawnVector: Vector2,
-             val destination: Vector2) : AbstractEntity(world) {
+             val destination: Vector2,
+             var power: Float = 1f) : AbstractEntity(world) {
   override var size: Float = 5f
   override var angle = 0f
 

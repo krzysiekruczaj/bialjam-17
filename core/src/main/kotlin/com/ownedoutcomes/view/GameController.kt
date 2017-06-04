@@ -119,7 +119,7 @@ class GameController : Disposable {
     val entitiesInRange = findEntitiesInRange(enemies)
     fastTowers.onEach {
       it.update(delta)
-      if (it.lastShotTime > 0.5f) {
+      if (it.lastShotTime > it.shotDelay) {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it, entitiesInRange)
         closestEntity?.let { closestEntity ->

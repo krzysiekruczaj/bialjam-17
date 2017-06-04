@@ -126,8 +126,10 @@ class Game(val stage: Stage,
         val translatedX = actor.getX(Align.center) - halfScreenWidth
         val translatedY = actor.getY(Align.center) - halfScreenHeight
 
-        if (gameController.towers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }.count() == 0 &&
-          gameController.fastTowers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }.count() == 0
+        val towersOnField = gameController.towers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
+        val fastTowersOnField = gameController.fastTowers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
+
+        if (towersOnField.count() == 0 && fastTowersOnField.count() == 0
           ) {
           println("Creating ${gameController.towers.size} castle facades. Creating facade with id = [$currentTower]")
 
@@ -154,6 +156,18 @@ class Game(val stage: Stage,
           }
 
           actor.isChecked = false
+        } else {
+
+          if (fastTowersOnField.isNotEmpty()) {
+            val tower = fastTowersOnField[0]
+            tower.life = tower.maxLife * 2
+            tower.maxLife = tower.maxLife * 2
+            tower.lastShotTime
+          } else {
+            val tower = towersOnField[0]
+            tower.life = tower.maxLife * 2
+            tower.maxLife = tower.maxLife * 2
+          }
         }
       }
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
