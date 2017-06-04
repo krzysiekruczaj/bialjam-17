@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ownedoutcomes.entity.AbstractEntity
 import com.ownedoutcomes.entity.FastTower
@@ -45,7 +44,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   private val healthSprite = skin.atlas.createSprite("health")
   private val enemyHealthSprite = skin.atlas.createSprite("health-enemy")
 
-  val debugRenderer = Box2DDebugRenderer()
+//  val debugRenderer = Box2DDebugRenderer()
 
 
   init {
@@ -63,7 +62,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
   fun render(delta: Float) {
     batch.projectionMatrix = gameController.camera.combined
-    debugRenderer.render(gameController.world, gameController.camera.combined)
+//    debugRenderer.render(gameController.world, gameController.camera.combined)
 
     batch.begin()
     renderCastle()
