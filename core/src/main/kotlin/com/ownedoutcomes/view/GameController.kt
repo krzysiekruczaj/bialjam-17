@@ -118,7 +118,7 @@ class GameController : Disposable {
 
     val entitiesInRange = findEntitiesInRange(enemies)
 
-    val entitiesInTowerRange = findEntitiesInCastleRange(enemies)
+    val entitiesInTowerRange = findEntitiesInCastleRange(entitiesInRange)
 
     fastTowers.onEach {
       it.update(delta)
