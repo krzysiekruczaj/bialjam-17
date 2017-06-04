@@ -48,7 +48,7 @@ class ContactController(val gameController: GameController) : ContactListener {
   }
 
   private fun decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity: Chicken, damage: Float) {
-    firstEntity.life = -damage
+    firstEntity.life -= damage
     if (firstEntity.life < 0) {
       gameController.enemiesToRemove.add(firstEntity)
     }
