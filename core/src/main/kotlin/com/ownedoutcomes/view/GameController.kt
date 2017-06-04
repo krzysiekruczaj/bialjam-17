@@ -52,6 +52,7 @@ class GameController(val skin: Skin) : Disposable {
     removeObjects(enemies, enemiesToRemove)
     removeObjects(towers, towersToRemove)
     removeObjects(bullets, bulletsToRemove)
+    removeObjects(fastTowers, fastTowersToRemove)
   }
 
   private fun <E : AbstractEntity> removeObjects(allObjects: GdxSet<E>, toRemove: GdxSet<E>) {
