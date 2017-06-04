@@ -6,7 +6,10 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.fieldWidth
-import com.ownedoutcomes.view.*
+import com.ownedoutcomes.view.bulletCollisionGroup
+import com.ownedoutcomes.view.bulletGroup
+import com.ownedoutcomes.view.towerCollisionGroup
+import com.ownedoutcomes.view.towerGroup
 import ktx.box2d.body
 import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
@@ -52,16 +55,15 @@ class TowerFactory(val world: World) {
 class TripleShotFastTower(world: World,
                           life: Float,
                           spawnVector: Vector2) : FastTower(world, life, spawnVector) {
-  override fun shot(destination: Vector2): GdxSet<Bullet> {
-    val bodyPosition = this.body.position
-    println("Creating bullet from [${bodyPosition.x}, ${bodyPosition.y}] to [${destination.x}, ${destination.y}]")
-    angle = destination.angle(bodyPosition)
+  override fun createBullets(destination: Vector2): GdxSet<Bullet> {
+    val source = createBulletSpawnVector()
     return gdxSetOf(
-      Bullet(world, 1f, bodyPosition, destination),
-      Bullet(world, 1f, bodyPosition, destination.cpy().rotate(15f)),
-      Bullet(world, 1f, bodyPosition, destination.cpy().rotate(-15f))
+      createBullet(source, destination),
+      createBullet(source, destination.cpy().rotate(15f)),
+      createBullet(source, destination.cpy().rotate(-15f))
     )
   }
+
 
 }
 
@@ -96,11 +98,37 @@ open class FastTower(world: World,
       }
     }
 
-  open fun shot(destination: Vector2): GdxSet<Bullet> {
+  fun shot(destination: Vector2): GdxSet<Bullet> {
+    assignAngle(destination)
+    return createBullets(destination)
+  }
+
+  private fun assignAngle(destination: Vector2) {
     val bodyPosition = this.body.position
-    println("Creating bullet from [${bodyPosition.x}, ${bodyPosition.y}] to [${destination.x}, ${destination.y}]")
-    angle = destination.angle(bodyPosition)
-    return gdxSetOf(Bullet(world, 1f, bodyPosition, destination))
+    val towerY = bodyPosition.y
+    val towerX = bodyPosition.x
+    angle = MathUtils.atan2(destination.y - towerY, destination.x - towerX)
+  }
+
+  open fun createBullets(destination: Vector2): GdxSet<Bullet> {
+    val bullet = createBullet(createBulletSpawnVector(), destination)
+    return gdxSetOf(bullet)
+  }
+
+  protected fun createBullet(source: Vector2, destination: Vector2): Bullet {
+    return Bullet(world, 1f, source, destination)
+  }
+
+  protected fun createBulletSpawnVector(): Vector2 {
+    val bodyPosition = this.body.position
+    val towerY = bodyPosition.y
+    val towerX = bodyPosition.x
+    val distanceX = MathUtils.cos(angle)
+    val distanceY = MathUtils.sin(angle)
+    val thunderX = towerX + distanceX * size
+    val thunderY = towerY + distanceY * size
+    val bulletSpawnVector = vec2(thunderX, thunderY)
+    return bulletSpawnVector
   }
 
   override fun update(delta: Float) {
