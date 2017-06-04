@@ -48,6 +48,10 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   init {
     castleSprite.setOriginCenter()
     enemySprite.setOriginCenter()
+
+    chickenSprites.forEach {
+      it.rotate90(true)
+    }
   }
 
   fun render(delta: Float) {
@@ -66,13 +70,20 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   }
 
   private fun processSprite(sprite: Sprite, entity: AbstractEntity): Sprite {
+    val bulletSprite = createSprite(sprite, entity)
+    bulletSprite.rotation = MathUtils.radiansToDegrees * entity.angle
+    bulletSprite.draw(batch)
+
+    return bulletSprite
+  }
+
+  private fun createSprite(sprite: Sprite, entity: AbstractEntity): Sprite {
     val bulletSprite = Sprite(sprite)
     val spriteSize = entity.size * 2
     bulletSprite.x = entity.body.position.x - entity.size
     bulletSprite.y = entity.body.position.y - entity.size
     bulletSprite.setSize(spriteSize, spriteSize)
     bulletSprite.setOriginCenter()
-    bulletSprite.draw(batch)
     return bulletSprite
   }
 
@@ -97,7 +108,9 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
   private fun renderEnemies(playerPosition: Vector2) {
     gameController.enemies.onEach {
-      processSprite(chickenSprites[Math.min(it.level, 8)], it)
+      val bulletSprite = createSprite(chickenSprites[Math.min(it.level, 8)], it)
+      bulletSprite.rotation = MathUtils.radiansToDegrees * it.angle
+      bulletSprite.draw(batch)
     }
   }
 

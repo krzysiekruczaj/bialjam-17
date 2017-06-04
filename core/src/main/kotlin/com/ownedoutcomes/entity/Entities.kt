@@ -70,7 +70,8 @@ abstract class Enemy(world: World,
 
   override fun update(delta: Float) {
     val currentDensity = 15f + size * MathUtils.PI * 2000f * 1.05f
-    angle = MathUtils.atan2(destination.y - body.position.y, destination.x - body.position.x)
+    val bodyPosition = this.body.position
+    angle = MathUtils.atan2(destination.y - bodyPosition.y, destination.x - bodyPosition.x)
     body.applyForceToCenter(
       MathUtils.cos(angle) * currentDensity,
       MathUtils.sin(angle) * currentDensity,
