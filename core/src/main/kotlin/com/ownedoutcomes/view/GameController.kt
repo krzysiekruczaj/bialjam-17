@@ -34,21 +34,37 @@ class GameController : Disposable {
   val bulletsToRemove = gdxSetOf<Bullet>()
 
   val fieldRadius = 5
-  private val enemiesSpawnTimeout = 10f
+  private val enemiesSpawnTimeout = 1f
   var lastSpawnDelta = 0.0f
 
   var points = 0
+
+  var currentWave = 0
 
   init {
     world.setContactListener(ContactController(this))
   }
 
-  fun spawnEnemies(enemiesCount: Int) =
-    (0..enemiesCount).map {
-      val chicken = Chicken(world, 1f)
-      enemies.add(chicken)
-      chicken
-    }
+  fun spawnEnemies(waveNumber: Int): List<Chicken> {
+    val enemiesInWave = waves[waveNumber].chickens
+      .flatMap {
+        when (it.key) {
+          0 -> (0..it.value).map { Chicken(world, 1f, 0) }
+          1 -> (0..it.value).map { Chicken(world, 4f, 1) }
+          2 -> (0..it.value).map { Chicken(world, 8f, 2) }
+          3 -> (0..it.value).map { Chicken(world, 16f, 3) }
+          4 -> (0..it.value).map { Chicken(world, 32f, 4) }
+          5 -> (0..it.value).map { Chicken(world, 64f, 5) }
+          6 -> (0..it.value).map { Chicken(world, 128f, 6) }
+          7 -> (0..it.value).map { Chicken(world, 256f, 7) }
+          8 -> (0..it.value).map { Chicken(world, 512f, 8) }
+          9 -> (0..it.value).map { Chicken(world, 1024f, 9) }
+          else -> emptyList()
+        }
+      }
+    enemies.addAll(enemiesInWave)
+    return enemiesInWave
+  }
 
   override fun dispose() {
     world.dispose()
@@ -84,7 +100,7 @@ class GameController : Disposable {
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
-      spawnEnemies(30)
+      spawnEnemies(Math.min(currentWave++, 40))
     } else {
       lastSpawnDelta += delta
     }
@@ -139,6 +155,18 @@ class GameController : Disposable {
   }
 
   fun gameOver() {
-    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 }
+
+val waves = (0..30).map {
+  listOf(Wave(mapOf(it to 30, it + 1 to 3)),
+    Wave(mapOf(it to 30, it + 1 to 10)),
+    Wave(mapOf(it to 30, it + 1 to 20)),
+    Wave(mapOf(it to 30, it + 1 to 30)))
+}.flatMap { it }
+
+data class Wave(
+  val chickens: Map<Int, Int>
+)
+

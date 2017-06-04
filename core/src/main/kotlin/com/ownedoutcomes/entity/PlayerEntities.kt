@@ -33,6 +33,8 @@ class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = 
         density = 0.5f
         friction = 0.3f
         restitution = 0.1f
+        filter.categoryBits = towerGroup
+        filter.maskBits = towerCollisionGroup
       }
     }
 

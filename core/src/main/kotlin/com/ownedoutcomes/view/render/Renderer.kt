@@ -19,8 +19,21 @@ import com.ownedoutcomes.view.GameController
 
 class GameRenderer(val gameController: GameController, val batch: Batch, skin: Skin) {
   private val castleSprite = skin.atlas.createSprite("castle_v1")
-  private val enemySprite = skin.atlas.createSprite("chicken2_v1")
   private val towerSprite = skin.atlas.createSprite("tower0")
+
+  private val enemySprite = skin.atlas.createSprite("chicken2_v1")
+
+  private val chickenSprites = arrayOf(
+    skin.atlas.createSprite("chicken_v0"),
+    skin.atlas.createSprite("chicken4_v0"),
+    skin.atlas.createSprite("chicken1_v0"),
+    skin.atlas.createSprite("chicken3_v1"),
+    skin.atlas.createSprite("chicken2_v1"),
+    skin.atlas.createSprite("chicken4_v1"),
+    skin.atlas.createSprite("chicken5_v1"),
+    skin.atlas.createSprite("chicken6_v1"),
+    skin.atlas.createSprite("chicken7_v1")
+  )
 
   private val fastTowerSprites = arrayOf(
     skin.atlas.createSprite("tower1"),
@@ -84,7 +97,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
   private fun renderEnemies(playerPosition: Vector2) {
     gameController.enemies.onEach {
-      processSprite(enemySprite, it)
+      processSprite(chickenSprites[Math.min(it.level, 8)], it)
     }
   }
 

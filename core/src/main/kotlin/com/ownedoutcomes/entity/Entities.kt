@@ -29,7 +29,7 @@ abstract class AbstractEntity(val world: World) {
   abstract fun update(delta: Float)
 }
 
-class Chicken(world: World, override var life: Float) : Enemy(world, life)
+class Chicken(world: World, override var life: Float, val level: Int) : Enemy(world, life)
 
 abstract class Enemy(world: World,
                      override var life: Float,
