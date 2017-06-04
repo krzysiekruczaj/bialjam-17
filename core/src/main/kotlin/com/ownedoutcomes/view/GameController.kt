@@ -73,8 +73,19 @@ class GameController : Disposable {
   fun removeDestroyedGameObjects() {
     removeObjects(enemies, enemiesToRemove)
     removeObjects(towers, towersToRemove)
-    removeObjects(bullets, bulletsToRemove)
     removeObjects(fastTowers, fastTowersToRemove)
+    filterBulletsThatFoundItsDestination(bullets, 5f)
+    removeObjects(bullets, bulletsToRemove)
+  }
+
+  private fun filterBulletsThatFoundItsDestination(bullets: GdxSet<Bullet>, delta: Float) {
+    bullets.onEach {
+      val bulletPosition = it.body.position
+      val destinationPosition = it.destination
+      if (Math.abs(bulletPosition.x - destinationPosition.x) < delta && Math.abs(bulletPosition.y - destinationPosition.y) < delta) {
+        bulletsToRemove.add(it)
+      }
+    }
   }
 
   private fun <E : AbstractEntity> removeObjects(allObjects: GdxSet<E>, toRemove: GdxSet<E>) {
