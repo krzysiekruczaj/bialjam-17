@@ -35,8 +35,10 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
   val bulletsToRemove = gdxSetOf<Bullet>()
 
   val fieldRadius = 5
-  private val enemiesSpawnTimeout = 0.5f
+  private val enemiesSpawnTimeout = 10f
   var lastSpawnDelta = 0.0f
+
+  var points = 0
 
   init {
     world.setContactListener(ContactController(context, this))

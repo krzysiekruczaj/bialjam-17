@@ -24,8 +24,6 @@ class Game(val stage: Stage,
 
   var currentTower = 0
 
-  var points = 0
-
   val view = table {
     setFillParent(true)
     align(Align.bottomLeft)
@@ -63,7 +61,7 @@ class Game(val stage: Stage,
       }
 
       // Points:
-      pointsLabel = label(text = "$:$points") {
+      pointsLabel = label(text = "") {
         cell ->
         run {
           cell.expand().align(Align.topRight)
@@ -168,6 +166,6 @@ class Game(val stage: Stage,
   }
 
   private fun updatePoints() {
-    pointsLabel.setText("Money: $points$")
+    pointsLabel.setText("Money: ${gameController.points}$")
   }
 }

@@ -31,6 +31,7 @@ class ContactController(val context: Context, val gameController: GameController
         is Bullet -> {
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
           gameController.bulletsToRemove.add(secondEntity)
+          gameController.points += 1
         }
         is Tower -> {
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
