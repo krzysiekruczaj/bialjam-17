@@ -146,7 +146,7 @@ class Bullet(world: World,
   }
 
   fun isTimeToLiveLimitExceeded(): Boolean {
-    return timeToLive > 3f
+    return timeToLive > 2f
   }
 }
 
