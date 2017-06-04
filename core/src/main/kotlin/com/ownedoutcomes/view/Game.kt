@@ -40,7 +40,7 @@ class Game(val stage: Stage,
 
       val centerX = tilesX / 2
 
-      val fieldRadius = 5
+      val fieldRadius = gameController.fieldRadius
       val dirtStart = centerX - fieldRadius
       val dirtEnd = centerX + fieldRadius
       for (y in 0..tilesY - 1) {

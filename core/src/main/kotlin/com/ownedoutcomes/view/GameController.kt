@@ -10,6 +10,7 @@ import com.ownedoutcomes.entity.*
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
 import ktx.collections.GdxSet
+import ktx.collections.addAll
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
 import ktx.inject.Context
@@ -32,6 +33,8 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
 
   val bullets = gdxSetOf<Bullet>()
   val bulletsToRemove = gdxSetOf<Bullet>()
+
+  val fieldRadius = 5
 
   init {
     world.setContactListener(ContactController(context, this))
@@ -84,11 +87,14 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
         bulletsToRemove.add(it)
       }
     }
+
+    val entitiesInRange = findEntitiesInRange(enemies)
+    println("Found ${entitiesInRange.size} entities in range out of ${enemies.size}")
     fastTowers.onEach {
       it.update(delta)
       if (it.lastShotTime > 0.3f) {
         it.lastShotTime = 0f
-        val closestEntity = findClosestEntity(it)
+        val closestEntity = findClosestEntity(it, entitiesInRange)
         closestEntity?.let { closestEntity ->
           bullets.addAll(it.shot(closestEntity.body.position.cpy()))
         }
@@ -97,18 +103,28 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
 
   }
 
-  private fun findClosestEntity(fastTower: FastTower): Enemy? {
-    var minimumEnity: Enemy? = null
+  private fun findEntitiesInRange(enemies: GdxSet<Chicken>): GdxSet<Chicken> {
+    val chickensInRange = gdxSetOf<Chicken>()
+
+    chickensInRange.addAll(enemies.filter {
+      castle.spawnCenter.dst(it.body.position) < (fieldRadius + 3) * 50f
+    })
+
+    return chickensInRange
+  }
+
+  private fun findClosestEntity(fastTower: FastTower, entitiesInRange: GdxSet<Chicken>): Enemy? {
+    var minimumEntity: Enemy? = null
     var minimumDistance: Float = Float.MAX_VALUE
-    enemies.onEach {
+    entitiesInRange.onEach {
       val position = it.body.position
       val fastTowerPosition = fastTower.body.position
       val distance = vec2(position.x, position.y).dst(vec2(fastTowerPosition.x, fastTowerPosition.y))
       if (minimumDistance > distance) {
         minimumDistance = distance
-        minimumEnity = it
+        minimumEntity = it
       }
     }
-    return minimumEnity
+    return minimumEntity
   }
 }
