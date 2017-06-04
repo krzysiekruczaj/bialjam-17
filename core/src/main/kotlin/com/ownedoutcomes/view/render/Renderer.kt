@@ -161,8 +161,8 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   private fun renderFastTowers() {
     gameController.fastTowers.onEach {
       when (it) {
-        is TripleShotFastTower -> renderFastTower(fastTowerSprites.get(1), it)
-        else -> renderFastTower(fastTowerSprites.get(0), it)
+        is TripleShotFastTower -> renderFastTower(fastTowerSprites[1], it)
+        else -> renderFastTower(fastTowerSprites[0], it)
       }
     }
   }

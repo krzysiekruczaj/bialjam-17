@@ -48,10 +48,11 @@ def render(String dirName, size) {
   root.listFiles().each {
     def name = it.name.split("\\.")[0]
     runProcess(root, "inkscape -z -w $size -h $size -e ../atlas/${name}.png ${name}.svg")   //if using linux uncommen this
-    
+
 //    runProcess(root, "/Applications/Inkscape.app/Contents/Resources/bin/inkscape -z -w $size -h $size -e ../atlas/${name}.png ${name}.svg")
   }
   runProcess(root, "inkscape -z -w 200 -h 200 -e ../atlas/castle_v1.png castle_v1.svg")
+  runProcess(root, "inkscape -z -w 1000 -h 1000 -e ../atlas/castle_v1.png castle_v1.svg")
 }
 
 def runProcess(dir, String commands) {
