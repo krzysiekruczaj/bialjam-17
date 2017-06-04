@@ -25,7 +25,7 @@ class Game(val stage: Stage,
   private lateinit var timeToWaveLabel: Label
 
   val grassArray = arrayOf("Q", "W", "E", "R", "T")
-  val costArray = arrayOf("50", "200", "1500", "100", "50")
+  val costArray = arrayOf("50$", "200$", "1500$", "100$", "50$")
 
   var currentTower = 0
 
