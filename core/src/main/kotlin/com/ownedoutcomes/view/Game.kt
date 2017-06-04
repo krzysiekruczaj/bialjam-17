@@ -122,54 +122,68 @@ class Game(val stage: Stage,
   private fun KTableWidget.createImageButton(style: String): Unit {
     imageButton(style = style) {
       onClick { _: InputEvent, actor: KImageButton, x: Float, y: Float ->
-        println("Clicked [$x, $y] with actor $actor on [${actor.x}, ${actor.y}]")
 
-        val translatedX = actor.getX(Align.center) - halfScreenWidth
-        val translatedY = actor.getY(Align.center) - halfScreenHeight
+        val canAfford = when (currentTower) {
+          0 -> gameController.points > towerFactory.wallTowerCost
+          1 -> gameController.points > towerFactory.fastTowerCost
+          2 -> gameController.points > towerFactory.tripleShotFastTowerCost
+          else -> gameController.points > towerFactory.splashTowerCost
+        }
 
-        val towersOnField = gameController.towers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
-        val fastTowersOnField = gameController.fastTowers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
+        if (canAfford) {
+          val translatedX = actor.getX(Align.center) - halfScreenWidth
+          val translatedY = actor.getY(Align.center) - halfScreenHeight
+          val towersOnField = gameController.towers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
+          val fastTowersOnField = gameController.fastTowers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
 
-        if (towersOnField.count() == 0 && fastTowersOnField.count() == 0
-          ) {
-          println("Creating ${gameController.towers.size} castle facades. Creating facade with id = [$currentTower]")
+          if (towersOnField.count() == 0 && fastTowersOnField.count() == 0) {
+            println("Creating ${gameController.towers.size} castle facades. Creating facade with id = [$currentTower]")
 
 
-          println("Creating Tower at [$translatedX, $translatedY]")
+            println("Creating Tower at [$translatedX, $translatedY]")
 
-          when (currentTower) {
-            0 -> {
-              val wallTower = towerFactory.wallTower(vec2(translatedX, translatedY))
-              gameController.towers.add(wallTower)
+            when (currentTower) {
+              0 -> {
+                val wallTower = towerFactory.wallTower(vec2(translatedX, translatedY))
+                gameController.towers.add(wallTower)
+                gameController.points -= towerFactory.wallTowerCost
+              }
+              1 -> {
+                val fastTower = towerFactory.fastTower(vec2(translatedX, translatedY))
+                gameController.fastTowers.add(fastTower)
+                gameController.points -= towerFactory.fastTowerCost
+
+              }
+              2 -> {
+                val fastTower = towerFactory.tripleShotFastTower(vec2(translatedX, translatedY))
+                gameController.fastTowers.add(fastTower)
+                gameController.points -= towerFactory.tripleShotFastTowerCost
+              }
+              else -> {
+                val splashTower = towerFactory.splashTower(vec2(translatedX, translatedY))
+                gameController.towers.add(splashTower)
+                gameController.points -= towerFactory.splashTowerCost
+
+              }
             }
-            1 -> {
-              val fastTower = towerFactory.fastTower(vec2(translatedX, translatedY))
-              gameController.fastTowers.add(fastTower)
-            }
-            2 -> {
-              val fastTower = towerFactory.tripleShotFastTower(vec2(translatedX, translatedY))
-              gameController.fastTowers.add(fastTower)
-            }
-            else -> {
-              val splashTower = towerFactory.splashTower(vec2(translatedX, translatedY))
-              gameController.towers.add(splashTower)
-            }
-          }
 
-          actor.isChecked = false
-        } else {
-
-          if (fastTowersOnField.isNotEmpty()) {
-            val tower = fastTowersOnField[0]
-            tower.life = tower.maxLife * 2
-            tower.maxLife = tower.maxLife * 2
-            tower.lastShotTime
+            actor.isChecked = false
           } else {
-            val tower = towersOnField[0]
-            tower.life = tower.maxLife * 2
-            tower.maxLife = tower.maxLife * 2
+
+            if (fastTowersOnField.isNotEmpty()) {
+              val tower = fastTowersOnField[0]
+              tower.life = tower.maxLife * 2
+              tower.maxLife = tower.maxLife * 2
+              tower.lastShotTime
+            } else {
+              val tower = towersOnField[0]
+              tower.life = tower.maxLife * 2
+              tower.maxLife = tower.maxLife * 2
+            }
           }
         }
+
+
       }
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
   }
