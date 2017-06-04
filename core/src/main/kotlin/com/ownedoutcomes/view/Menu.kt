@@ -3,6 +3,7 @@ package com.ownedoutcomes.view
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.Application
 import ktx.actors.onClick
 import ktx.app.KtxScreen
@@ -15,12 +16,14 @@ class Menu(
   val view = table {
     setFillParent(true)
 
-    label("Play!") {
-      color = Color.WHITE
+    label("PLAY!") {
+      color = Color.BLACK
+      fontScaleX = 5f
+      fontScaleY = 5f
       onClick { _, _ ->
         application.setScreen<Game>()
       }
-    }
+    }.cell(align = Align.topRight)
 
     background("background")
   }
