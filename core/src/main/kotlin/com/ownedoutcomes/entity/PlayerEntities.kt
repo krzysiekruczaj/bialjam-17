@@ -87,7 +87,7 @@ class Bullet(world: World,
              override var life: Float,
              val spawnVector: Vector2,
              val destination: Vector2) : AbstractEntity(world) {
-  override var size: Float = 25f
+  override var size: Float = 5f
   override var angle = 0f
   init {
     initiate()
