@@ -21,7 +21,7 @@ class GameController(val assetManager: AssetManager) : Disposable {
 
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
 
-  val castle = Castle(world, 10000f)
+  val castle = Castle(world, 5000f)
   val enemies = gdxSetOf<Chicken>()
   val enemiesToRemove = gdxSetOf<Chicken>()
 
@@ -117,7 +117,7 @@ class GameController(val assetManager: AssetManager) : Disposable {
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
-      spawnEnemies(Math.min(currentWave++, 40))
+      spawnEnemies(10 * currentWave++)
     } else {
       lastSpawnDelta += delta
     }

@@ -32,7 +32,7 @@ class ContactController(val gameController: GameController, val assetManager: As
         is Bullet -> {
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity, secondEntity.power)
           gameController.bulletsToRemove.add(secondEntity)
-          gameController.points += firstEntity.level * 30 + 1
+          gameController.points += firstEntity.level * 10 + 1
           Gdx.audio.newSound("hit${MathUtils.random.nextInt(10)}.wav".toInternalFile()).play(0.4f)
         }
         is Tower -> {
