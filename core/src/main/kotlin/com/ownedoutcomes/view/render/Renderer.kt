@@ -40,7 +40,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     skin.atlas.createSprite("tower1"),
     skin.atlas.createSprite("tower2")
   )
-  private val bulletSprite = skin.atlas.createSprite("bullet")
+  private val bulletSprite = skin.atlas.createSprite("jar")
 
   private val healthSprite = skin.atlas.createSprite("health")
   private val enemyHealthSprite = skin.atlas.createSprite("health-enemy")
