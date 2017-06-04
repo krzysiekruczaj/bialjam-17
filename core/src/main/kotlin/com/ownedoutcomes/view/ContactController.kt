@@ -20,29 +20,24 @@ class ContactController(val gameController: GameController) : ContactListener {
     if (firstEntity is Chicken) {
       when (secondEntity) {
         is Castle -> {
-          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
           secondEntity.life--
           if (secondEntity.life < 0) {
             gameController.gameOver()
           }
         }
         is Bullet -> {
-          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
+          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity, secondEntity.power)
           gameController.bulletsToRemove.add(secondEntity)
-          gameController.points += 1
+          gameController.points += firstEntity.level * 2 + 1
         }
         is Tower -> {
-          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
-
           secondEntity.life--
           if (secondEntity.life < 0) {
             gameController.towersToRemove.add(secondEntity)
           }
         }
         is FastTower -> {
-          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
-
-          secondEntity.life--
+          secondEntity.life -= firstEntity.level * 2 + 1
           if (secondEntity.life < 0) {
             gameController.fastTowersToRemove.add(secondEntity)
           }
@@ -52,8 +47,8 @@ class ContactController(val gameController: GameController) : ContactListener {
 
   }
 
-  private fun decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity: Chicken) {
-    firstEntity.life--
+  private fun decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity: Chicken, damage: Float) {
+    firstEntity.life = -damage
     if (firstEntity.life < 0) {
       gameController.enemiesToRemove.add(firstEntity)
     }
@@ -64,10 +59,10 @@ class ContactController(val gameController: GameController) : ContactListener {
 }
 
 // Collision groups:
-val enemyGroup: Short =                     0b00000001
-val bulletGroup: Short =                    0b00000010
-val towerGroup: Short =                     0b00000100
+val enemyGroup: Short = 0b00000001
+val bulletGroup: Short = 0b00000010
+val towerGroup: Short = 0b00000100
 
-val enemyCollisionGroup: Short =            0b00000110
-val bulletCollisionGroup: Short =           0b00000001
-val towerCollisionGroup: Short =            0b00000001
+val enemyCollisionGroup: Short = 0b00000110
+val bulletCollisionGroup: Short = 0b00000001
+val towerCollisionGroup: Short = 0b00000001

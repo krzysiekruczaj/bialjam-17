@@ -119,7 +119,7 @@ class GameController : Disposable {
     val entitiesInRange = findEntitiesInRange(enemies)
     fastTowers.onEach {
       it.update(delta)
-      if (it.lastShotTime > 0.5f) {
+      if (it.lastShotTime > it.shotDelay) {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it, entitiesInRange)
         closestEntity?.let { closestEntity ->
@@ -143,9 +143,9 @@ class GameController : Disposable {
     var minimumEntity: Enemy? = null
     var minimumDistance: Float = Float.MAX_VALUE
     entitiesInRange.onEach {
-      val position = it.body.position
+      val chickenPosition = it.body.position
       val fastTowerPosition = fastTower.body.position
-      val distance = vec2(position.x, position.y).dst(vec2(fastTowerPosition.x, fastTowerPosition.y))
+      val distance = vec2(chickenPosition.x, chickenPosition.y).dst(vec2(fastTowerPosition.x, fastTowerPosition.y))
       if (distance < 3 * fieldWidth && minimumDistance > distance) {
         minimumDistance = distance
         minimumEntity = it

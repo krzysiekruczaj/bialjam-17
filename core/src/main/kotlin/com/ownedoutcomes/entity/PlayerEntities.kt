@@ -46,10 +46,10 @@ class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = 
 }
 
 class TowerFactory(val world: World) {
-  fun wallTower(spawnVector: Vector2) = Tower(world, 10f, spawnVector)
-  fun fastTower(spawnVector: Vector2) = FastTower(world, 3f, spawnVector)
-  fun tripleShotFastTower(spawnVector: Vector2) = TripleShotFastTower(world, 3f, spawnVector)
-  fun splashTower(spawnVector: Vector2) = Tower(world, 3f, spawnVector)
+  fun wallTower(spawnVector: Vector2) = Tower(world, 1000f, spawnVector)
+  fun fastTower(spawnVector: Vector2) = FastTower(world, 3000f, spawnVector)
+  fun tripleShotFastTower(spawnVector: Vector2) = TripleShotFastTower(world, 3000f, spawnVector)
+  fun splashTower(spawnVector: Vector2) = Tower(world, 3000f, spawnVector)
 }
 
 class TripleShotFastTower(world: World,
@@ -68,13 +68,15 @@ class TripleShotFastTower(world: World,
 }
 
 open class FastTower(world: World,
-                override var life: Float,
-                val spawnVector: Vector2) : AbstractEntity(world) {
+                     override var life: Float,
+                     val spawnVector: Vector2) : AbstractEntity(world) {
   override var size: Float = 25f
   override var angle = 0f
+  var shotDelay = 0.5f
 
   var lastShotTime = 0f
   var maxLife = life
+  var towerPower = 1f
 
   init {
     initiate()
@@ -140,7 +142,8 @@ open class FastTower(world: World,
 class Bullet(world: World,
              override var life: Float,
              val spawnVector: Vector2,
-             val destination: Vector2) : AbstractEntity(world) {
+             val destination: Vector2,
+             var power: Float = 1f) : AbstractEntity(world) {
   override var size: Float = 5f
   override var angle = 0f
 

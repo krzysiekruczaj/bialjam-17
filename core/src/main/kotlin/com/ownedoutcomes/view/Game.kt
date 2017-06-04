@@ -123,33 +123,52 @@ class Game(val stage: Stage,
       onClick { _: InputEvent, actor: KImageButton, x: Float, y: Float ->
         println("Clicked [$x, $y] with actor $actor on [${actor.x}, ${actor.y}]")
 
-        println("Creating ${gameController.towers.size} castle facades. Creating facade with id = [$currentTower]")
+        val translatedX = actor.getX(Align.center) - halfScreenWidth
+        val translatedY = actor.getY(Align.center) - halfScreenHeight
 
-        val x = actor.getX(Align.center) - halfScreenWidth
-        val y = actor.getY(Align.center) - halfScreenHeight
+        val towersOnField = gameController.towers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
+        val fastTowersOnField = gameController.fastTowers.filter { it.spawnVector.x == translatedX && it.spawnVector.y == translatedY }
 
-        println("Creating Tower at [$x, $y]")
+        if (towersOnField.count() == 0 && fastTowersOnField.count() == 0
+          ) {
+          println("Creating ${gameController.towers.size} castle facades. Creating facade with id = [$currentTower]")
 
-        when (currentTower) {
-          0 -> {
-            val wallTower = towerFactory.wallTower(vec2(x, y))
-            gameController.towers.add(wallTower)
+
+          println("Creating Tower at [$translatedX, $translatedY]")
+
+          when (currentTower) {
+            0 -> {
+              val wallTower = towerFactory.wallTower(vec2(translatedX, translatedY))
+              gameController.towers.add(wallTower)
+            }
+            1 -> {
+              val fastTower = towerFactory.fastTower(vec2(translatedX, translatedY))
+              gameController.fastTowers.add(fastTower)
+            }
+            2 -> {
+              val fastTower = towerFactory.tripleShotFastTower(vec2(translatedX, translatedY))
+              gameController.fastTowers.add(fastTower)
+            }
+            else -> {
+              val splashTower = towerFactory.splashTower(vec2(translatedX, translatedY))
+              gameController.towers.add(splashTower)
+            }
           }
-          1 -> {
-            val fastTower = towerFactory.fastTower(vec2(x, y))
-            gameController.fastTowers.add(fastTower)
-          }
-          2 -> {
-            val fastTower = towerFactory.tripleShotFastTower(vec2(x, y))
-            gameController.fastTowers.add(fastTower)
-          }
-          else -> {
-            val splashTower = towerFactory.splashTower(vec2(x, y))
-            gameController.towers.add(splashTower)
+
+          actor.isChecked = false
+        } else {
+
+          if (fastTowersOnField.isNotEmpty()) {
+            val tower = fastTowersOnField[0]
+            tower.life = tower.maxLife * 2
+            tower.maxLife = tower.maxLife * 2
+            tower.lastShotTime
+          } else {
+            val tower = towersOnField[0]
+            tower.life = tower.maxLife * 2
+            tower.maxLife = tower.maxLife * 2
           }
         }
-
-        actor.isChecked = false
       }
     }.cell(height = fieldHeight.toFloat(), width = fieldWidth.toFloat())
   }
