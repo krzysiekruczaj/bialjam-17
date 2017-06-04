@@ -3,7 +3,6 @@ package com.ownedoutcomes.view
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.World
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import com.ownedoutcomes.entity.*
@@ -13,10 +12,9 @@ import ktx.collections.GdxSet
 import ktx.collections.addAll
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
-import ktx.inject.Context
 import ktx.math.vec2
 
-class GameController(val context: Context, val skin: Skin) : Disposable {
+class GameController : Disposable {
   val world = World(vec2(0f, 0f), true)
 
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
@@ -41,7 +39,7 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
   var points = 0
 
   init {
-    world.setContactListener(ContactController(context, this))
+    world.setContactListener(ContactController(this))
   }
 
   fun spawnEnemies(enemiesCount: Int) =
@@ -139,5 +137,9 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
       }
     }
     return minimumEntity
+  }
+
+  fun gameOver() {
+    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 }

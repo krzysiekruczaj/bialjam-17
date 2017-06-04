@@ -4,11 +4,9 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
-import com.ownedoutcomes.Application
 import com.ownedoutcomes.entity.*
-import ktx.inject.Context
 
-class ContactController(val context: Context, val gameController: GameController) : ContactListener {
+class ContactController(val gameController: GameController) : ContactListener {
   override fun endContact(contact: Contact?) {}
 
   override fun beginContact(contact: Contact?) {
@@ -25,7 +23,7 @@ class ContactController(val context: Context, val gameController: GameController
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
           secondEntity.life--
           if (secondEntity.life < 0) {
-            context.inject<Application>().setScreen<Menu>()
+            gameController.gameOver()
           }
         }
         is Bullet -> {

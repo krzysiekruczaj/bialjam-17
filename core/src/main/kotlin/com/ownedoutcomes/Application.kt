@@ -30,7 +30,7 @@ class Application : KtxGame<Screen>() {
     context.register {
       bindSingleton(TextureAtlas("skin.atlas"))
       bindSingleton(createSkin(inject()))
-      bindSingleton(GameController(inject(), inject()))
+      bindSingleton(GameController())
       bindSingleton<Batch>(SpriteBatch())
       bindSingleton<Viewport>(ScreenViewport())
       bindSingleton(Stage(inject(), inject()))
