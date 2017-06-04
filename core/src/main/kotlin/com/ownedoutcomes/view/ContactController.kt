@@ -4,9 +4,11 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
+import com.ownedoutcomes.Application
 import com.ownedoutcomes.entity.*
+import ktx.inject.Context
 
-class ContactController(val gameController: GameController) : ContactListener {
+class ContactController(val context: Context, val gameController: GameController) : ContactListener {
   override fun endContact(contact: Contact?) {}
 
   override fun beginContact(contact: Contact?) {
@@ -19,7 +21,13 @@ class ContactController(val gameController: GameController) : ContactListener {
   private fun checkContact(firstEntity: Any, secondEntity: Any) {
     if (firstEntity is Chicken) {
       when (secondEntity) {
-        is Castle -> decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
+        is Castle -> {
+          decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
+          secondEntity.life--
+          if (secondEntity.life < 0) {
+            context.inject<Application>().setScreen<Menu>()
+          }
+        }
         is Bullet -> {
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity)
           gameController.bulletsToRemove.add(secondEntity)

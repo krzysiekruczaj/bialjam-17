@@ -12,9 +12,10 @@ import com.ownedoutcomes.screenWidth
 import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
+import ktx.inject.Context
 import ktx.math.vec2
 
-class GameController(val skin: Skin) : Disposable {
+class GameController(val context: Context, val skin: Skin) : Disposable {
   val world = World(vec2(0f, 0f), true)
 
   val camera = OrthographicCamera(screenWidth.toFloat(), screenHeight.toFloat())
@@ -33,7 +34,7 @@ class GameController(val skin: Skin) : Disposable {
   val bulletsToRemove = gdxSetOf<Bullet>()
 
   init {
-    world.setContactListener(ContactController(this))
+    world.setContactListener(ContactController(context, this))
   }
 
   fun spawnEnemies(enemiesCount: Int) =
