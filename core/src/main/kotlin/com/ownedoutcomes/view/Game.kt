@@ -1,6 +1,7 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -11,6 +12,7 @@ import com.ownedoutcomes.view.render.GameRenderer
 import ktx.actors.onClick
 import ktx.actors.onKey
 import ktx.app.KtxScreen
+import ktx.assets.toInternalFile
 import ktx.math.vec2
 import ktx.scene2d.*
 
@@ -194,7 +196,7 @@ class Game(val stage: Stage,
 
   override fun show() {
     stage.addActor(view)
-
+    Gdx.audio.newMusic("theme.mp3".toInternalFile()).play()
     Gdx.input.inputProcessor = stage
     stage.keyboardFocus = view
   }
