@@ -74,8 +74,19 @@ class GameController(val assetManager: AssetManager) : Disposable {
   fun removeDestroyedGameObjects() {
     removeObjects(enemies, enemiesToRemove)
     removeObjects(towers, towersToRemove)
-    removeObjects(bullets, bulletsToRemove)
     removeObjects(fastTowers, fastTowersToRemove)
+    filterBulletsThatFoundItsDestination(bullets, 5f)
+    removeObjects(bullets, bulletsToRemove)
+  }
+
+  private fun filterBulletsThatFoundItsDestination(bullets: GdxSet<Bullet>, delta: Float) {
+    bullets.onEach {
+      val bulletPosition = it.body.position
+      val destinationPosition = it.destination
+      if (Math.abs(bulletPosition.x - destinationPosition.x) < delta && Math.abs(bulletPosition.y - destinationPosition.y) < delta) {
+        bulletsToRemove.add(it)
+      }
+    }
   }
 
   private fun <E : AbstractEntity> removeObjects(allObjects: GdxSet<E>, toRemove: GdxSet<E>) {
@@ -118,13 +129,25 @@ class GameController(val assetManager: AssetManager) : Disposable {
     }
 
     val entitiesInRange = findEntitiesInRange(enemies)
+
+    val entitiesInTowerRange = findEntitiesInCastleRange(entitiesInRange)
+
     fastTowers.onEach {
       it.update(delta)
       if (it.lastShotTime > it.shotDelay) {
         it.lastShotTime = 0f
-        val closestEntity = findClosestEntity(it, entitiesInRange)
-        closestEntity?.let { closestEntity ->
-          bullets.addAll(it.shot(closestEntity.body.position.cpy().scl(1000f)))
+        val closestEntityToCastle = findClosestEntity(it, entitiesInTowerRange)
+        println("Found ${entitiesInTowerRange.size} entities in castle range.")
+        if (closestEntityToCastle != null) {
+          println("Closest entity to castle= [${closestEntityToCastle.body.position.x}, ${closestEntityToCastle.body.position.y}]")
+          bullets.addAll(it.shot(closestEntityToCastle.body.position.cpy()))
+        } else {
+          val closestEntityToTower = findClosestEntity(it, entitiesInRange)
+          closestEntityToTower?.let { closestEntity ->
+            println("Closest entity to tower = [${closestEntityToTower.body.position.x}, ${closestEntityToTower.body.position.y}]")
+
+            bullets.addAll(it.shot(closestEntity.body.position.cpy().scl(1000f)))
+          }
         }
       }
     }
@@ -140,6 +163,16 @@ class GameController(val assetManager: AssetManager) : Disposable {
     return chickensInRange
   }
 
+  private fun findEntitiesInCastleRange(enemies: GdxSet<Chicken>): GdxSet<Chicken> {
+    val chickensInRange = gdxSetOf<Chicken>()
+
+    chickensInRange.addAll(enemies.filter {
+      castle.spawnCenter.dst(it.body.position) < (fieldRadius) * 50f
+    })
+
+    return chickensInRange
+  }
+
   private fun findClosestEntity(fastTower: FastTower, entitiesInRange: GdxSet<Chicken>): Enemy? {
     var minimumEntity: Enemy? = null
     var minimumDistance: Float = Float.MAX_VALUE
@@ -147,7 +180,7 @@ class GameController(val assetManager: AssetManager) : Disposable {
       val chickenPosition = it.body.position
       val fastTowerPosition = fastTower.body.position
       val distance = vec2(chickenPosition.x, chickenPosition.y).dst(vec2(fastTowerPosition.x, fastTowerPosition.y))
-      if (distance < 3 * fieldWidth && minimumDistance > distance) {
+      if (distance < 4 * fieldWidth && minimumDistance > distance) {
         minimumDistance = distance
         minimumEntity = it
       }
