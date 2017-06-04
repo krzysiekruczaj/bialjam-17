@@ -104,6 +104,7 @@ class Game(val stage: Stage,
       x in dirtStart..dirtEnd && y == dirtEnd -> return createImageButton("grass_s")
       x == dirtStart && y in dirtStart..dirtEnd -> return createImageButton("grass_w")
       x == dirtEnd && y in dirtStart..dirtEnd -> return createImageButton("grass_e")
+      x in (dirtStart + 4)..(dirtEnd - 4) && y in (dirtStart + 4)..(dirtEnd - 4) -> return createImage("dirt")
       x in dirtStart..dirtEnd && y in dirtStart..dirtEnd -> return createImageButton("dirt")
       else -> return createImage("grass")
     }

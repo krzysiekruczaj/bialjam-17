@@ -45,7 +45,6 @@ class GameController : Disposable {
 
   fun spawnEnemies(enemiesCount: Int) =
     (0..enemiesCount).map {
-      //      skin.getDrawable("chicken${MathUtils.random.nextInt(4) + 4}_v1")
       val chicken = Chicken(world, 1f)
       enemies.add(chicken)
       chicken
@@ -112,7 +111,6 @@ class GameController : Disposable {
         }
       }
     }
-
   }
 
   private fun findEntitiesInRange(enemies: GdxSet<Chicken>): GdxSet<Chicken> {
