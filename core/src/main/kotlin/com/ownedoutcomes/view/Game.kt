@@ -1,7 +1,6 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -182,9 +181,17 @@ class Game(val stage: Stage,
 
   override fun show() {
     stage.addActor(view)
-    Gdx.audio.newMusic("theme.mp3".toInternalFile()).play()
+    playMusic()
     Gdx.input.inputProcessor = stage
     stage.keyboardFocus = view
+  }
+
+  fun playMusic() {
+    val music = Gdx.audio.newMusic("theme.mp3".toInternalFile())
+    music.setOnCompletionListener {
+      playMusic()
+    }
+    music.play()
   }
 
   override fun render(delta: Float) {
