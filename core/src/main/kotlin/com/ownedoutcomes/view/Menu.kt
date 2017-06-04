@@ -17,6 +17,9 @@ class Menu(
 
     label("Play!") {
       color = Color.WHITE
+
+      fontScaleX =6f
+      fontScaleY = 6f
       onClick { _, _ ->
         application.setScreen<Game>()
       }
