@@ -58,6 +58,8 @@ class ContactController(val gameController: GameController, val assetManager: As
     firstEntity.life = -damage
     if (firstEntity.life < 0) {
       gameController.enemiesToRemove.add(firstEntity)
+      Gdx.audio.newSound("hit0.wav".toInternalFile()).play()
+
     }
   }
 
