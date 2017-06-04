@@ -134,6 +134,10 @@ class Game(val stage: Stage,
             val fastTower = towerFactory.fastTower(vec2(x, y))
             gameController.fastTowers.add(fastTower)
           }
+          2 -> {
+            val fastTower = towerFactory.tripleShotFastTower(vec2(x, y))
+            gameController.fastTowers.add(fastTower)
+          }
           else -> {
             val splashTower = towerFactory.splashTower(vec2(x, y))
             gameController.towers.add(splashTower)

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ownedoutcomes.entity.AbstractEntity
 import com.ownedoutcomes.entity.FastTower
 import com.ownedoutcomes.entity.Tower
+import com.ownedoutcomes.entity.TripleShotFastTower
 import com.ownedoutcomes.view.GameController
 
 
@@ -20,7 +21,11 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   private val castleSprite = skin.atlas.createSprite("castle_v1")
   private val enemySprite = skin.atlas.createSprite("chicken2_v1")
   private val towerSprite = skin.atlas.createSprite("tower0")
-  private val fastTowerSprite = skin.atlas.createSprite("tower1")
+
+  private val fastTowerSprites = arrayOf(
+    skin.atlas.createSprite("tower1"),
+    skin.atlas.createSprite("tower2")
+  )
   private val bulletSprite = skin.atlas.createSprite("bullet")
 
 
@@ -109,9 +114,11 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   }
 
   private fun renderFastTowers() {
-//    println("Rendering ${gameController.fastTowers.size} bullets")
     gameController.fastTowers.onEach {
-      renderFastTower(fastTowerSprite, it)
+      when (it) {
+        is TripleShotFastTower -> renderFastTower(fastTowerSprites.get(1), it)
+        else -> renderFastTower(fastTowerSprites.get(0), it)
+      }
     }
   }
 

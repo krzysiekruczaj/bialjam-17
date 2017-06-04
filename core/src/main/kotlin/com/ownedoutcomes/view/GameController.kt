@@ -88,7 +88,7 @@ class GameController(val skin: Skin) : Disposable {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it)
         closestEntity?.let { closestEntity ->
-          bullets.add(it.shot(closestEntity.body.position.cpy()))
+          bullets.addAll(it.shot(closestEntity.body.position.cpy()))
         }
       }
     }
