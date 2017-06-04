@@ -46,6 +46,11 @@ class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = 
 }
 
 class TowerFactory(val world: World) {
+  val wallTowerCost = 50
+  val fastTowerCost = 200
+  val tripleShotFastTowerCost = 1500
+  val splashTowerCost = 100
+
   fun wallTower(spawnVector: Vector2) = Tower(world, 1000f, spawnVector)
   fun fastTower(spawnVector: Vector2) = FastTower(world, 3000f, spawnVector)
   fun tripleShotFastTower(spawnVector: Vector2) = TripleShotFastTower(world, 3000f, spawnVector)
