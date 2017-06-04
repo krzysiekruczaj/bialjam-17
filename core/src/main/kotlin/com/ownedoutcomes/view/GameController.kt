@@ -35,6 +35,8 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
   val bulletsToRemove = gdxSetOf<Bullet>()
 
   val fieldRadius = 5
+  private val enemiesSpawnTimeout = 0.5f
+  var lastSpawnDelta = 0.0f
 
   init {
     world.setContactListener(ContactController(context, this))
@@ -77,6 +79,16 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
   }
 
   fun update(delta: Float) {
+    world.step(delta, 8, 3)
+    removeDestroyedGameObjects()
+
+    if (lastSpawnDelta > enemiesSpawnTimeout) {
+      lastSpawnDelta = 0.0f
+      spawnEnemies(10)
+    } else {
+      lastSpawnDelta += delta
+    }
+
     enemies.onEach { it.update(delta) }
     castle.update(delta)
     towers.onEach { it.update(delta) }
@@ -89,10 +101,9 @@ class GameController(val context: Context, val skin: Skin) : Disposable {
     }
 
     val entitiesInRange = findEntitiesInRange(enemies)
-    println("Found ${entitiesInRange.size} entities in range out of ${enemies.size}")
     fastTowers.onEach {
       it.update(delta)
-      if (it.lastShotTime > 0.3f) {
+      if (it.lastShotTime > 0.7f) {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it, entitiesInRange)
         closestEntity?.let { closestEntity ->

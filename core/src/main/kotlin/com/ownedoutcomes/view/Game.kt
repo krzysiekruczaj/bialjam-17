@@ -24,8 +24,6 @@ class Game(val stage: Stage,
 
   var currentTower = 0
 
-  var lastSpawnDelta = 0.0f
-
   var points = 0
 
   val view = table {
@@ -161,32 +159,15 @@ class Game(val stage: Stage,
     stage.keyboardFocus = view
   }
 
-  private val enemiesSpawnTimeout = 0.5f
-
   override fun render(delta: Float) {
-    gameController.world.step(delta, 8, 3)
-    gameController.removeDestroyedGameObjects()
-
-    if (lastSpawnDelta > enemiesSpawnTimeout) {
-      lastSpawnDelta = 0.0f
-      gameController.spawnEnemies(10)
-    } else {
-      lastSpawnDelta += delta
-    }
-
-    updatePoints()
-
     gameController.update(delta)
-    gameController.enemies.onEach { it.update(delta) }
-    gameController.castle.update(delta)
-    gameController.towers.onEach { it.update(delta) }
     stage.act(delta)
     stage.draw()
+    updatePoints()
     gameRenderer.render(delta)
   }
 
   private fun updatePoints() {
-    points++
-    pointsLabel.setText("Money: $points")
+    pointsLabel.setText("Money: $points$")
   }
 }
