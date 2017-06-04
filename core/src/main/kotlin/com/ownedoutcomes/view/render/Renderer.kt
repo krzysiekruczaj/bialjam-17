@@ -14,6 +14,8 @@ import com.ownedoutcomes.entity.AbstractEntity
 import com.ownedoutcomes.entity.FastTower
 import com.ownedoutcomes.entity.Tower
 import com.ownedoutcomes.entity.TripleShotFastTower
+import com.ownedoutcomes.screenHeight
+import com.ownedoutcomes.screenWidth
 import com.ownedoutcomes.view.GameController
 
 
@@ -59,14 +61,24 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     debugRenderer.render(gameController.world, gameController.camera.combined)
 
     batch.begin()
-
     renderCastle()
     renderEnemies(gameController.castle.spawnCenter)
     renderTowers()
     renderFastTowers()
     renderBullets()
 
+    renderNight()
+
     batch.end()
+  }
+
+  private fun renderNight() {
+    val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
+    pixmap.fill()
+    val drawable = TextureRegion(Texture(pixmap))
+    batch.setColor(0.5f, 0.5f, 0.5f, (gameController.timeFromLastChangeOfTimeOfTheDay / 10) * 0.7f)
+    batch.draw(drawable, -screenWidth.toFloat() / 2, -screenHeight.toFloat() / 2, screenWidth.toFloat(), screenHeight.toFloat())
+    pixmap.dispose()
   }
 
   private fun processSprite(sprite: Sprite, entity: AbstractEntity): Sprite {

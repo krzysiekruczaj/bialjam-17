@@ -42,6 +42,9 @@ class GameController(val assetManager: AssetManager) : Disposable {
 
   var currentWave = 0
 
+  var timeFromLastChangeOfTimeOfTheDay: Float = 0f
+  private var factor: Int = 1
+
   init {
     world.setContactListener(ContactController(this, assetManager))
   }
@@ -117,6 +120,14 @@ class GameController(val assetManager: AssetManager) : Disposable {
       lastSpawnDelta += delta
     }
 
+    if (timeFromLastChangeOfTimeOfTheDay > 10f) {
+      factor = -1
+    } else if (timeFromLastChangeOfTimeOfTheDay < 0f) {
+      timeFromLastChangeOfTimeOfTheDay = 0f
+      factor = 1
+    }
+    timeFromLastChangeOfTimeOfTheDay += delta * factor
+
     enemies.onEach { it.update(delta) }
     castle.update(delta)
     towers.onEach { it.update(delta) }
@@ -191,6 +202,7 @@ class GameController(val assetManager: AssetManager) : Disposable {
   fun gameOver() {
     //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
+
 }
 
 val waves = (0..30).map {
