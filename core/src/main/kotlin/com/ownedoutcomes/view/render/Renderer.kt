@@ -55,6 +55,10 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     chickenSprites.forEach {
       it.rotate90(true)
     }
+
+    fastTowerSprites.forEach {
+      it.rotate90(true)
+    }
   }
 
   fun render(delta: Float) {

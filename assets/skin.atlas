@@ -75,6 +75,13 @@ cannon2
   orig: 100, 100
   offset: 3, 12
   index: -1
+tower1
+  rotate: false
+  xy: 206, 326
+  size: 95, 76
+  orig: 100, 100
+  offset: 3, 12
+  index: -1
 castle_grey
   rotate: false
   xy: 1, 321
@@ -186,13 +193,6 @@ chicken_v2
   size: 74, 96
   orig: 100, 100
   offset: 14, 1
-  index: -1
-crossbow
-  rotate: false
-  xy: 1, 2
-  size: 91, 54
-  orig: 100, 100
-  offset: 5, 34
   index: -1
 dirt
   rotate: false
@@ -370,12 +370,19 @@ tower0
   orig: 100, 100
   offset: 0, 0
   index: -1
-tower1
+tower2
   rotate: false
-  xy: 93, 1
-  size: 60, 55
-  orig: 60, 60
-  offset: 0, 4
+  xy: 1, 2
+  size: 91, 54
+  orig: 100, 100
+  offset: 5, 34
+  index: -1
+tower2-a
+  rotate: false
+  xy: 1, 57
+  size: 100, 94
+  orig: 100, 100
+  offset: 0, 3
   index: -1
 tower3
   rotate: false
@@ -390,13 +397,6 @@ tower4
   size: 60, 55
   orig: 60, 60
   offset: 0, 4
-  index: -1
-tower2
-  rotate: false
-  xy: 1, 57
-  size: 100, 94
-  orig: 100, 100
-  offset: 0, 3
   index: -1
 upgrade-box
   rotate: false
