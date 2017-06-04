@@ -45,7 +45,7 @@ class Application : KtxGame<Screen>() {
 
     addScreen(context.inject<Menu>())
     addScreen(context.inject<Game>())
-    setScreen<Game>()
+    setScreen<Menu>()
   }
 
   fun createSkin(atlas: TextureAtlas): Skin = skin(atlas) { skin ->
