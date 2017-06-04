@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.fieldWidth
+import com.ownedoutcomes.view.*
 import ktx.box2d.body
 import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
@@ -88,6 +89,8 @@ open class FastTower(world: World,
         density = 0.5f
         friction = 0.3f
         restitution = 0.1f
+        filter.categoryBits = towerGroup
+        filter.maskBits = towerCollisionGroup
       }
     }
 
@@ -130,6 +133,8 @@ class Bullet(world: World,
         density = 0.05f
         friction = 0.3f
         restitution = 0.1f
+        filter.categoryBits = bulletGroup
+        filter.maskBits = bulletCollisionGroup
       }
     }
 
@@ -172,6 +177,8 @@ class Tower(world: World, override var life: Float, val spawnVector: Vector2) : 
         density = 0.5f
         friction = 0.3f
         restitution = 0.1f
+        filter.categoryBits = towerGroup
+        filter.maskBits = towerCollisionGroup
       }
     }
 

@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.fieldWidth
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
+import com.ownedoutcomes.view.enemyCollisionGroup
+import com.ownedoutcomes.view.enemyGroup
 import ktx.box2d.body
 import ktx.math.vec2
 
@@ -60,6 +62,8 @@ abstract class Enemy(world: World,
         density = 0.05f
         friction = 0.2f
         restitution = 0.1f
+        filter.categoryBits = enemyGroup
+        filter.maskBits = enemyCollisionGroup
       }
 
     }

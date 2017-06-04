@@ -47,7 +47,6 @@ class ContactController(val gameController: GameController) : ContactListener {
             gameController.fastTowersToRemove.add(secondEntity)
           }
         }
-
       }
     }
 
@@ -63,3 +62,12 @@ class ContactController(val gameController: GameController) : ContactListener {
   override fun preSolve(contact: Contact?, oldManifold: Manifold?) {}
   override fun postSolve(contact: Contact?, impulse: ContactImpulse?) {}
 }
+
+// Collision groups:
+val enemyGroup: Short =                     0b00000001
+val bulletGroup: Short =                    0b00000010
+val towerGroup: Short =                     0b00000100
+
+val enemyCollisionGroup: Short =            0b00000110
+val bulletCollisionGroup: Short =           0b00000001
+val towerCollisionGroup: Short =            0b00000001
