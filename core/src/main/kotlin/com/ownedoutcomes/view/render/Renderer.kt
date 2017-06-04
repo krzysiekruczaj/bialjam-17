@@ -77,14 +77,12 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   }
 
   private fun renderEnemies(playerPosition: Vector2) {
-    println("Rendering ${gameController.enemies.size} enemies")
     gameController.enemies.onEach {
       processSprite(enemySprite, it)
     }
   }
 
   private fun renderTowers() {
-    println("Rendering ${gameController.towers.size} towers")
     gameController.towers.onEach {
       renderSpriteWithHealthBar(towerSprite, it)
     }
@@ -110,7 +108,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   }
 
   private fun renderFastTowers() {
-    println("Rendering ${gameController.fastTowers.size} bullets")
+//    println("Rendering ${gameController.fastTowers.size} bullets")
     gameController.fastTowers.onEach {
       renderFastTower(fastTowerSprite, it)
     }

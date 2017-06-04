@@ -172,14 +172,12 @@ class Game(val stage: Stage,
 
     updatePoints()
 
-//    pointsLabel.setText("Level: $currentGameLevel Points: $currentGamePoints")
     gameController.update(delta)
     gameController.enemies.onEach { it.update(delta) }
     gameController.castle.update(delta)
     gameController.towers.onEach { it.update(delta) }
     stage.act(delta)
     stage.draw()
-//    debugRenderer.render(gameController.world, camera.combined)
     gameRenderer.render(delta)
   }
 

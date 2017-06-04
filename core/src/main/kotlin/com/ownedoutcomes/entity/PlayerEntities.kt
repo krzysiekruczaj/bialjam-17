@@ -73,6 +73,7 @@ class FastTower(world: World,
     }
 
   fun shot(destination: Vector2): Bullet {
+    println("Creating bullet from [${this.body.position.x}, ${this.body.position.y}] to [${destination.x}, ${destination.y}]")
     return Bullet(world, 1f, this.body.position, destination)
   }
 
@@ -97,8 +98,8 @@ class Bullet(world: World,
       type = BodyDef.BodyType.DynamicBody
       fixedRotation = true
       linearDamping = 1f
-      position.x = spawnVector.x - 100f
-      position.y = spawnVector.y - 100f
+      position.x = spawnVector.x
+      position.y = spawnVector.y
 
       circle(2f) {
         userData = this@Bullet
@@ -109,12 +110,14 @@ class Bullet(world: World,
     }
 
   override fun update(delta: Float) {
-    val currentDensity = 15f * MathUtils.PI * 2000f * 1.05f
+    val currentDensity = 15f * MathUtils.PI * 2000f * 1.05f * 100f
     val angle = MathUtils.atan2(destination.y - body.position.y, destination.x - body.position.x)
-    println(body.fixtureList[0].userData)
-    body.applyForceToCenter(
+//    println(body.fixtureList[0].userData)
+    body.applyForce(
       MathUtils.cos(angle) * currentDensity,
       MathUtils.sin(angle) * currentDensity,
+      destination.x,
+      destination.y,
       true)
   }
 }
