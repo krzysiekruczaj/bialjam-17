@@ -43,10 +43,10 @@ class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = 
 }
 
 class TowerFactory(val world: World) {
-  fun wallTower(spawnVector: Vector2) = Tower(world, 10f, spawnVector)
-  fun fastTower(spawnVector: Vector2) = FastTower(world, 3f, spawnVector)
-  fun tripleShotFastTower(spawnVector: Vector2) = TripleShotFastTower(world, 3f, spawnVector)
-  fun splashTower(spawnVector: Vector2) = Tower(world, 3f, spawnVector)
+  fun wallTower(spawnVector: Vector2) = Tower(world, 1000f, spawnVector)
+  fun fastTower(spawnVector: Vector2) = FastTower(world, 3000f, spawnVector)
+  fun tripleShotFastTower(spawnVector: Vector2) = TripleShotFastTower(world, 3000f, spawnVector)
+  fun splashTower(spawnVector: Vector2) = Tower(world, 3000f, spawnVector)
 }
 
 class TripleShotFastTower(world: World,
@@ -54,7 +54,6 @@ class TripleShotFastTower(world: World,
                           spawnVector: Vector2) : FastTower(world, life, spawnVector) {
   override fun shot(destination: Vector2): GdxSet<Bullet> {
     val bodyPosition = this.body.position
-    println("Creating bullet from [${bodyPosition.x}, ${bodyPosition.y}] to [${destination.x}, ${destination.y}]")
     angle = destination.angle(bodyPosition)
     return gdxSetOf(
       Bullet(world, 1f, bodyPosition, destination),
@@ -98,7 +97,6 @@ open class FastTower(world: World,
 
   open fun shot(destination: Vector2): GdxSet<Bullet> {
     val bodyPosition = this.body.position
-    println("Creating bullet from [${bodyPosition.x}, ${bodyPosition.y}] to [${destination.x}, ${destination.y}]")
     angle = destination.angle(bodyPosition)
     return gdxSetOf(Bullet(world, 1f, bodyPosition, destination))
   }
