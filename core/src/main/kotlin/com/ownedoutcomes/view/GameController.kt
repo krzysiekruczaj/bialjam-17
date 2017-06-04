@@ -107,7 +107,7 @@ class GameController : Disposable {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it, entitiesInRange)
         closestEntity?.let { closestEntity ->
-          bullets.addAll(it.shot(closestEntity.body.position.cpy()))
+          bullets.addAll(it.shot(closestEntity.body.position.cpy().scl(1000f)))
         }
       }
     }
@@ -135,7 +135,6 @@ class GameController : Disposable {
         minimumEntity = it
       }
     }
-    println("Minimum distance: $minimumDistance")
     return minimumEntity
   }
 
