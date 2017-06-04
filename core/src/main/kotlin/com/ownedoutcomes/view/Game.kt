@@ -24,6 +24,8 @@ class Game(val stage: Stage,
   private lateinit var pointsLabel: Label
   private lateinit var timeToWaveLabel: Label
 
+  val grassArray = arrayOf("Q", "W", "E", "R", "T")
+
   var currentTower = 0
 
   val view = table {
@@ -59,6 +61,12 @@ class Game(val stage: Stage,
           name = buttonName
           it.height(60f).width(70f)
             .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
+        }
+        label(text = grassArray[i]) {
+          cell ->
+          run {
+            cell.expand().align(Align.bottomRight)
+          }
         }
       }
 

@@ -38,7 +38,7 @@ class GameController(val assetManager: AssetManager) : Disposable {
   val enemiesSpawnTimeout = 10f
   var lastSpawnDelta = 0.0f
 
-  var points: Int = 1000
+  var points: Int = 10000
 
   var currentWave = 0
 
