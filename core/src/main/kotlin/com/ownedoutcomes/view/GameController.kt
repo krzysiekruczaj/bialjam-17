@@ -13,6 +13,7 @@ import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
 import ktx.collections.isNotEmpty
 import ktx.math.vec2
+import java.util.*
 
 class GameController(val skin: Skin) : Disposable {
   val world = World(vec2(0f, 0f), true)
@@ -81,9 +82,29 @@ class GameController(val skin: Skin) : Disposable {
       it.update(delta)
       if (it.lastShotTime > 1f) {
         it.lastShotTime = 0f
-        bullets.add(it.shot(vec2(100f, 100f)))
+        val closestEntity = findClosestEntity(it)
+        if (closestEntity.isPresent) {
+          val position = closestEntity.get().body.position
+          bullets.add(it.shot(position))
+        }
       }
     }
 
+  }
+
+  private fun findClosestEntity(fastTower: FastTower): Optional<Enemy> {
+
+    var minimumEnity: Optional<Enemy> = Optional.empty()
+    var minimumDistance: Float = Float.MAX_VALUE
+    enemies.onEach {
+      val position = it.body.position
+      val fastTowerPosition = fastTower.body.position
+      val distance = vec2(position.x, position.y).dst(vec2(fastTowerPosition.x, fastTowerPosition.y))
+      if (minimumDistance > distance) {
+        minimumDistance = distance
+        minimumEnity = Optional.of(it)
+      }
+    }
+    return minimumEnity
   }
 }
