@@ -21,6 +21,7 @@ class Game(val stage: Stage,
   private val towerFactory = TowerFactory(gameController.world)
   private lateinit var towerTypes: KButtonTable
   private lateinit var pointsLabel: Label
+  private lateinit var timeToWaveLabel: Label
 
   var currentTower = 0
 
@@ -62,6 +63,13 @@ class Game(val stage: Stage,
 
       // Points:
       pointsLabel = label(text = "") {
+        cell ->
+        run {
+          cell.expand().align(Align.topRight)
+        }
+      }
+
+      timeToWaveLabel = label(text = "0") {
         cell ->
         run {
           cell.expand().align(Align.topRight)
@@ -163,7 +171,13 @@ class Game(val stage: Stage,
     stage.act(delta)
     stage.draw()
     updatePoints()
+    updateTime()
     gameRenderer.render(delta)
+  }
+
+  private fun updateTime() {
+    val timeToNextWave = gameController.enemiesSpawnTimeout.toInt() - gameController.lastSpawnDelta.toInt() - 1
+    timeToWaveLabel.setText("To next wave: $timeToNextWave")
   }
 
   private fun updatePoints() {

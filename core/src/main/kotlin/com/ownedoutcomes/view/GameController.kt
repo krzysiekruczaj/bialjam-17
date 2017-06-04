@@ -34,7 +34,7 @@ class GameController : Disposable {
   val bulletsToRemove = gdxSetOf<Bullet>()
 
   val fieldRadius = 5
-  private val enemiesSpawnTimeout = 1f
+  val enemiesSpawnTimeout = 2f
   var lastSpawnDelta = 0.0f
 
   var points = 0

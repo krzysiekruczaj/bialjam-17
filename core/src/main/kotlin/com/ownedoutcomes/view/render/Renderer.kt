@@ -19,7 +19,7 @@ import com.ownedoutcomes.view.GameController
 
 class GameRenderer(val gameController: GameController, val batch: Batch, skin: Skin) {
   private val castleSprite = skin.atlas.createSprite("castle_v1")
-  private val towerSprite = skin.atlas.createSprite("tower0")
+  private val towerSprite = skin.atlas.createSprite("tower")
 
   private val enemySprite = skin.atlas.createSprite("chicken2_v1")
 
