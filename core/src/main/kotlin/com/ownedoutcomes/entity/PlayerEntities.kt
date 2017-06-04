@@ -15,10 +15,9 @@ import ktx.collections.GdxSet
 import ktx.collections.gdxSetOf
 import ktx.math.vec2
 
-class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
+class Castle(world: World, override var life: Float, val spawnCenter: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, life) {
   override var size: Float = 75f
   override var angle = 0f
-  var maxLife = life
 
   init {
     initiate()
@@ -74,13 +73,12 @@ class TripleShotFastTower(world: World,
 
 open class FastTower(world: World,
                      override var life: Float,
-                     val spawnVector: Vector2) : AbstractEntity(world) {
+                     val spawnVector: Vector2) : AbstractEntity(world, life) {
   override var size: Float = 25f
   override var angle = 0f
   var shotDelay = 0.5f
 
   var lastShotTime = 0f
-  var maxLife = life
   var towerPower = 1f
 
   init {
@@ -148,7 +146,7 @@ class Bullet(world: World,
              override var life: Float,
              val spawnVector: Vector2,
              val destination: Vector2,
-             var power: Float = 1f) : AbstractEntity(world) {
+             var power: Float = 1f) : AbstractEntity(world, life) {
   override var size: Float = 5f
   override var angle = 0f
 
@@ -193,10 +191,9 @@ class Bullet(world: World,
   }
 }
 
-class Tower(world: World, override var life: Float, val spawnVector: Vector2) : AbstractEntity(world) {
+class Tower(world: World, override var life: Float, val spawnVector: Vector2) : AbstractEntity(world, life) {
   override var size: Float = 25f
   override var angle = 0f
-  var maxLife = life
 
   init {
     initiate()

@@ -1,6 +1,5 @@
 package com.ownedoutcomes.view.render
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -43,6 +42,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   )
   private val bulletSprite = skin.atlas.createSprite("bullet")
 
+  private val healthSprite = skin.atlas.createSprite("health")
 
   val debugRenderer = Box2DDebugRenderer()
 
@@ -85,7 +85,6 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     val bulletSprite = createSprite(sprite, entity)
     bulletSprite.rotation = MathUtils.radiansToDegrees * entity.angle
     bulletSprite.draw(batch)
-
     return bulletSprite
   }
 
@@ -107,15 +106,18 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
   private fun renderCastle() {
     val castle = gameController.castle
-    val castleSprite = processSprite(castleSprite, castle)
+    processSprite(castleSprite, castle)
+    renderHealthSprite(castle)
+  }
 
-    val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
-    pixmap.setColor(Color.RED)
-    pixmap.fill()
-    val drawable = TextureRegion(Texture(pixmap))
-    batch.color = Color.RED
-    batch.draw(drawable, castleSprite.x, castleSprite.y + 2 * castle.size, castle.size * 2 * (castle.life / castle.maxLife), 10f)
-    pixmap.dispose()
+  private fun renderHealthSprite(castle: AbstractEntity) {
+    val healthSprite = Sprite(healthSprite)
+    val spriteSize = castle.size * 2 * (castle.life / castle.maxLife)
+    healthSprite.x = castle.body.position.x - castle.size
+    healthSprite.y = castle.body.position.y + castle.size
+    healthSprite.setSize(spriteSize, 10f)
+    healthSprite.setOriginCenter()
+    healthSprite.draw(batch)
   }
 
   private fun renderEnemies(playerPosition: Vector2) {
@@ -141,14 +143,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     towerSprite.setSize(spriteSize, spriteSize)
     towerSprite.setOriginCenter()
     towerSprite.draw(batch)
-
-    val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
-    pixmap.setColor(Color.RED)
-    pixmap.fill()
-    val drawable = TextureRegion(Texture(pixmap))
-    batch.color = Color.RED
-    batch.draw(drawable, towerSprite.x, towerSprite.y + 2 * entity.size, spriteSize * (entity.life / entity.maxLife), 10f)
-    pixmap.dispose()
+    renderHealthSprite(entity)
   }
 
   private fun renderFastTowers() {
@@ -171,12 +166,6 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
 
     towerSprite.draw(batch)
 
-    val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
-    pixmap.setColor(Color.RED)
-    pixmap.fill()
-    val drawable = TextureRegion(Texture(pixmap))
-    batch.color = Color.RED
-    batch.draw(drawable, towerSprite.x, towerSprite.y + 2 * tower.size, spriteSize * (tower.life / tower.maxLife), 10f)
-    pixmap.dispose()
+    renderHealthSprite(tower)
   }
 }

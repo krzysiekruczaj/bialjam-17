@@ -35,12 +35,14 @@ class GameController(val assetManager: AssetManager) : Disposable {
   val bulletsToRemove = gdxSetOf<Bullet>()
 
   val fieldRadius = 5
-  val enemiesSpawnTimeout = 2f
+  val enemiesSpawnTimeout = 10f
   var lastSpawnDelta = 0.0f
 
   var points: Int = 1000
 
   var currentWave = 0
+
+  var nightDelay: Float = 10f
 
   var timeFromLastChangeOfTimeOfTheDay: Float = 0f
   private var factor: Int = 1
@@ -120,13 +122,19 @@ class GameController(val assetManager: AssetManager) : Disposable {
       lastSpawnDelta += delta
     }
 
-    if (timeFromLastChangeOfTimeOfTheDay > 10f) {
-      factor = -1
-    } else if (timeFromLastChangeOfTimeOfTheDay < 0f) {
-      timeFromLastChangeOfTimeOfTheDay = 0f
-      factor = 1
+    if (nightDelay < 0f) {
+      if (timeFromLastChangeOfTimeOfTheDay > 10f) {
+        factor = -1
+      } else if (timeFromLastChangeOfTimeOfTheDay < 0f) {
+        timeFromLastChangeOfTimeOfTheDay = 0f
+        factor = 1
+      }
+      timeFromLastChangeOfTimeOfTheDay += delta * factor
+    } else {
+      nightDelay -= delta
     }
-    timeFromLastChangeOfTimeOfTheDay += delta * factor
+
+
 
     enemies.onEach { it.update(delta) }
     castle.update(delta)

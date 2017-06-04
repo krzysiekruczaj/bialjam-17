@@ -13,7 +13,7 @@ import com.ownedoutcomes.view.enemyGroup
 import ktx.box2d.body
 import ktx.math.vec2
 
-abstract class AbstractEntity(val world: World) {
+abstract class AbstractEntity(val world: World, var maxLife: Float) {
   lateinit var body: Body
   abstract var size: Float
   abstract var angle: Float
@@ -33,7 +33,7 @@ class Chicken(world: World, override var life: Float, val level: Int) : Enemy(wo
 
 abstract class Enemy(world: World,
                      override var life: Float,
-                     val destination: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world) {
+                     val destination: Vector2 = vec2(0f, fieldWidth.toFloat() / 2)) : AbstractEntity(world, life) {
   override var size = 20f
   override var angle = 0f
 
