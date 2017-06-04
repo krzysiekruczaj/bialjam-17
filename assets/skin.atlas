@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 559, 120
+  xy: 431, 244
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -14,14 +14,14 @@ beige
   index: -1
 bomb
   rotate: false
-  xy: 102, 78
+  xy: 803, 414
   size: 65, 91
   orig: 100, 100
   offset: 18, 7
   index: -1
 brown
   rotate: false
-  xy: 532, 116
+  xy: 404, 240
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
@@ -29,259 +29,266 @@ brown
   index: -1
 bullet
   rotate: false
-  xy: 933, 372
+  xy: 1001, 468
   size: 12, 37
   orig: 64, 64
   offset: 26, 13
   index: -1
+cannon
+  rotate: false
+  xy: 734, 411
+  size: 68, 94
+  orig: 100, 100
+  offset: 17, 3
+  index: -1
 castle_grey
   rotate: false
-  xy: 337, 324
+  xy: 1, 323
   size: 204, 182
   orig: 204, 182
   offset: 0, 0
   index: -1
 castle_v1
   rotate: false
-  xy: 1, 170
-  size: 335, 336
-  orig: 400, 400
-  offset: 33, 36
+  xy: 1, 154
+  size: 168, 168
+  orig: 200, 200
+  offset: 16, 18
   index: -1
 chicken
   rotate: false
-  xy: 299, 120
+  xy: 366, 229
   size: 37, 49
   orig: 50, 50
   offset: 7, 0
   index: -1
 chicken1_v0
   rotate: false
-  xy: 1, 6
+  xy: 206, 342
   size: 65, 68
   orig: 100, 100
   offset: 19, 14
   index: -1
 chicken2_v1
   rotate: false
-  xy: 806, 410
+  xy: 89, 57
   size: 74, 96
   orig: 100, 100
   offset: 14, 1
   index: -1
 chicken3_v0
   rotate: false
-  xy: 542, 341
+  xy: 869, 437
   size: 65, 68
   orig: 100, 100
   offset: 19, 14
   index: -1
 chicken3_v1
   rotate: false
-  xy: 337, 227
+  xy: 1, 57
   size: 87, 96
   orig: 100, 100
   offset: 10, 1
   index: -1
 chicken4_v0
   rotate: false
-  xy: 956, 438
+  xy: 935, 437
   size: 65, 68
   orig: 100, 100
   offset: 19, 14
   index: -1
 chicken4_v1
   rotate: false
-  xy: 542, 410
+  xy: 307, 409
   size: 87, 96
   orig: 100, 100
   offset: 10, 1
   index: -1
 chicken5_v1
   rotate: false
-  xy: 425, 227
+  xy: 395, 409
   size: 87, 96
   orig: 100, 100
   offset: 10, 1
   index: -1
 chicken6_v1
   rotate: false
-  xy: 630, 410
+  xy: 483, 409
   size: 87, 96
   orig: 100, 100
   offset: 10, 1
   index: -1
 chicken7_v1
   rotate: false
-  xy: 718, 410
+  xy: 571, 409
   size: 87, 96
   orig: 100, 100
   offset: 10, 1
   index: -1
 chicken_v0
   rotate: false
-  xy: 168, 101
+  xy: 170, 184
   size: 65, 68
   orig: 100, 100
   offset: 19, 14
   index: -1
 chicken_v1
   rotate: false
-  xy: 881, 410
+  xy: 659, 409
   size: 74, 96
   orig: 100, 100
   offset: 14, 1
   index: -1
 dirt
   rotate: false
-  xy: 608, 345
+  xy: 272, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 dirt-selected
   rotate: false
-  xy: 234, 105
+  xy: 337, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 empty-box
   rotate: false
-  xy: 509, 44
+  xy: 62, 4
   size: 52, 52
   orig: 64, 64
   offset: 6, 6
   index: -1
 flag_blue
   rotate: false
-  xy: 532, 155
+  xy: 164, 68
   size: 48, 50
   orig: 50, 50
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 673, 345
+  xy: 402, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_e
   rotate: false
-  xy: 738, 345
+  xy: 467, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_e-selected
   rotate: false
-  xy: 803, 345
+  xy: 532, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_n
   rotate: false
-  xy: 868, 345
+  xy: 597, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_n-selected
   rotate: false
-  xy: 337, 162
+  xy: 662, 344
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_ne
   rotate: false
-  xy: 402, 162
+  xy: 170, 119
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_ne-selected
   rotate: false
-  xy: 467, 162
+  xy: 168, 3
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_nw
   rotate: false
-  xy: 123, 13
+  xy: 226, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_nw-selected
   rotate: false
-  xy: 337, 97
+  xy: 291, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_s
   rotate: false
-  xy: 402, 97
+  xy: 356, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_s-selected
   rotate: false
-  xy: 467, 97
+  xy: 421, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_se
   rotate: false
-  xy: 513, 259
+  xy: 486, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_se-selected
   rotate: false
-  xy: 956, 373
+  xy: 551, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_sw
   rotate: false
-  xy: 188, 36
+  xy: 616, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_sw-selected
   rotate: false
-  xy: 253, 40
+  xy: 681, 279
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_w
   rotate: false
-  xy: 318, 32
+  xy: 236, 212
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_w-selected
   rotate: false
-  xy: 383, 32
+  xy: 301, 214
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 gray
   rotate: false
-  xy: 188, 1
+  xy: 459, 244
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -289,42 +296,42 @@ gray
   index: -1
 tower0
   rotate: false
-  xy: 67, 5
+  xy: 170, 253
   size: 55, 69
   orig: 70, 70
   offset: 7, 0
   index: -1
 tower1
   rotate: false
-  xy: 448, 41
+  xy: 1, 1
   size: 60, 55
   orig: 60, 60
   offset: 0, 4
   index: -1
 tower3
   rotate: false
-  xy: 448, 41
+  xy: 1, 1
   size: 60, 55
   orig: 60, 60
   offset: 0, 4
   index: -1
 tower4
   rotate: false
-  xy: 448, 41
+  xy: 1, 1
   size: 60, 55
   orig: 60, 60
   offset: 0, 4
   index: -1
 tower2
   rotate: false
-  xy: 1, 75
+  xy: 206, 411
   size: 100, 94
   orig: 100, 100
   offset: 0, 3
   index: -1
 upgrade-box
   rotate: false
-  xy: 532, 206
+  xy: 115, 4
   size: 52, 52
   orig: 64, 64
   offset: 6, 6
