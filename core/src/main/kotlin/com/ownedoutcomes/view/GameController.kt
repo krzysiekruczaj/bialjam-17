@@ -87,9 +87,8 @@ class GameController(val skin: Skin) : Disposable {
       if (it.lastShotTime > 0.3f) {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it)
-        val position = closestEntity?.body?.position
-        position?.let { vector ->
-          bullets.add(it.shot(vector.cpy()))
+        closestEntity?.let { closestEntity ->
+          bullets.add(it.shot(closestEntity.body.position.cpy()))
         }
       }
     }
