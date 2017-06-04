@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Disposable
 import com.ownedoutcomes.entity.*
+import com.ownedoutcomes.fieldWidth
 import com.ownedoutcomes.screenHeight
 import com.ownedoutcomes.screenWidth
 import ktx.collections.GdxSet
@@ -84,7 +85,7 @@ class GameController : Disposable {
 
     if (lastSpawnDelta > enemiesSpawnTimeout) {
       lastSpawnDelta = 0.0f
-      spawnEnemies(10)
+      spawnEnemies(30)
     } else {
       lastSpawnDelta += delta
     }
@@ -103,7 +104,7 @@ class GameController : Disposable {
     val entitiesInRange = findEntitiesInRange(enemies)
     fastTowers.onEach {
       it.update(delta)
-      if (it.lastShotTime > 0.7f) {
+      if (it.lastShotTime > 0.5f) {
         it.lastShotTime = 0f
         val closestEntity = findClosestEntity(it, entitiesInRange)
         closestEntity?.let { closestEntity ->
@@ -131,11 +132,12 @@ class GameController : Disposable {
       val position = it.body.position
       val fastTowerPosition = fastTower.body.position
       val distance = vec2(position.x, position.y).dst(vec2(fastTowerPosition.x, fastTowerPosition.y))
-      if (minimumDistance > distance) {
+      if (distance < 3 * fieldWidth && minimumDistance > distance) {
         minimumDistance = distance
         minimumEntity = it
       }
     }
+    println("Minimum distance: $minimumDistance")
     return minimumEntity
   }
 
