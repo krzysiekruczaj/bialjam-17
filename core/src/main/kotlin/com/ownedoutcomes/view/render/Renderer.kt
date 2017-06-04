@@ -43,6 +43,7 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
   private val bulletSprite = skin.atlas.createSprite("bullet")
 
   private val healthSprite = skin.atlas.createSprite("health")
+  private val enemyHealthSprite = skin.atlas.createSprite("health-enemy")
 
   val debugRenderer = Box2DDebugRenderer()
 
@@ -120,11 +121,22 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     healthSprite.draw(batch)
   }
 
+  private fun renderEnemyHealthSprite(enemy: AbstractEntity) {
+    val healthSprite = Sprite(enemyHealthSprite)
+    val spriteSize = enemy.size * 2 * (enemy.life / enemy.maxLife)
+    healthSprite.x = enemy.body.position.x - enemy.size
+    healthSprite.y = enemy.body.position.y + enemy.size
+    healthSprite.setSize(spriteSize, 10f)
+    healthSprite.setOriginCenter()
+    healthSprite.draw(batch)
+  }
+
   private fun renderEnemies(playerPosition: Vector2) {
     gameController.enemies.onEach {
       val bulletSprite = createSprite(chickenSprites[Math.min(it.level, 8)], it)
       bulletSprite.rotation = MathUtils.radiansToDegrees * it.angle
       bulletSprite.draw(batch)
+      renderEnemyHealthSprite(it)
     }
   }
 

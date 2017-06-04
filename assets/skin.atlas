@@ -336,6 +336,13 @@ health
   orig: 1, 10
   offset: 0, 0
   index: -1
+health-enemy
+  rotate: false
+  xy: 233, 60
+  size: 1, 10
+  orig: 1, 10
+  offset: 0, 0
+  index: -1
 jar
   rotate: false
   xy: 302, 342
