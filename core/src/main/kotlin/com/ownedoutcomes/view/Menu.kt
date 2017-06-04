@@ -21,6 +21,8 @@ class Menu(
         application.setScreen<Game>()
       }
     }
+
+    background("background")
   }
 
   override fun show() {
