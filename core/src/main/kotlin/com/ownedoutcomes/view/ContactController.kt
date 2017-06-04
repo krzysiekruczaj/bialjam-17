@@ -1,12 +1,18 @@
 package com.ownedoutcomes.view
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.ownedoutcomes.entity.*
+import ktx.assets.getAsset
+import ktx.assets.toInternalFile
 
-class ContactController(val gameController: GameController) : ContactListener {
+class ContactController(val gameController: GameController, val assetManager: AssetManager) : ContactListener {
   override fun endContact(contact: Contact?) {}
 
   override fun beginContact(contact: Contact?) {
@@ -29,6 +35,7 @@ class ContactController(val gameController: GameController) : ContactListener {
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity, secondEntity.power)
           gameController.bulletsToRemove.add(secondEntity)
           gameController.points += firstEntity.level * 2 + 1
+          Gdx.audio.newSound("hit${MathUtils.random.nextInt(10)}.wav".toInternalFile()).play()
         }
         is Tower -> {
           secondEntity.life--
