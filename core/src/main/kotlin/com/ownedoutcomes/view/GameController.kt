@@ -148,14 +148,14 @@ class GameController(val assetManager: AssetManager) : Disposable {
       if (it.lastShotTime > it.shotDelay) {
         it.lastShotTime = 0f
         val closestEntityToCastle = findClosestEntity(it, entitiesInTowerRange)
-        println("Found ${entitiesInTowerRange.size} entities in castle range.")
+        //println("Found ${entitiesInTowerRange.size} entities in castle range.")
         if (closestEntityToCastle != null) {
-          println("Closest entity to castle= [${closestEntityToCastle.body.position.x}, ${closestEntityToCastle.body.position.y}]")
+          //println("Closest entity to castle= [${closestEntityToCastle.body.position.x}, ${closestEntityToCastle.body.position.y}]")
           bullets.addAll(it.shot(closestEntityToCastle.body.position.cpy()))
         } else {
           val closestEntityToTower = findClosestEntity(it, entitiesInRange)
           closestEntityToTower?.let { closestEntity ->
-            println("Closest entity to tower = [${closestEntityToTower.body.position.x}, ${closestEntityToTower.body.position.y}]")
+            //println("Closest entity to tower = [${closestEntityToTower.body.position.x}, ${closestEntityToTower.body.position.y}]")
 
             bullets.addAll(it.shot(closestEntity.body.position.cpy().scl(1000f)))
           }

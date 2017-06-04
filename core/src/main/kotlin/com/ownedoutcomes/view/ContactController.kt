@@ -2,14 +2,12 @@ package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.ownedoutcomes.entity.*
-import ktx.assets.getAsset
 import ktx.assets.toInternalFile
 
 class ContactController(val gameController: GameController, val assetManager: AssetManager) : ContactListener {
@@ -35,7 +33,7 @@ class ContactController(val gameController: GameController, val assetManager: As
           decreaseLifeForEnemyAndAssignForRemovalIfNeeded(firstEntity, secondEntity.power)
           gameController.bulletsToRemove.add(secondEntity)
           gameController.points += firstEntity.level * 2 + 1
-          Gdx.audio.newSound("hit${MathUtils.random.nextInt(10)}.wav".toInternalFile()).play()
+          Gdx.audio.newSound("hit${MathUtils.random.nextInt(10)}.wav".toInternalFile()).play(0.4f)
         }
         is Tower -> {
           secondEntity.life--
@@ -58,7 +56,7 @@ class ContactController(val gameController: GameController, val assetManager: As
     firstEntity.life -= damage
     if (firstEntity.life < 0) {
       gameController.enemiesToRemove.add(firstEntity)
-      Gdx.audio.newSound("hit0.wav".toInternalFile()).play()
+      Gdx.audio.newSound("hit0.wav".toInternalFile()).play(0.4f)
 
     }
   }
