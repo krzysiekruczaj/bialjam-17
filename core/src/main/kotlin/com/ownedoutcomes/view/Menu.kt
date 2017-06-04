@@ -16,7 +16,7 @@ class Menu(
     setFillParent(true)
 
     label("Play!") {
-      color = Color.WHITE
+      color = Color.BLACK
 
       fontScaleX = 6f
       fontScaleY = 6f

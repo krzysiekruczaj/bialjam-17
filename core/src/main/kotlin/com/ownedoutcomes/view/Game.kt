@@ -88,7 +88,7 @@ class Game(val stage: Stage,
       timeToWaveLabel = label(text = "0") {
         cell ->
         run {
-          cell.expand().align(Align.topRight)
+          cell.expand().align(Align.bottomRight)
         }
       }
     }
