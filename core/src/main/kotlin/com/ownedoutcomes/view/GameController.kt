@@ -208,6 +208,7 @@ class GameController(val assetManager: AssetManager) : Disposable {
   }
 
   fun gameOver() {
+    System.exit(-1)
     //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
   }
 
