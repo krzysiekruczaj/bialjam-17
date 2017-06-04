@@ -40,7 +40,7 @@ filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 349, 233
+  xy: 910, 307
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -55,7 +55,7 @@ bomb
   index: -1
 brown
   rotate: false
-  xy: 943, 368
+  xy: 311, 234
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
@@ -91,7 +91,7 @@ castle_v1
   index: -1
 chicken
   rotate: false
-  xy: 311, 218
+  xy: 872, 292
   size: 37, 49
   orig: 50, 50
   offset: 7, 0
@@ -210,7 +210,7 @@ dirt-selected
   index: -1
 empty-box
   rotate: false
-  xy: 831, 289
+  xy: 766, 289
   size: 52, 52
   orig: 64, 64
   offset: 6, 6
@@ -224,126 +224,126 @@ flag_blue
   index: -1
 grass
   rotate: false
-  xy: 358, 342
+  xy: 302, 338
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_e
   rotate: false
-  xy: 423, 342
+  xy: 367, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_e-selected
   rotate: false
-  xy: 488, 342
+  xy: 432, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_n
   rotate: false
-  xy: 553, 342
+  xy: 497, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_n-selected
   rotate: false
-  xy: 618, 342
+  xy: 562, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_ne
   rotate: false
-  xy: 683, 342
+  xy: 627, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_ne-selected
   rotate: false
-  xy: 748, 342
+  xy: 692, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_nw
   rotate: false
-  xy: 813, 342
+  xy: 757, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_nw-selected
   rotate: false
-  xy: 878, 342
+  xy: 822, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_s
   rotate: false
-  xy: 311, 268
+  xy: 887, 342
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_s-selected
   rotate: false
-  xy: 376, 277
+  xy: 311, 273
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_se
   rotate: false
-  xy: 441, 277
+  xy: 376, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_se-selected
   rotate: false
-  xy: 506, 277
+  xy: 441, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_sw
   rotate: false
-  xy: 571, 277
+  xy: 506, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_sw-selected
   rotate: false
-  xy: 636, 277
+  xy: 571, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_w
   rotate: false
-  xy: 701, 277
+  xy: 636, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 grass_w-selected
   rotate: false
-  xy: 766, 277
+  xy: 701, 277
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 gray
   rotate: false
-  xy: 302, 183
+  xy: 338, 238
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -365,10 +365,10 @@ tower
   index: -1
 tower0
   rotate: false
-  xy: 302, 333
-  size: 55, 69
-  orig: 70, 70
-  offset: 7, 0
+  xy: 206, 403
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
 tower1
   rotate: false
@@ -400,7 +400,7 @@ tower2
   index: -1
 upgrade-box
   rotate: false
-  xy: 884, 289
+  xy: 819, 289
   size: 52, 52
   orig: 64, 64
   offset: 6, 6
