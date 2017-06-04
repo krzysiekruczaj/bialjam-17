@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.ownedoutcomes.entity.Chicken
+import com.ownedoutcomes.entity.AbstractEntity
 import com.ownedoutcomes.entity.FastTower
 import com.ownedoutcomes.entity.Tower
 import com.ownedoutcomes.view.GameController
@@ -47,72 +46,56 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     batch.end()
   }
 
+  private fun processSprite(sprite: Sprite, entity: AbstractEntity): Sprite {
+    val bulletSprite = Sprite(sprite)
+    val spriteSize = entity.size * 2
+    bulletSprite.x = entity.body.position.x - entity.size
+    bulletSprite.y = entity.body.position.y - entity.size
+    bulletSprite.setSize(spriteSize, spriteSize)
+    bulletSprite.setOriginCenter()
+    bulletSprite.draw(batch)
+    return bulletSprite
+  }
+
   private fun renderBullets() {
-    val bullets = gameController.bullets
-    bullets.onEach { bullet ->
-      val bulletSprite = Sprite(bulletSprite)
-      val spriteSize = bullet.size * 2
-      bulletSprite.x = bullet.body.position.x - bullet.size
-      bulletSprite.y = bullet.body.position.y - bullet.size
-      bulletSprite.setSize(spriteSize, spriteSize)
-      bulletSprite.setOriginCenter()
-      bulletSprite.draw(batch)
+    gameController.bullets.onEach {
+      processSprite(bulletSprite, it)
     }
   }
 
   private fun renderCastle() {
     val castle = gameController.castle
-    val playerSprite = Sprite(castleSprite)
-    val spriteSize = castle.size * 2
-    playerSprite.x = castle.body.position.x - castle.size
-    playerSprite.y = castle.body.position.y - castle.size
-    playerSprite.setSize(spriteSize, spriteSize)
-    playerSprite.setOriginCenter()
-    playerSprite.draw(batch)
+    val castleSprite = processSprite(castleSprite, castle)
 
     val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
     pixmap.setColor(Color.RED)
     pixmap.fill()
     val drawable = TextureRegion(Texture(pixmap))
     batch.color = Color.RED
-    batch.draw(drawable, playerSprite.x, playerSprite.y + 2 * castle.size, spriteSize * (castle.life / castle.maxLife), 10f)
+    batch.draw(drawable, castleSprite.x, castleSprite.y + 2 * castle.size, castle.size * 2 * (castle.life / castle.maxLife), 10f)
     pixmap.dispose()
   }
 
   private fun renderEnemies(playerPosition: Vector2) {
     println("Rendering ${gameController.enemies.size} enemies")
-    gameController.enemies.forEach {
-      enemy ->
-      renderEnemy(playerPosition, enemy)
+    gameController.enemies.onEach {
+      processSprite(enemySprite, it)
     }
-  }
-
-  private fun renderEnemy(playerPosition: Vector2, enemy: Chicken) {
-    val enemySprite = Sprite(enemySprite)
-    val spriteSize = enemy.size * 2
-    val enemyBody = enemy.body
-    enemySprite.x = enemyBody.position.x - enemy.size
-    enemySprite.y = enemyBody.position.y - enemy.size
-    enemySprite.setSize(spriteSize, spriteSize)
-    enemySprite.setOriginCenter()
-
-    enemySprite.rotation = MathUtils.radiansToDegrees * -enemy.angle
-    enemySprite.draw(batch)
   }
 
   private fun renderTowers() {
     println("Rendering ${gameController.towers.size} towers")
-    gameController.towers.forEach {
-      tower ->
-      renderTower(tower)
+    gameController.towers.onEach {
+      renderSpriteWithHealthBar(towerSprite, it)
     }
+
   }
 
-  private fun renderTower(tower: Tower) {
-    val towerSprite = Sprite(towerSprite)
-    val spriteSize = tower.size * 2
-    towerSprite.x = tower.body.position.x - tower.size
-    towerSprite.y = tower.body.position.y - tower.size
+  private fun renderSpriteWithHealthBar(sprite: Sprite, entity: Tower) {
+    val towerSprite = Sprite(sprite)
+    val spriteSize = entity.size * 2
+    towerSprite.x = entity.body.position.x - entity.size
+    towerSprite.y = entity.body.position.y - entity.size
     towerSprite.setSize(spriteSize, spriteSize)
     towerSprite.setOriginCenter()
     towerSprite.draw(batch)
@@ -122,19 +105,18 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     pixmap.fill()
     val drawable = TextureRegion(Texture(pixmap))
     batch.color = Color.RED
-    batch.draw(drawable, towerSprite.x, towerSprite.y + 2 * tower.size, spriteSize * (tower.life / tower.maxLife), 10f)
+    batch.draw(drawable, towerSprite.x, towerSprite.y + 2 * entity.size, spriteSize * (entity.life / entity.maxLife), 10f)
     pixmap.dispose()
   }
 
   private fun renderFastTowers() {
     println("Rendering ${gameController.fastTowers.size} bullets")
-    gameController.fastTowers.forEach {
-      tower ->
-      renderFastTower(tower)
+    gameController.fastTowers.onEach {
+      renderFastTower(fastTowerSprite, it)
     }
   }
 
-  private fun renderFastTower(tower: FastTower) {
+  private fun renderFastTower(fastTowerSprite: Sprite, tower: FastTower) {
     val towerSprite = Sprite(fastTowerSprite)
     val spriteSize = tower.size * 2
     towerSprite.x = tower.body.position.x - tower.size
