@@ -74,6 +74,7 @@ class FastTower(world: World,
 
   fun shot(destination: Vector2): Bullet {
     println("Creating bullet from [${this.body.position.x}, ${this.body.position.y}] to [${destination.x}, ${destination.y}]")
+    angle = destination.angle(this.body.position)
     return Bullet(world, 1f, this.body.position, destination)
   }
 

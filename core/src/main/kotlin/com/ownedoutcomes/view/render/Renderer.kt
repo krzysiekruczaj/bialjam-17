@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -121,6 +122,8 @@ class GameRenderer(val gameController: GameController, val batch: Batch, skin: S
     towerSprite.y = tower.body.position.y - tower.size
     towerSprite.setSize(spriteSize, spriteSize)
     towerSprite.setOriginCenter()
+    towerSprite.rotation = MathUtils.radiansToDegrees * tower.angle
+
     towerSprite.draw(batch)
 
     val pixmap = Pixmap(0, 10, Pixmap.Format.RGBA8888)
